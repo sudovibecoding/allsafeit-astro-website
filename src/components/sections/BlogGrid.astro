@@ -1,0 +1,141 @@
+---
+import Icon from '../primitives/Icon.astro';
+import { BLOGS } from '../../data/blogs';
+import { blogPostHref, heroBlogImage, type BlogStory } from '../../lib/storyblok-blog';
+
+interface StaticPost {
+  heading: string;
+  desc: string;
+  href: string;
+  imgSrc: string;
+  imgAlt: string;
+}
+
+interface Props {
+  badge?: string;
+  heading?: string;
+  maxItems?: number;
+  posts?: BlogStory[];
+}
+
+const {
+  badge = '[AllSafe IT Blog]',
+  heading = 'Insights on Managed IT Support & Cybersecurity',
+  maxItems = 3,
+  posts,
+} = Astro.props;
+
+const items: StaticPost[] = posts?.length
+  ? posts.slice(0, maxItems).map((post) => {
+      const hero = post.content.body?.find((b) => b.component === 'hero_blog_post');
+      return {
+        heading: post.name,
+        desc: post.content.body?.find((b) => b.component === 'hero_blog_post')?.lead ?? '',
+        href: blogPostHref(post),
+        imgSrc: hero?.image_path ?? heroBlogImage(post) ?? '',
+        imgAlt: hero?.image_alt ?? post.name,
+      };
+    })
+  : BLOGS.slice(0, maxItems);
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-content">
+      <div class="content_grid centered-title">
+        <div class="title">
+          <p class="badge-text text-center">{badge}</p>
+          <h2 class="h3 text_center">{heading}</h2>
+        </div>
+      </div>
+      <div class="latest-blogs">
+        <div class="blogs-grid">
+          {items.map((post) => (
+            <div class="blog-card">
+              <div class="card">
+                <div>
+                  <img
+                    src={post.imgSrc}
+                    alt={post.imgAlt}
+                    class="card-image"
+                    width="800"
+                    height="500"
+                    loading="lazy"
+                  />
+                  <div class="card-line" aria-hidden="true"></div>
+                </div>
+                <div class="card-body">
+                  <h3 class="lead-text strong">{post.heading}</h3>
+                  {post.desc && <p class="lead-text body-text">{post.desc}</p>}
+                  <div class="button-flex">
+                    <a href={post.href} class="badge-text-blue hover-text-link-label">Read more</a>
+                    <Icon name="arrow-right" class="small_icon color__lightblue" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .blog-card { display: flex; flex-direction: column; }
+
+  .lead-text.strong { font-weight: 600; }
+
+  .hover-text-link-label {
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .hover-text-link-label:hover { color: var(--color-brand-dark); }
+
+  .latest-blogs { width: 100%; }
+
+  .blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    margin-top: var(--spacing-section-sm);
+  }
+
+  .card {
+    gap: 12px;
+    border-radius: var(--radius-default);
+    background-color: var(--color-light-2);
+    flex-direction: column;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .card-line {
+    background-color: var(--color-brand-primary);
+    background-image: linear-gradient(94deg, var(--color-accent), #fff);
+    width: 100%;
+    height: 6px;
+  }
+
+  .card-image {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+  }
+
+  .card-body {
+    gap: 1.5rem;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    display: flex;
+  }
+
+  @media (max-width: 991px) { .blogs-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 767px) { .blogs-grid { grid-template-columns: 1fr; } }
+</style>

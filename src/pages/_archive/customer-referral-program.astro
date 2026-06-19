@@ -1,0 +1,110 @@
+---
+/**
+ * Customer Referral Program — earn money for referring new clients.
+ *
+ * Composed entirely from existing design-system components:
+ *   - Base (SEO, layout)
+ *   - inline compact hero (centered-title utility)
+ *   - OnboardingProcess (3-step referral flow, stepLabel="Step")
+ *   - inline reward callout (.bg-gradient utility)
+ *   - TalkToExpertCta (closing brand banner — points to /contact-us)
+ *
+ * No inline form: the live Webflow page does NOT have an inline referral
+ * form — it directs interested partners to /contact-us instead. We match
+ * that flow exactly. Removed the previous ContactSection that was here.
+ *
+ * Indexing: indexable — referral programs benefit from SEO.
+ */
+
+import Base from '../layouts/Base.astro';
+import OnboardingProcess from '../components/sections/OnboardingProcess.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+
+const referralSteps = [
+  {
+    number: 1,
+    title: 'Complete the form below to introduce us to the partner.',
+    body: 'Share their name, company, and contact info. The form takes a minute.',
+  },
+  {
+    number: 2,
+    title: 'We will reach out to your referral.',
+    body: "Our team will contact them directly to discuss their IT needs. No pressure — we just want to learn how we can help.",
+  },
+  {
+    number: 3,
+    title: 'Get rewarded once they sign on.',
+    body: 'Once your referral becomes a client, you receive your reward. Simple as that.',
+  },
+];
+---
+
+<Base
+  title="Customer Referral Program | Refer Businesses &amp; Get Rewarded"
+  description="Recommend AllSafe IT to another company in need of IT services & earn up to $500. Fill out the form below to get rewarded through our customer referral program."
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h1">Earn up to $500, when you introduce a new partner to AllSafe IT</h1>
+        <p class="lead-text">
+          We value our partnerships — and we'd love to thank you for helping
+          us grow. Refer a business in your network, and earn cash when they
+          become a client.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <OnboardingProcess
+    heading="How it works"
+    phases={referralSteps}
+    stepLabel="Step"
+    image="/images/allsafe-employee-1.avif"
+    imageAlt="AllSafe IT team member smiling — partnership-focused"
+  />
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="reward-callout">
+        <p class="badge-text">The reward</p>
+        <h2 class="h3">$50 upon the initial referral. $450 when they sign on as a client.</h2>
+        <p class="lead-text">
+          Earn a quick $50 for every introduction. The big $450 lands when
+          they officially become an AllSafe IT client — fast, fair, and
+          fully aboveboard.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <TalkToExpertCta
+    heading="Ready to refer a partner?"
+    body="Reach out to our team — we'll take it from there. Earn $50 on referral, $450 when they sign on."
+    ctaText="Refer through Contact Us"
+    ctaHref="/contact-us"
+  />
+</Base>
+
+<style>
+  .reward-callout {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background-image: linear-gradient(
+      180deg,
+      var(--color-light-1),
+      var(--color-light-2)
+    );
+    border-radius: var(--radius-large);
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  .reward-callout .badge-text {
+    color: var(--color-accent);
+  }
+</style>

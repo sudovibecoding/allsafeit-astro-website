@@ -1,0 +1,160 @@
+---
+import Icon from '../primitives/Icon.astro';
+// Plain <img> (not astro:assets <Image>) — serve the pre-optimized Webflow
+// .avif as-is, no re-encode. See StrategicSupport for rationale.
+import photoItPro from '../../assets/images/DSC_2042DSC_2041.avif';
+
+interface Props {
+  heading?: string;
+  imagePath?: string;
+  imageAlt?: string;
+  item_1_label?: string;
+  item_1_body?: string;
+  item_2_label?: string;
+  item_2_body?: string;
+  item_3_label?: string;
+  item_3_body?: string;
+  item_4_label?: string;
+  item_4_body?: string;
+}
+
+const {
+  heading = 'Proof, Not Promises',
+  imagePath,
+  imageAlt = 'IT professional offering expert IT support to businesses in Southern California',
+  item_1_label = 'SOC 2 compliant',
+  item_1_body = "Robust security practices that meet the highest independent standards. We're audited so you can trust our current IT setup protects your data.",
+  item_2_label = '97% CSAT',
+  item_2_body = 'Clients rate their experience because it matters. Proactive monitoring and responsive support keep California businesses satisfied year after year.',
+  item_3_label = '98% Retention:',
+  item_3_body = 'Clients stay because results matter. Service providers who deliver earn loyalty. This works.',
+  item_4_label = '20+ Years:',
+  item_4_body = 'Serving small and mid sized business across SoCal. We know this market, these industries, and their challenges. Managed service provider experience you can verify.',
+} = Astro.props;
+
+const items = [
+  {
+    label: item_1_label,
+    body: item_1_body,
+    static: true,
+  },
+  {
+    label: item_2_label,
+    body: item_2_body,
+    static: false,
+  },
+  {
+    label: item_3_label,
+    body: item_3_body,
+    static: false,
+  },
+  {
+    label: item_4_label,
+    body: item_4_body,
+    static: false,
+  },
+] as const;
+---
+
+<div class="section margin-top-small">
+  <div class="container">
+    <div class="section-content">
+      <div class="grid">
+        <div class="content">
+          <div class="title">
+            <h2 class="h3">{heading}</h2>
+          </div>
+          <div class="accordion">
+            {items.map((item, i) => (
+              <details class="accordion-item" open={i === 0}>
+                <summary class="acc-title">
+                  <div class="accordion-icon-title">
+                    <Icon name="check-circle" class="widget__embed-icons green-icon" />
+                    <div class="accordion-title no_padding">{item.label}</div>
+                  </div>
+                </summary>
+                <div class="accordion-content-wrap">
+                  <div class="accordion-content">
+                    <p class="accordion-text">{item.body}</p>
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        <div class="square-image-wrap sticky">
+          <img
+            class="square-parallax-image"
+            src={imagePath ?? photoItPro.src}
+            alt={imageAlt}
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* The global `.grid` uses `justify-items: center`, so each column is sized
+     to its CONTENT, not stretched. Toggling a dropdown changes the content's
+     intrinsic width, which made this column visibly resize/recenter. Force the
+     dropdown column to fill its track so its width stays constant regardless
+     of which <details> is open. */
+  .content {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  /* Click-to-expand "Proof, Not Promises" — native <details>, NO JS.
+     Mirrors the project's AccordionItem pattern + Webflow's proof markup. */
+  .accordion-item {
+    border-bottom: 1px dotted var(--color-dark-faded);
+  }
+
+  .acc-title {
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    font-weight: 500;
+    display: flex;
+    list-style: none; /* remove default <summary> marker */
+  }
+  .acc-title::-webkit-details-marker { display: none; }
+
+  .accordion-icon-title {
+    gap: 0.6rem;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+  }
+
+  .accordion-title.no_padding {
+    color: var(--color-brand-dark);
+    padding: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  /* Collapsible body (hidden until the <details> is open). */
+  .accordion-content-wrap {
+    padding: 0 18px 18px 18px;
+  }
+  .accordion-text {
+    color: var(--color-brand-dark);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    margin: 0;
+  }
+
+  /* #5: when the grid collapses on mobile, image stacks ABOVE the text. */
+  @media (max-width: 991px) {
+    .square-image-wrap { order: -1; }
+  }
+
+  @media (max-width: 767px) {
+    .accordion-title.no_padding { font-size: 1.1rem; }
+  }
+</style>

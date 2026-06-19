@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+      { '@type': 'ListItem', position: 2, name: 'Careers', item: 'https://www.allsafeit.com/careers' },
+    ],
+  },
+];
+---
+
+<Base
+  title="Join Our Team at AllSafe IT | Careers in IT Services"
+  description="Explore exciting career opportunities in the field of IT at AllSafe IT. Join a dynamic team today dedicated to innovation and excellence."
+  canonical="https://www.allsafeit.com/careers"
+  schema={schema}
+>
+  {/* ── Hero (dark, split: text left + world-map image right) ── */}
+  <div class="careers-hero-wrap">
+    <div aria-hidden="true" style="height: var(--navbar-height)"></div>
+    <section class="section bg-brand-2 careers-hero">
+      <div class="container">
+        <div class="careers-hero-grid">
+          <div class="content">
+            <h1 class="h2 color__white-shade1"><span>Join our team</span> to learn as fast as you can</h1>
+            <p class="lead-text color__white-shade1">
+              Everyone who works with us is qualified to think alongside us. To contribute. To make systems secure, robust, elegant.<br /><br />
+              We give you enough responsibility to accelerate your learning. Now, the question remains; do you love IT as much as us?
+            </p>
+            <a href="https://allsafeit.hrpartner.io/jobs" class="button small" target="_blank" rel="noopener noreferrer">Join our team</a>
+          </div>
+          <img
+            src="/images/image-careers-hero-saas-x-template_1image-careers-hero-saas-x-template.avif"
+            alt="Pixelated world map with four circular portraits of diverse people placed over different continents."
+            class="careers-hero-image"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {/* ── Mission (3-image custom grid + content) ── */}
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        <div class="mission-images">
+          <img src="/images/DSC_2042DSC_2041.avif" alt="AllSafe IT experts having a conference" loading="lazy" />
+          <img src="/images/DSC_2148-mission.avif" alt="An AllSafe IT expert" loading="lazy" />
+          <img src="/images/DSC_2057DSC_2056.avif" alt="AllSafe IT team at work" loading="lazy" />
+        </div>
+        <div class="content">
+          <div class="title">
+            <div class="badge-text">[Our Mission]</div>
+            <h2 class="h4">Our mission is to turn managed IT services into a fine art</h2>
+          </div>
+          <p class="body-text">
+            Are you ready to think alongside us? To contribute ideas and to support the rest of the team with your IT skills? We are always innovating within our business, to make managed IT services even better. IT services are an art, with high stakes at hand! Every single working day is a dive into new systems and thus, excitement!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Current job openings ── */}
+  <section class="section bg-gradient">
+    <div class="container">
+      <div class="centered-title">
+        <div class="badge-text">[job openings]</div>
+        <h2 class="h2 text_center">Current job openings</h2>
+        <p class="lead-text text_center">
+          We are always excited to hear from anyone motivated to provide the best possible service to our clients. If no positions are available, please feel free to send an open application.
+        </p>
+        <a href="https://allsafeit.hrpartner.io/jobs" class="button" target="_blank" rel="noopener noreferrer">Join our team</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Dark hero pulled up under the navbar. */
+  .careers-hero-wrap {
+    margin-top: var(--navbar-negative-height);
+  }
+
+  .careers-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .careers-hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  /* The `.content` wrapper is `display:flex; flex-direction:column`, whose
+     default cross-axis (align-items: stretch) makes block-level children fill
+     the column. The CTA should size to its content instead. */
+  .careers-hero .button {
+    align-self: flex-start;
+  }
+
+  /* Mission images: a 2-col grid with the first image spanning both rows. */
+  .mission-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+  }
+  .mission-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-default);
+    aspect-ratio: 1;
+  }
+  .mission-images img:first-child {
+    grid-row: 1 / 3;
+    aspect-ratio: auto;
+  }
+
+  @media (max-width: 991px) {
+    .careers-hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .mission-images {
+      grid-template-rows: auto;
+    }
+    .mission-images img:first-child {
+      grid-column: 1 / 3;
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

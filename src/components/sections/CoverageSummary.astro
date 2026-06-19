@@ -1,0 +1,143 @@
+---
+interface TableRow {
+  label: string;
+  body: string;
+}
+
+interface Panel {
+  heading: string;
+  intro: string;
+  table?: TableRow[];
+  paragraphs?: string[];
+}
+
+interface Props {
+  heading: string;
+  intro: string;
+  panels: Panel[];
+}
+
+const { heading, intro, panels } = Astro.props;
+---
+
+<section class="section bg-gradient">
+  <div class="container">
+    <div class="section-content">
+      <div class="centered-title">
+        <h2 class="h3 text_center">{heading}</h2>
+        <p class="lead-text text_center">{intro}</p>
+      </div>
+      <div class="panels-stack">
+        {panels.map(panel => (
+          <article class="panel-card">
+            <h3 class="h4">{panel.heading}</h3>
+            <p class="panel-intro">{panel.intro}</p>
+            {panel.table && (
+              <div class="panel-table">
+                <div class="panel-row panel-row__head">
+                  <div class="panel-cell">Solution</div>
+                  <div class="panel-cell">What it does</div>
+                </div>
+                {panel.table.map(row => (
+                  <div class="panel-row">
+                    <div class="panel-cell panel-cell__label">{row.label}</div>
+                    <div class="panel-cell">{row.body}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {panel.paragraphs?.map(p => (
+              <p class="lead-text body-text">{p}</p>
+            ))}
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .centered-title {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    align-items: center;
+    max-width: var(--container-6col);
+    margin: 0 auto 3rem;
+  }
+
+  .panels-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .panel-card {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .panel-intro {
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    color: var(--color-brand-dark);
+    font-weight: 500;
+  }
+
+  .panel-table {
+    border-radius: var(--radius-default);
+    overflow: hidden;
+    border: 1px solid var(--color-light-2);
+  }
+
+  .panel-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--color-light-2);
+  }
+
+  .panel-row:first-child {
+    border-top: 0;
+  }
+
+  .panel-row__head {
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+    font-weight: 600;
+  }
+
+  .panel-cell {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  .panel-cell__label {
+    font-weight: 600;
+    color: var(--color-brand-dark);
+  }
+
+  @media (max-width: 767px) {
+    .panel-card { padding: 1.25rem; }
+
+    .panel-row {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .panel-row__head { display: none; }
+
+    .panel-cell__label {
+      font-size: var(--text-small);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-accent);
+    }
+  }
+</style>

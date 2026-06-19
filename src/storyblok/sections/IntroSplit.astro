@@ -1,0 +1,26 @@
+---
+import IntroSplit from '../../components/sections/IntroSplit.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { renderHeading } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading: unknown;
+    body?: unknown;
+    body_html?: string;
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<IntroSplit
+  headingHtml={renderHeading(blok.heading)}
+  body={resolveRichOrHtml(blok.body_html, blok.body)}
+  image={resolveImage(blok.image, blok.image_path)}
+  imageAlt={blok.image_alt}
+/>

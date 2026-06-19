@@ -1,0 +1,78 @@
+---
+/**
+ * Two-column layout for service-detail body, matching Webflow's
+ * `.layout-right_component.rich-text-grid`:
+ *   - grid-template-columns: 2fr .75fr  (≈73% article / 27% sidebar)
+ *   - grid-column-gap: 1.5rem
+ *   - Sidebar aligned to the top (align-top), stays sticky while scrolling
+ *
+ * The article body uses the default slot. Sidebar uses the `sidebar` slot.
+ */
+---
+
+<section class="section padding-top-small">
+  <div class="container">
+    <div class="layout-right_component rich-text-grid">
+      <div class="layout-right_content-wrapper-2">
+        <div class="article-wrapper article-richtext">
+          <slot />
+        </div>
+      </div>
+      <div class="layout-right_image-wrapper align-top">
+        <slot name="sidebar" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout-right_component {
+    display: grid;
+    column-gap: 4rem;
+    row-gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+
+  .layout-right_component.rich-text-grid {
+    column-gap: 1.5rem;
+    grid-template-columns: 2fr 0.75fr;
+    position: relative;
+  }
+
+  .layout-right_content-wrapper-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    min-width: 0;
+  }
+
+  .article-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .layout-right_image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+
+  .layout-right_image-wrapper.align-top {
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 991px) {
+    .layout-right_component.rich-text-grid {
+      grid-template-columns: 1fr;
+      column-gap: 0;
+      row-gap: 2.5rem;
+    }
+  }
+</style>

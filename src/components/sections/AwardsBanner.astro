@@ -1,0 +1,91 @@
+---
+interface Props {
+  heading: string;
+  /** Per-city narrative paragraph. HTML allowed for inline anchors. */
+  body: string;
+  /** Right-column team or office photo. */
+  image: string;
+  imageAlt: string;
+  /** Webflow Torrance uses `awards-recognition-section bg-gradient`. */
+  bg?: 'plain' | 'gradient';
+  /** Newport's growth-pitch awards-recognition-section omits the MSP logo pair. */
+  showLogos?: boolean;
+}
+
+const { heading, body, image, imageAlt, bg = 'plain', showLogos = true } = Astro.props;
+const sectionClass = `section${bg === 'gradient' ? ' bg-gradient' : ''}`;
+
+const awards = [
+  {
+    src: '/images/CF-MSP-501-Logo-Dec-2022-Vertical_1CF-MSP-501-Logo-Dec-2022-Vertical.avif',
+    alt: 'Channel Futures MSP 501 award logo',
+  },
+  {
+    src: '/images/2024_CRN_MSP_500_vertical_12024_CRN_MSP_500_vertical.avif',
+    alt: 'CRN MSP 500 2024 award logo',
+  },
+] as const;
+---
+
+<section class={sectionClass}>
+  <div class="container">
+    <div class="section-content">
+      <div class="grid">
+        <div class="awards-content">
+          <h2 class="h3">{heading}</h2>
+          <p class="lead-text" set:html={body}></p>
+          {showLogos && (
+            <div class="awards-logo-wrap">
+              {awards.map(a => (
+                <div class="awards-logo">
+                  <img src={a.src} alt={a.alt} width="160" height="200" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div class="square-image-wrap">
+          <img
+            src={image}
+            alt={imageAlt}
+            class="square-parallax-image"
+            width="500"
+            height="500"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .awards-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .awards-logo-wrap {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .awards-logo img {
+    max-width: 160px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 767px) {
+    .awards-logo img {
+      max-width: 130px;
+      max-height: 160px;
+    }
+  }
+</style>

@@ -1,0 +1,122 @@
+---
+import Icon from '../primitives/Icon.astro';
+import { INDUSTRIES, type Industry } from '../../data/industries';
+
+interface Props {
+  /** Rendered from Storyblok heading richtext (supports line breaks). */
+  headingHtml?: string;
+  /** When omitted, falls back to static INDUSTRIES data. */
+  industries?: Industry[];
+}
+
+const { headingHtml, industries = INDUSTRIES } = Astro.props;
+const defaultHeading =
+  'Industries We Serve: <br>Managed IT Solutions for California Businesses';
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-content">
+      <div class="content_grid">
+        <div class="title">
+          {headingHtml ? (
+            <Fragment set:html={headingHtml} />
+          ) : (
+            <h2 class="h3" set:html={defaultHeading} />
+          )}
+        </div>
+      </div>
+      <div class="industry-card-grid">
+        {industries.map((ind) => (
+          <div class="info-card">
+            <div class="icon">
+              <img src={ind.iconWhite} class="embed-icons-white" alt="" width="32" height="32" loading="lazy" />
+              <img src={ind.iconBlue}  class="embed-icons-blue"  alt="" width="32" height="32" loading="lazy" />
+            </div>
+            <div class="card-body">
+              <div class="card-text-copy">
+                <h3 class="h4">{ind.heading}</h3>
+                <div class="lead-text body-text">{ind.desc}</div>
+              </div>
+              <div class="button-flex">
+                <a href={ind.href} class="badge-text-blue">{ind.heading}</a>
+                <Icon name="arrow-right" class="small_icon color__lightblue" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Matches Webflow `.info-card` (bg light-1, 1rem padding, 6px radius).
+     The hover (darken + white-icon swap) replicates Webflow's two-icon
+     interaction on these industry cards. */
+  .info-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+    border-radius: var(--radius-default);
+    background-color: var(--color-light-1);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .info-card .icon {
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
+  .info-card .embed-icons-white,
+  .info-card .embed-icons-blue {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .info-card .embed-icons-white { opacity: 0; }
+  .info-card .embed-icons-blue  { opacity: 1; }
+
+  .info-card:hover { background-color: var(--color-brand-dark); }
+
+  .info-card:hover .embed-icons-white { opacity: 1; }
+  .info-card:hover .embed-icons-blue  { opacity: 0; }
+
+  .info-card:hover .h4,
+  .info-card:hover .lead-text,
+  .info-card:hover .body-text { color: var(--color-light-1); }
+
+  .info-card:hover .badge-text-blue { color: var(--color-accent); }
+
+  .card-text-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Webflow `.industry-card-grid`: 3-col desktop → 2-col tablet → 1-col mobile.
+     2rem gap matches Webflow's grid-column-gap/row-gap. */
+  .industry-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+    margin-top: var(--spacing-section-sm);
+  }
+
+  @media (max-width: 991px) {
+    .industry-card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 767px) {
+    .industry-card-grid { grid-template-columns: 1fr; }
+  }
+</style>

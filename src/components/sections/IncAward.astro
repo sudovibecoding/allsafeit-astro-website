@@ -1,0 +1,63 @@
+---
+// Plain <img> (not astro:assets <Image>) — serve the pre-optimized Webflow
+// .avif as-is, no re-encode. See StrategicSupport for rationale.
+import photoTeam from '../../assets/images/6939794b98a8d163dbb5dd90_expertguidance-1.avif';
+
+interface Props {
+  heading?: string;
+  bodyHtml?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  imagePath?: string;
+  imageAlt?: string;
+  logoPath?: string;
+  logoAlt?: string;
+}
+
+const {
+  heading = 'An Inc. 5000 Company',
+  bodyHtml = "Being an Inc. 5000 company means we're one of the fastest-growing private companies in the U.S.<br /><br />This award reflects our obsession with customer satisfaction and retention. For you, it's a guarantee of quality. It means you are partnering with a stable, high-performance team that has the scale to handle your technology today, and the momentum to support you five years from now.",
+  ctaText = 'Talk to an Expert',
+  ctaHref = '/contact-us',
+  imagePath,
+  imageAlt = 'Managed IT professionals of AllSafe IT at our SoCal headquarters',
+  logoPath = '/images/Inc5000__Allsafeit.avif',
+  logoAlt = 'Inc 5000 logo',
+} = Astro.props;
+---
+
+<section class="section bg-gradient">
+  <div class="container">
+    <div class="grid">
+      <div class="justify-vertical">
+        <div class="content">
+          <h2 class="h3">{heading}</h2>
+          <div class="widget__inc-width">
+            <img src={logoPath} loading="lazy" alt={logoAlt} width="150" height="60" />
+          </div>
+          <div class="content">
+            <p class="lead-text" set:html={bodyHtml}></p>
+            <a href={ctaHref} class="button small">{ctaText}</a>
+          </div>
+        </div>
+      </div>
+      <div class="square-image-wrap">
+        <img
+          src={imagePath ?? photoTeam.src}
+          loading="lazy"
+          alt={imageAlt}
+          class="square-parallax-image"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .widget__inc-width { max-width: 150px; }
+
+  /* #5: image stacks above the text when the grid collapses on mobile. */
+  @media (max-width: 991px) {
+    .square-image-wrap { order: -1; }
+  }
+</style>

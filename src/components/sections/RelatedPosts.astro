@@ -1,0 +1,203 @@
+---
+/**
+ * "Continue reading" section shown at the bottom of a blog-post detail page.
+ * Matches Webflow `detail_blog.html` related-posts grid:
+ *   - "Continue reading" h3
+ *   - `.blog-grid-thirds` — 3-column grid
+ *   - Each card: image (link) → category + date badges → H5 title → "Read story" button
+ *
+ * Renders nothing if `posts` is empty (e.g. only one MDX file exists in the
+ * collection — the case while the migration is in progress).
+ */
+
+export interface RelatedPost {
+  title: string;
+  href: string;
+  featuredImage: string;
+  featuredImageAlt: string;
+  category: string;
+  categoryHref?: string;
+  publishDate: Date;
+}
+
+interface Props {
+  posts: RelatedPost[];
+  heading?: string;
+}
+
+const { posts, heading = 'Continue reading' } = Astro.props;
+
+const formatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+{posts.length > 0 && (
+  <section class="section padding-top-small related-posts">
+    <div class="container">
+      <div class="section-content cms">
+        <h2 class="h3">{heading}</h2>
+        <div class="blog-grid-thirds">
+          {posts.map((post) => (
+            <article class="blog-collection-item">
+              <div class="blog-item">
+                <a href={post.href} class="blog-item-link" aria-label={post.title}>
+                  <img
+                    src={post.featuredImage}
+                    alt={post.featuredImageAlt}
+                    class="blog-item-image"
+                    loading="lazy"
+                    width="600"
+                    height="400"
+                  />
+                  {/* sr-only label gives SEO crawlers anchor text — the
+                      title text below is inside a separate <a>, so this
+                      image-wrapping link otherwise has none. */}
+                  <span class="sr-only">{post.title}</span>
+                </a>
+                <div class="blog-item-content">
+                  <div class="blog-item-title">
+                    <div class="blog-meta">
+                      {post.categoryHref ? (
+                        <a href={post.categoryHref} class="badge-text blog-meta-category">{post.category}</a>
+                      ) : (
+                        <span class="badge-text blog-meta-category">{post.category}</span>
+                      )}
+                      <time class="badge-text blog-meta-date" datetime={post.publishDate.toISOString()}>
+                        {formatter.format(post.publishDate)}
+                      </time>
+                    </div>
+                    <a href={post.href} class="h5 blog-item-headline">{post.title}</a>
+                  </div>
+                  <a href={post.href} class="button small">
+                    <div class="button-text-wrapper">
+                      <span class="button-text">Read story</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .section-content.cms {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* Webflow `.blog-grid-thirds` */
+  .blog-grid-thirds {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .blog-collection-item {
+    display: flex;
+  }
+
+  /* Webflow `.blog-item` — transparent card, 0.5px border, 3px radius. */
+  .blog-item {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    border: 0.5px solid var(--color-dark-faded);
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: transparent;
+  }
+
+  /* Webflow `.blog-item-link` — image wrapper, default 6px radius, overflow-hidden. */
+  .blog-item-link {
+    display: block;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-default);
+    overflow: hidden;
+  }
+
+  .blog-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-item-link:hover .blog-item-image {
+    transform: scale(1.03);
+  }
+
+  /* Webflow `.blog-item-content` — flex column, 36px gap, justify-space-between. */
+  .blog-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    padding: 1rem 1.25rem 1.5rem;
+    flex: 1;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  /* Webflow `.blog-item-title` — flex column, 18px gap, 0.5rem padding-top. */
+  .blog-item-title {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 0.5rem;
+  }
+
+  /* Webflow `.blog-meta` — 24px gap, flex-start. */
+  .blog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .blog-meta-category {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  a.blog-meta-category:hover {
+    opacity: 0.7;
+  }
+
+  .blog-meta-date {
+    color: var(--color-text-dark-body);
+    opacity: 0.7;
+  }
+
+  .blog-item-headline {
+    color: var(--color-brand-dark);
+    text-decoration: none;
+    transition: color 0.15s ease;
+    margin: 0;
+  }
+
+  .blog-item-headline:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 991px) {
+    .blog-grid-thirds {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 575px) {
+    .blog-grid-thirds {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { title?: string; description?: unknown; href?: string; cta?: string };
+}
+---
+
+<div hidden data-service-list-item={Astro.props.blok.title} />

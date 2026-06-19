@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "allsafeit-astro-website",
+  "compatibility_date": "2026-05-29",
+  "observability": {
+    "enabled": true
+  },
+  "main": "dist/_worker.js/index.js",
+  "compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "dist"
+  },
+  // All runtime env vars + secrets are managed in the Cloudflare
+  // dashboard so production and preview can diverge without touching
+  // git, and so non-devs can rotate values without a deploy:
+  //   Workers & Pages → allsafeit-astro-website → Settings →
+  //   Variables and Secrets
+  //
+  // Required (all runtime, all set in the dashboard):
+  //   RESEND_API_KEY            (Secret) — Resend API key (re_…)
+  //   TURNSTILE_SECRET          (Secret) — Cloudflare Turnstile site secret
+  //   EMAIL_FROM                (Text)   — sender header ("Name <email>")
+  //   APP_ENV                   (Text)   — development | staging | production
+  //   STAGING_EMAIL_OVERRIDE    (Text)   — reroutes all email in non-prod;
+  //                                        leave unset in production
+  //   NOTIFICATION_TO_EMAILS    (Text)   — comma-separated recipient list
+  //   SITE_ID                   (Text)   — Webflow-shape webhook payload
+  //   WEBHOOK_CRM_URL           (Text)   — Wingman CRM endpoint
+  //   WEBHOOK_LEAD_URL_1        (Text)   — Lead-capture Worker (with secret)
+  //   WEBHOOK_LEAD_URL_2        (Text)   — Second lead-capture Worker
+}

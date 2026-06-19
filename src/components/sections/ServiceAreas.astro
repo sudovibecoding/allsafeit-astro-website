@@ -1,0 +1,151 @@
+---
+interface Props {
+  heading: string;
+  /** When provided, shows map iframe + pin label on right (primary variant). */
+  mapEmbedUrl?: string;
+  /** Address line shown above the map. HTML allowed for inline anchors. */
+  addressLine?: string;
+  /** Label shown over the map (city, state). */
+  pinLabel?: string;
+  /** When provided (and no mapEmbedUrl), shows a sticky image on right (secondary variant). */
+  image?: string;
+  imageAlt?: string;
+  /** Background style. Primary pages use gradient, secondary pages use no-bg. */
+  bg?: 'gradient' | 'plain';
+}
+
+const {
+  heading,
+  mapEmbedUrl,
+  addressLine,
+  pinLabel,
+  image,
+  imageAlt = '',
+  bg = 'plain',
+} = Astro.props;
+
+const hasMap = Boolean(mapEmbedUrl);
+const hasImage = !hasMap && Boolean(image);
+const sectionClass = `section${bg === 'gradient' ? ' bg-gradient' : ''}`;
+---
+
+<section class={sectionClass}>
+  <div class="container">
+    <div class="section-content">
+      <div class={hasMap || hasImage ? 'service-areas-grid' : 'service-areas-single'}>
+        <div class="service-areas-content">
+          <h2 class={hasMap ? 'h3' : 'h4'}>{heading}</h2>
+          <div class="lead-text body-text"><slot /></div>
+        </div>
+
+        {hasMap && (
+          <div class="service-areas-map-col">
+            {addressLine && (
+              <p class="lead-text horizontal-subheading" set:html={addressLine}></p>
+            )}
+            <div class="map-wrap">
+              <iframe
+                src={mapEmbedUrl}
+                title={`Map of AllSafe IT serving ${pinLabel ?? heading}`}
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              ></iframe>
+            </div>
+            {pinLabel && (
+              <div class="map-pin-label blur-box">
+                <h3 class="h4">{pinLabel}</h3>
+              </div>
+            )}
+          </div>
+        )}
+
+        {hasImage && (
+          <div class="square-image-wrap sticky">
+            <img
+              src={image}
+              alt={imageAlt}
+              class="square-parallax-image"
+              width="500"
+              height="500"
+              loading="lazy"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-areas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .service-areas-single {
+    max-width: var(--container-8col, 960px);
+    margin: 0 auto;
+  }
+
+  .service-areas-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .service-areas-map-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    top: calc(var(--navbar-height) + 2rem);
+  }
+
+  .horizontal-subheading {
+    color: var(--color-brand-dark);
+  }
+
+  .map-wrap {
+    border-radius: var(--radius-default);
+    overflow: hidden;
+    height: 400px;
+    background-color: var(--color-light-2);
+  }
+
+  .map-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  /* Webflow `.blog-item-content.blur-box` — translucent blue tint with
+     backdrop blur, sits below the map and overlaps it by -25px (Webflow
+     spec). The blur-box class adds the soft-glass aesthetic. */
+  .map-pin-label {
+    margin-top: -25px;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius-default);
+    background-color: #7cb7f01f;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    align-self: stretch;
+  }
+
+  .map-pin-label .h4 {
+    margin: 0;
+    color: var(--color-brand-dark);
+  }
+
+  @media (max-width: 991px) {
+    .service-areas-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .service-areas-map-col { position: static; }
+  }
+</style>

@@ -1,0 +1,230 @@
+---
+import Base from '../../layouts/Base.astro';
+import HeroService from '../../components/sections/HeroService.astro';
+import IntroSplit from '../../components/sections/IntroSplit.astro';
+import ProblemsGrid from '../../components/sections/ProblemsGrid.astro';
+import NumberedListSplit from '../../components/sections/NumberedListSplit.astro';
+import ServiceCardGrid from '../../components/sections/ServiceCardGrid.astro';
+import Tabs from '../../components/sections/Tabs.astro';
+import IndustriesGrid from '../../components/sections/IndustriesGrid.astro';
+import WhyChooseAccordion from '../../components/sections/WhyChooseAccordion.astro';
+import OnboardingProcess from '../../components/sections/OnboardingProcess.astro';
+import ServiceAreas from '../../components/sections/ServiceAreas.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
+import ContactSection from '../../components/sections/ContactSection.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { ONBOARDING_PHASES, MAP_EMBEDS, PROBLEM_ICONS as ICONS } from '../../data/locations-shared';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+    { '@type': 'ListItem', position: 2, name: 'Managed IT Services Orange County', item: 'https://www.allsafeit.com/locations/managed-it-services-orange-county' },
+  ],
+};
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'AllSafe IT — Orange County',
+  url: 'https://www.allsafeit.com/locations/managed-it-services-orange-county',
+  telephone: '+1-888-400-2748',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '4695 MacArthur Ct, 11th Floor',
+    addressLocality: 'Newport Beach',
+    addressRegion: 'CA',
+    postalCode: '92660',
+    addressCountry: 'US',
+  },
+};
+
+const problems = [
+  { title: 'System Crashes That Halt Revenue', body: 'Proactive monitoring stops failures before they kill productivity. Medical practices lose access to patient records. Manufacturers watch production lines go dark. Billing freezes mid-cycle. We\'ve watched local businesses burn thousands hourly because basic monitoring wasn\'t catching warning signs early enough.', icon: ICONS.wifi },
+  { title: 'Ransomware and Phishing Attacks', body: 'Managed cybersecurity services demand active threat hunting, not passive software sitting idle. Phishing schemes trick your most cautious staff. Ransomware locks critical files before anyone realizes what happened. Orange County businesses managing sensitive data under HIPAA or CCPA can\'t afford gaps. We deploy audited controls proving your security posture meets compliance standards.', icon: ICONS.shield },
+  { title: 'IT Budgets Spiraling Out of Control', body: 'Managed IT services in Orange County deliver flat monthly rates eliminating billing surprises. Companies waste budget on duplicate platforms and licenses nobody uses. We audit what you\'re paying for, cut the waste, optimize existing tools, and align every dollar with measurable business value.', icon: ICONS.dollar },
+  { title: 'Growth outpacing infrastructure', body: 'Current configurations reveal bottlenecks blocking expansion. Companies doubling headcount fast hit walls when cloud strategies collapse and security gaps appear. We assess capacity limits, plan migrations supporting growth trajectories, and execute without disrupting daily business operations.', icon: ICONS.growth },
+  { title: 'Meeting Regulatory Standards', body: 'SOC 2 certification means we\'ve survived rigorous external audits ourselves. Healthcare needs HIPAA. Retail requires PCI DSS. Defense contractors must meet CMMC frameworks. We document every control and hand you audit-ready evidence whenever regulators come calling.', icon: ICONS.doc },
+  { title: 'Waiting Hours for Emergency Help', body: 'Newport Beach headquarters puts our team minutes from your office when systems fail. Remote <a href="/it-support-orange-county">IT support</a> connects you instantly to real technicians who already know your environment inside out. No automated menus. No callbacks. No burning time while we navigate the 405.', icon: ICONS.bolt },
+  { title: 'Maxed-Out Internal IT Teams', body: 'Co managed IT services Orange County staff appreciate work alongside your existing people. Your team keeps strategic control. We add 24/7 coverage, specialized skills, and enterprise-grade security capabilities. Local companies have scaled from 50 seats to 200-plus without hiring additional full-time IT headcount this way.', icon: ICONS.people },
+];
+
+const lookForItems = [
+  { term: 'Performance history over marketing promises.', body: 'Client retention tells the truth. Examine how long customers stay, what service levels they\'re actually hitting, whether the company has survived market shifts.' },
+  { term: 'Independent security audits.', body: 'SOC 2 compliance proves third-party auditors verified controls over time. Most managed service providers in Orange County skip this certification. That difference matters.' },
+  { term: 'Active threat response teams.', body: 'Human attackers engineer the cyber threats hitting your network. Your partner needs analysts actively hunting threats, not just monitoring tools generating alerts nobody reviews.' },
+  { term: 'Proven scaling experience.', body: 'Ask whether they\'ve guided companies through rapid expansion, multi-location growth, complex cloud migrations. Theoretical expertise doesn\'t count. You need a services provider who\'s actually done this.' },
+  { term: 'Physical proximity for emergencies.', body: 'Orange County offices mean real response speed. Remote support handles 90% of issues instantly. That remaining 10% requiring hands-on work needs someone arriving in minutes, not scheduling next-day visits.' },
+  { term: 'Industry compliance expertise.', body: 'If regulations govern your work, your IT management partner must understand those frameworks deeply. Generic security doesn\'t satisfy HIPAA auditors or PCI assessments.' },
+  { term: 'Transparent pricing.', body: 'Understand exactly what\'s included, what triggers additional costs, how billing works. Quality managed service partners explain this upfront.' },
+];
+
+const coveragePanels = [
+  {
+    heading: 'Modern Security for Modern Threats',
+    intro: 'Cybersecurity services Orange County businesses need today require layered defense matching actual attack patterns.',
+    table: [
+      { label: 'Safe Cloud', body: 'Microsoft 365 protection catching credential theft, business email compromise, AI-driven attacks standard security models miss completely' },
+      { label: 'Safe Endpoint', body: 'Device-level security covering every laptop and mobile. Critical for hybrid teams spread across multiple Orange County locations' },
+      { label: 'Managed Detection & Response', body: 'Security analysts monitoring networks constantly. Threats get neutralized immediately, not discovered weeks later during forensics' },
+    ],
+    paragraphs: ['Proactive security keeps business running smoothly. Your data stays locked down. You focus on winning contracts and serving clients.'],
+  },
+  {
+    heading: 'Technology as a Growth Engine (AllSafe Intelligence)',
+    intro: 'Running smoothly matters. Staying protected matters more. But technology should multiply what your people accomplish.',
+    paragraphs: [
+      'OC engineering firms waste hours managing file transfers instead of designing products. Onboarding new hires takes days when it should take hours. Data entry pulls talented staff away from high-value work only they can do.',
+      'We find these bottlenecks. Build customized solutions integrating with existing systems. Implement without disrupting workflows because we already know your IT environment completely. This turns technology into a force multiplier instead of just overhead.',
+    ],
+  },
+  {
+    heading: 'Co-Managed IT Services Orange County',
+    intro: 'Your team. Our support. Complete coverage.',
+    paragraphs: [
+      'Internal IT capability works well until scaling introduces problems. Coverage gaps during growth spurts. Projects requiring specialized expertise your staff lacks. Security demands exceeding current capacity and budget.',
+      'Co-managed IT means partnership. Your people maintain control and institutional knowledge. We provide monitoring around the clock, specialized security skills, enterprise tools without enterprise overhead costs.',
+    ],
+  },
+  {
+    heading: 'Remote IT Support',
+    intro: 'IT support that answers immediately. Every time.',
+    paragraphs: [
+      'Nobody should wait on hold when systems fail. Our remote managed IT services Orange County teams trust picks up in seconds. Real people. Real solutions.',
+      'This is IT outsourcing Orange County done correctly. Proactive monitoring identifies potential issues before staff notices problems. Help desk resolves trouble on first contact. Strategic planning keeps infrastructure aligned with business goals and growth trajectories.',
+    ],
+  },
+];
+
+// Build tab items from panels: intro paragraph + optional table + remaining
+// paragraphs joined as HTML for the Tabs component's set:html slot.
+const coverageTabs = coveragePanels.map((p) => {
+  const intro = `<p class="panel-intro">${p.intro}</p>`;
+  const table = p.table
+    ? `<div class="coverage-table">
+         <div class="coverage-row coverage-row__head">
+           <div>Solution</div><div>What it does</div>
+         </div>
+         ${p.table
+           .map(
+             (r) =>
+               `<div class="coverage-row"><div class="coverage-label">${r.label}</div><div>${r.body}</div></div>`,
+           )
+           .join('')}
+       </div>`
+    : '';
+  const paragraphs = (p.paragraphs ?? []).map((s) => `<p>${s}</p>`).join('');
+  return { label: p.heading, content: `${intro}${table}${paragraphs}` };
+});
+
+const whyChooseItems = [
+  { label: 'SOC 2 compliant', body: 'Independent auditors verify our security practices annually. Most IT services providers skip this level of accountability.' },
+  { label: 'Rapid onsite support', body: 'Irvine, Costa Mesa, Tustin, Anaheim. When you need business IT services Orange County companies trust for onsite work, we arrive fast.' },
+  { label: 'AI consulting built in', body: 'AllSafe Intelligence helps you leverage technology for competitive advantage, not just operational stability. Value beyond traditional managed IT services.' },
+  { label: '97% client satisfaction', body: 'We measure this because it matters. Numbers prove we\'re supporting businesses correctly.' },
+  { label: 'Co-managed options', body: 'Already have an IT manager? We provide the team and resources letting them focus on strategy instead of daily tech support fires.' },
+];
+
+const faqs = [
+  { q: 'What does a managed service provider do?', a: 'A services provider handles your complete IT environment. Monitoring, help desk, cybersecurity, cloud solutions, strategic planning. We manage technology so you focus on business growth and serving clients.' },
+  { q: 'How much do managed IT services cost in Orange County?', a: 'Flat monthly rates give you predictable budget planning. Full team of IT experts costs less than hiring one internal IT manager. Pricing depends on company size, systems complexity, specific services required.' },
+  { q: 'What are the benefits of managed IT services for small businesses in Orange County?', a: 'Enterprise technology and security without enterprise budgets. Access to specialized expertise across Microsoft Services, cloud services, network infrastructure. Proactive approach means fewer disruptions and downtime. Predictable costs replace surprise repair bills.' },
+  { q: 'What\'s the difference between an MSP and break-fix IT support?', a: 'Break-fix means paying per incident after failure. Orange County managed IT services means continuous monitoring, catching problems early, preventing disruptions before they impact business operations. You get proactive support and budget predictability.' },
+  { q: 'How do co-managed IT services work?', a: 'Your in-house IT team keeps control and decision-making authority. We add 24/7 coverage, specialized security expertise, enterprise-grade tools. This partnership model provides support your team needs without replacing institutional knowledge they\'ve built.' },
+];
+---
+
+<Base
+  title="Managed IT Services Orange County | AllSafe IT"
+  description="Expert managed IT services in Orange County. 7x CRN MSP 500 winner, 24/7 cybersecurity and cloud support. SOC 2 certified. Free IT assessment."
+  canonical="https://www.allsafeit.com/locations/managed-it-services-orange-county"
+  schema={[breadcrumbSchema, localBusinessSchema]}
+>
+  <HeroService
+    heading="Managed IT Services Orange County"
+    lead={[
+      "You're tired of talking about tech support. We hear that. It's time for tech to support you.",
+      "AllSafe IT operates from Newport Beach, bringing the SOC 2-compliant managed IT services Orange County companies rely on. Complete cybersecurity. AllSafe Intelligence. Your entire tech stack managed by one trusted partner.",
+    ]}
+    image="/images/Orange_county.avif"
+    imageAlt="AllSafe IT Orange County Newport Beach office — managed IT services"
+  />
+
+  <div class="container">
+    <Breadcrumb crumbs={[{ label: 'Home', href: '/' }, { label: 'Managed IT Services Orange County' }]} />
+  </div>
+
+  <IntroSplit
+    heading="Top-Rated Managed Services Provider in Orange County"
+    body="For two decades, AllSafe IT has kept Orange County businesses running strong. We handle IT infrastructure management, neutralize cyber threats, and deploy AI solutions that turn technology into your competitive advantage. Based in Newport Beach, we reach Irvine, Costa Mesa, and Tustin faster than you can sit through OC traffic. Technology exists to serve your mission. We guarantee it does."
+    image="/images/allsafeitdreamteam.jpg"
+    imageAlt="AllSafe IT technicians providing managed IT services in Orange County near Newport Beach."
+  />
+
+  <ProblemsGrid
+    heading="Problems We Solve for Businesses in Orange County"
+    intro="Orange County companies face predictable challenges. Here's what we fix."
+    problems={problems}
+  />
+
+  <NumberedListSplit
+    heading="What to Look for in an Orange County Managed IT Services Provider"
+    intro="Seven factors separate real IT partners from vendors just chasing contracts."
+    items={lookForItems}
+    outro="The right managed IT services company Orange County businesses choose becomes part of your success plan. Not just keeping systems alive."
+    image="/images/managedIThollywood.avif"
+    imageAlt="top managed services provider across orange county CA"
+  />
+
+  <ServiceCardGrid
+    heading="Complete Orange County Managed IT, Security, and AI Under One Roof"
+    lead="Five service pillars, one trusted partner."
+  />
+
+  {/* Webflow `.tabs-2` — slim no-framework tabbed coverage panel, lazy-loaded. */}
+  <section class="section bg-gradient">
+    <div class="container">
+      <div class="section-content">
+        <div class="centered-title">
+          <h2 class="h3 text_center">Complete IT Coverage, One Trusted Partner</h2>
+          <p class="lead-text text_center">Technology performs best as integrated systems. Managed IT keeps operations running. Cybersecurity keeps assets protected. AI multiplies what teams accomplish daily.</p>
+        </div>
+        <Tabs tabs={coverageTabs} initial={0} />
+      </div>
+    </div>
+  </section>
+
+  <IndustriesGrid />
+
+  <WhyChooseAccordion
+    heading="Why Choose Us for Managed IT Services in Orange County"
+    intro="<strong>Newport Beach headquarters.</strong> Local IT experts mean faster response and stronger partnerships. We're neighbors, not remote vendors."
+    items={whyChooseItems}
+    image="/images/ITsupportconsultation.avif"
+    imageAlt="it professional at AllSafe IT offering IT support Orange County"
+    imageLeft
+  />
+
+  <OnboardingProcess
+    heading={`AllSafe IT Client <br>Onboarding Process`}
+    phases={ONBOARDING_PHASES}
+    image="/images/DSC_1927DSC_1926.avif"
+    imageAlt="reliable Co managed IT services in Orange County"
+  />
+
+  <ServiceAreas
+    heading="Serving Orange County and Beyond"
+    mapEmbedUrl={MAP_EMBEDS.orangeCounty}
+    addressLine={`AllSafe IT serves Orange County from our local office at <a href="https://www.google.com/maps?cid=359422836789346827" target="_blank" rel="noopener">4695 MacArthur Court, Newport Beach, CA 92660</a>, in the heart of Orange County's business corridor, just minutes from <a href="https://www.fashionisland.com/" target="_blank" rel="noopener">Fashion Island</a>, <a href="https://www.ocair.com/" target="_blank" rel="noopener">John Wayne Airport</a>, and Newport Center.`}
+    pinLabel="Newport Beach, California"
+    bg="gradient"
+  >
+    <p>Our team focuses on Orange County businesses throughout <a href="/it-support-irvine">Irvine</a>, <a href="/managed-it-services-costa-mesa">Costa Mesa</a>, <a href="/managed-it-services-newport">Newport Beach</a>, <a href="/it-support-anaheim">Anaheim</a>, Santa Ana, <a href="/it-support-lake-forest">Lake Forest</a>, Huntington Beach, and surrounding communities. This local coverage delivers fast response when issues can't wait.</p>
+    <p>With nearby technicians understanding regional business environment, you get timely support maintaining systems running and staff productive. Choose an MSP in Orange County that's close by, responsive, ready to assist when you need help most.</p>
+    <p>Choose a local MSP in Orange County that is close by, responsive, and ready to support you when it matters most.</p>
+  </ServiceAreas>
+
+  <FaqSection faqs={faqs} heading="Common Questions About Managed IT Services in Orange County" />
+  <ContactSection />
+</Base>

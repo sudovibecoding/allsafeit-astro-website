@@ -1,0 +1,10 @@
+---
+export const prerender = false;
+
+import StoryblokStoryPage from '../../../components/storyblok/StoryblokStoryPage.astro';
+
+const slugParam = Astro.params.slug;
+const storySlug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam ?? 'home';
+---
+
+<StoryblokStoryPage storySlug={storySlug} demo />

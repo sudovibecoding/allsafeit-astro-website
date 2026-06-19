@@ -1,0 +1,368 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import HeroCentered from '../components/sections/HeroCentered.astro';
+import FaqSection from '../components/sections/FaqSection.astro';
+
+// Section images are served as plain <img> (pre-optimized Webflow assets,
+// no Astro re-encode) — same convention as the homepage.
+
+// "These are the standards we hold ourselves to..." — 5 value cards.
+// Copy + icons mirror the Webflow About page 1:1.
+const standards = [
+  {
+    heading: 'We do what we say we’ll do.',
+    body: 'We deal in facts, not assumptions. We cultivate the trust of our partners every day by finishing what we start and keeping our word.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M384 96L512 96C529.7 96 544 110.3 544 128C544 145.7 529.7 160 512 160L398.4 160C393.2 185.8 375.5 207.1 352 217.3L352 512L512 512C529.7 512 544 526.3 544 544C544 561.7 529.7 576 512 576L128 576C110.3 576 96 561.7 96 544C96 526.3 110.3 512 128 512L288 512L288 217.3C264.5 207 246.8 185.7 241.6 160L128 160C110.3 160 96 145.7 96 128C96 110.3 110.3 96 128 96L256 96C270.6 76.6 293.8 64 320 64C346.2 64 369.4 76.6 384 96zM439.6 384L584.4 384L512 259.8L439.6 384zM512 480C449.1 480 396.8 446 386 401.1C383.4 390.1 387 378.8 392.7 369L487.9 205.8C492.9 197.2 502.1 192 512 192C521.9 192 531.1 197.3 536.1 205.8L631.3 369C637 378.8 640.6 390.1 638 401.1C627.2 445.9 574.9 480 512 480zM126.8 259.8L54.4 384L199.3 384L126.8 259.8zM.9 401.1C-1.7 390.1 1.9 378.8 7.6 369L102.8 205.8C107.8 197.2 117 192 126.9 192C136.8 192 146 197.3 151 205.8L246.2 369C251.9 378.8 255.5 390.1 252.9 401.1C242.1 445.9 189.8 480 126.9 480C64 480 11.7 446 .9 401.1z"/></svg>`,
+  },
+  {
+    heading: 'We care about the process.',
+    body: 'The best processes lead to the best client experience. We exceed expectations by being prepared. We are NIST aligned and SOC2 compliant. We have external standards because we value accountability.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M320.1 417.6C330.1 417.6 340 419.9 349.1 424.6L423.5 462.5L410.5 380C407.3 359.8 414 339.3 428.4 324.8L487.4 265.7L404.9 252.6C384.7 249.4 367.2 236.7 357.9 218.5L319.9 144.1L319.9 417.7zM489.4 553C482.1 558.3 472.4 559.1 464.4 555L320.1 481.6L175.8 555C167.8 559.1 158.1 558.3 150.8 553C143.5 547.7 139.8 538.8 141.2 529.8L166.4 369.9L52 255.4C45.6 249 43.4 239.6 46.2 231C49 222.4 56.3 216.1 65.3 214.7L225.2 189.3L298.8 45.1C302.9 37.1 311.2 32 320.2 32C329.2 32 337.5 37.1 341.6 45.1L415 189.3L574.9 214.7C583.8 216.1 591.2 222.4 594 231C596.8 239.6 594.5 249 588.2 255.4L473.7 369.9L499 529.8C500.4 538.7 496.7 547.7 489.4 553z"/></svg>`,
+  },
+  {
+    heading: 'We are generous with what we know.',
+    body: 'We share what we learn with each other and with our clients. We take initiative to learn, develop, and adapt. Knowledge is not power here. Sharing it is.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M416 224C398.3 224 384 209.7 384 192C384 174.3 398.3 160 416 160L576 160C593.7 160 608 174.3 608 192L608 352C608 369.7 593.7 384 576 384C558.3 384 544 369.7 544 352L544 269.3L374.6 438.7C362.1 451.2 341.8 451.2 329.3 438.7L224 333.3L86.6 470.6C74.1 483.1 53.8 483.1 41.3 470.6C28.8 458.1 28.8 437.8 41.3 425.3L201.3 265.3C213.8 252.8 234.1 252.8 246.6 265.3L352 370.7L498.7 224L416 224z"/></svg>`,
+  },
+  {
+    heading: 'We enjoy the people we work with.',
+    body: 'We want our clients to win. We celebrate the wins of our team. Skill gets you in the door. Character keeps you here.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M320 64C355.3 64 384 92.7 384 128C384 163.3 355.3 192 320 192C284.7 192 256 163.3 256 128C256 92.7 284.7 64 320 64zM416 376C416 401 403.3 423 384 435.9L384 528C384 554.5 362.5 576 336 576L304 576C277.5 576 256 554.5 256 528L256 435.9C236.7 423 224 401 224 376L224 336C224 283 267 240 320 240C373 240 416 283 416 336L416 376zM160 96C190.9 96 216 121.1 216 152C216 182.9 190.9 208 160 208C129.1 208 104 182.9 104 152C104 121.1 129.1 96 160 96zM176 336L176 368C176 400.5 188.1 430.1 208 452.7L208 528C208 529.2 208 530.5 208.1 531.7C199.6 539.3 188.4 544 176 544L144 544C117.5 544 96 522.5 96 496L96 439.4C76.9 428.4 64 407.7 64 384L64 352C64 299 107 256 160 256C172.7 256 184.8 258.5 195.9 262.9C183.3 284.3 176 309.3 176 336zM432 528L432 452.7C451.9 430.2 464 400.5 464 368L464 336C464 309.3 456.7 284.4 444.1 262.9C455.2 258.4 467.3 256 480 256C533 256 576 299 576 352L576 384C576 407.7 563.1 428.4 544 439.4L544 496C544 522.5 522.5 544 496 544L464 544C451.7 544 440.4 539.4 431.9 531.7C431.9 530.5 432 529.2 432 528zM480 96C510.9 96 536 121.1 536 152C536 182.9 510.9 208 480 208C449.1 208 424 182.9 424 152C424 121.1 449.1 96 480 96z"/></svg>`,
+  },
+  {
+    heading: 'We choose compassionate candor.',
+    body: "We challenge directly and care personally. That means we say the hard thing to your face, not behind your back. We welcome truth, intentionally, even when it's hard to hear.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM165.6 378C161.9 364.3 173.1 352 187.3 352L452.7 352C466.9 352 478.1 364.3 474.4 378C455.9 446 393.8 496 320 496C246.2 496 184 446 165.6 378zM208 256C208 238.3 222.3 224 240 224C257.7 224 272 238.3 272 256C272 273.7 257.7 288 240 288C222.3 288 208 273.7 208 256zM400 224C417.7 224 432 238.3 432 256C432 273.7 417.7 288 400 288C382.3 288 368 273.7 368 256C368 238.3 382.3 224 400 224z"/></svg>`,
+  },
+] as const;
+
+// FAQ — copy mirrors the Webflow About page.
+const ABOUT_FAQS = [
+  {
+    q: 'What does a managed IT service provider (MSP) actually do?',
+    a: 'A managed IT service provider supports and manages a company’s technology on an ongoing basis. This includes monitoring systems, resolving issues, maintaining networks, and improving security. The focus is on preventing problems, reducing downtime, and keeping technology reliable as the business grows.',
+  },
+  {
+    q: 'How do you onboard a new client or switch us from our current IT provider without downtime?',
+    a: 'We begin with a detailed review of your systems, access, and security. Credentials and documentation are transferred securely, and systems are monitored closely during the transition. Most onboarding work happens behind the scenes to ensure operations continue smoothly without disruption.',
+  },
+  {
+    q: 'How will you keep our business secure from cyber threats?',
+    a: 'Our team uses a layered security approach that includes continuous monitoring, system updates, access controls, and proactive risk management. This helps identify threats early, reduce vulnerabilities, and respond quickly to incidents while protecting data and maintaining business continuity.',
+  },
+  {
+    q: 'Do you provide onsite IT support or is everything remote?',
+    a: 'We resolve many issues remotely for faster response times, but onsite IT support is available when hands-on assistance is needed. This hybrid support model gives businesses reliable local coverage while maintaining the efficiency of remote monitoring and support.',
+  },
+];
+
+// IT support / cybersecurity flow icons (Transform section overlay).
+const flowSupportIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M32 400C32 479.5 96.5 544 176 544L480 544C550.7 544 608 486.7 608 416C608 364.4 577.5 319.9 533.5 299.7C540.2 286.6 544 271.7 544 256C544 203 501 160 448 160C430.3 160 413.8 164.8 399.6 173.1C375.5 127.3 327.4 96 272 96C192.5 96 128 160.5 128 240C128 248 128.7 255.9 129.9 263.5C73 282.7 32 336.6 32 400z"/></svg>`;
+const flowSecurityIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M320 64C324.6 64 329.2 65 333.4 66.9L521.8 146.8C543.8 156.1 560.2 177.8 560.1 204C559.6 303.2 518.8 484.7 346.5 567.2C329.8 575.2 310.4 575.2 293.7 567.2C121.3 484.7 80.6 303.2 80.1 204C80 177.8 96.4 156.1 118.4 146.8L306.7 66.9C310.9 65 315.4 64 320 64zM320 130.8L320 508.9C458 442.1 495.1 294.1 496 205.5L320 130.9L320 130.9z"/></svg>`;
+---
+
+<Base
+  title="About AllSafe IT | Managed IT Services California"
+  description="Learn about AllSafe IT — 20+ years serving California businesses with proactive managed IT services, cybersecurity, and strategic technology consulting. SOC 2 certified."
+  canonical="https://www.allsafeit.com/about-us"
+>
+  {/* ── Hero (dark, centered — shared HeroCentered component) ── */}
+  <HeroCentered badge="[About us]" title="Giving you the perfect experience through personalized IT support" />
+
+  {/* ── Breadcrumb ── */}
+  <div class="container">
+    <Breadcrumb crumbs={[{ label: 'Home', href: '/' }, { label: 'About us' }]} />
+  </div>
+
+  {/* ── Big team image ── */}
+  <section class="section padding-small about-image-section">
+    <div class="container">
+      <div class="parallax-wrap">
+        <img
+          src="/images/allsafeitdreamteam.jpg"
+          alt="AllSafe IT dream team — a team of IT professionals"
+          class="parallax-image"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  {/* ── We empower + Two Decades + metrics ── */}
+  <section class="section">
+    <div class="container">
+      <div class="section-content">
+        <div class="content_grid">
+          <div class="title">
+            <h2 class="h3">We empower businesses with proactive IT support</h2>
+          </div>
+          <div class="body-text">
+            Staying ahead with robust IT support is not just a necessity; it’s a lifeline for your business. Yet, many find themselves entangled with providers who are more reactive than proactive, facing issues like unresponsive support, inadequate solutions, and a lack of understanding of what businesses truly need.<br /><br />
+            You deserve a partner that not only addresses these challenges but anticipates them, ensuring your operations run smoothly without interruption. Enter AllSafe IT, where our mission is to transform your IT challenges into strengths. We understand the frustration of downtime, the complexity of compliance, and the need for a seamless IT strategy that supports your growth.<br /><br />
+            With our custom solutions, 24/7 support, and a commitment to excellence, we ensure that your IT infrastructure is not just a backdrop but a driving force behind your success.
+          </div>
+        </div>
+
+        <div class="content_grid align-top">
+          <div class="title">
+            <h2 class="h3">Two Decades of Doing the Work</h2>
+            <div class="body-text">
+              Since 2005 we’ve helped businesses across healthcare, financial services, legal, manufacturing, retail, entertainment, and professional services turn IT from an obstacle into an advantage.<br /><br />
+              We’ve seen what happens when businesses treat IT as an afterthought — and what happens when they get it right: sustainable growth, competitive advantage, and teams that actually enjoy their technology.<br /><br />
+              Our mission is to make downtime obsolete — to give you and your team your time back so you can focus on your business.
+            </div>
+          </div>
+          <div class="parallax-wrap">
+            <img
+              src="/images/ITsupportworking.avif"
+              alt="AllSafe IT support experts at work"
+              class="parallax-image"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-box color__lightblue">
+            <div class="metric-stack">
+              <div class="metric-text color__white-shade1">99.9%</div>
+              <h3 class="metric-heading color__white-shade1">Uptime for all network infrastructure</h3>
+            </div>
+            <p class="body-text color__white-shade1">Our mission is to make downtime obsolete, to give you and your team your time back — so you can focus on your business.</p>
+          </div>
+          <div class="metric-box color__lightblue">
+            <div class="metric-stack">
+              <div class="metric-text color__white-shade1">24/7</div>
+              <h3 class="metric-heading color__white-shade1">Remote IT support via phone and chat</h3>
+            </div>
+            <p class="body-text color__white-shade1">Your business operations should never have to grind to a halt, and we ensure this by providing support when you need it.</p>
+          </div>
+          <div class="metric-box color__lightblue">
+            <div class="metric-stack">
+              <div class="metric-text color__white-shade1">94.9%</div>
+              <h3 class="metric-heading color__white-shade1">Customer satisfaction rate for helpdesk support</h3>
+            </div>
+            <p class="body-text color__white-shade1">We’ve kept our clients consistently satisfied with our IT helpdesk support services, which shows how much we value them.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Transform your business (bg-gradient) ── */}
+  <section class="section bg-gradient">
+    <div class="container">
+      <div class="grid align-top">
+        <div class="content loose">
+          <div class="title">
+            <h2 class="h3">Transform your business with our cybersecurity-focused IT solutions</h2>
+          </div>
+          <div class="body-text">
+            We believe in the power of technology to transform businesses. Our approach is centered around understanding your specific needs and crafting strategic IT solutions that propel you forward.<br /><br />
+            We’ve helped countless clients navigate the complexities of IT infrastructure, cybersecurity, and strategic planning with our comprehensive suite of services. Our services have been a game-changer for many, offering not just technical expertise but strategic foresight that aligns IT with business goals.<br /><br />
+            From the heartwarming story of a non-profit we brought back from the brink of a cybersecurity disaster, to the small retail business we helped scale with strategic IT investments, our clients’ successes speak volumes.
+          </div>
+        </div>
+        <div class="wide-flow-wrap">
+          <div class="parallax-wrap">
+            <img
+              src="/images/cybersecurity__allsafeit.jpg"
+              alt="AllSafe IT cybersecurity-focused IT solutions"
+              class="parallax-image"
+              loading="lazy"
+            />
+          </div>
+          <div class="wide-flow">
+            <div class="flow-item">
+              <div class="flow-icon"><div class="widget__embed-icons color__white-shade1" set:html={flowSupportIcon} /></div>
+              <div class="badge-text flow-item-text">IT support</div>
+            </div>
+            <div class="flow-wide-line" aria-hidden="true"></div>
+            <div class="flow-item">
+              <div class="flow-icon"><div class="widget__embed-icons color__white-shade1" set:html={flowSecurityIcon} /></div>
+              <div class="badge-text flow-item-text">cybersecurity-focused IT solutions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── These are the standards we hold ourselves to... ── */}
+  <section class="section padding-top-small">
+    <div class="container">
+      <div class="section-content">
+        <div class="title">
+          <h2 class="h3 text_center">These are the standards<br />we hold ourselves to...</h2>
+        </div>
+        <div class="card-grid thirds">
+          {standards.map((s) => (
+            <div class="icon-card">
+              <div class="boxed-icon">
+                <div class="widget__embed-icons" set:html={s.icon} />
+              </div>
+              <div class="icon-card-content">
+                <h3 class="h5 bold">{s.heading}</h3>
+                <div class="lead-text body-text">{s.body}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Recognized by the Industry ── */}
+  <section class="section">
+    <div class="container">
+      <div class="section-content">
+        <div class="content_grid">
+          <div class="title">
+            <h2 class="h3">Recognized by the Industry. Accountable to You.</h2>
+          </div>
+          <div class="body-text">
+            Third-party recognition means you’re not taking our word for it alone. AllSafe IT has been named to CRN’s MSP 500 list seven times across multiple categories, most recently in 2026. We’ve also been recognized by the Los Angeles Business Journal’s The Lists 2026, named a top IT services company nationally by UpCity, and listed among the most-reviewed cybersecurity firms in Los Angeles by Clutch and The Manifest.<br /><br />
+            We’re also BBB Accredited. That means transparent service agreements, responsive communication, and a public record of how we operate. For businesses evaluating IT partners, it provides formal accountability if we ever fall short.<br /><br />
+            Consistent delivery over time, not a single good quarter, is what these recognitions reflect.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── FAQ ── */}
+  <FaqSection heading="Frequently Asked Questions" faqs={ABOUT_FAQS} />
+</Base>
+
+<style>
+  /* Dark hero pulled up under the (translucent) navbar. */
+  /* ── Parallax image wrap (Webflow .parallax-wrap / .parallax-image).
+     Static render: a 3:2 rounded image, object-fit cover. ── */
+  .parallax-wrap {
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-default);
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  .parallax-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Big team banner: cap the height so the 3:2 ratio doesn't render
+     ~880px tall on wide screens. (Scoped to this section only — the
+     "Two Decades" / "Transform" images keep their 3:2 ratio.) */
+  .about-image-section .parallax-wrap {
+    aspect-ratio: auto;
+    height: 480px;
+  }
+
+  /* ── Metric boxes (3 lightblue) — big number + heading, body below. ── */
+  .metric-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .metric-heading {
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  /* ── Transform section: content gap (Webflow .content.loose) ── */
+  .content.loose {
+    gap: 36px;
+  }
+
+  /* ── wide-flow overlay: two brand cards joined by a dotted line,
+     overlapping the bottom of the image (Webflow .wide-flow). ── */
+  .wide-flow-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .wide-flow {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    margin: -48px 48px 0;
+  }
+  .flow-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: 156px;
+    padding: 12px;
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-light-1);
+    text-align: center;
+  }
+  .flow-icon {
+    width: 144px;
+    height: 144px;
+    border-radius: var(--radius-default);
+    background-color: var(--color-dark-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flow-icon .widget__embed-icons { width: 3rem; }
+  .flow-item-text {
+    color: var(--color-light-1);
+    white-space: normal;
+  }
+  .flow-wide-line {
+    flex: 1;
+    border-bottom: 1px dotted var(--color-brand-dark);
+  }
+
+  /* ── Standards icon cards ── */
+  .icon-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-default);
+    background-color: var(--color-light-1);
+    height: 100%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  /* Hover: darken to brand — consistent with the homepage industry cards. */
+  .icon-card:hover {
+    background-color: var(--color-brand-dark);
+  }
+  .icon-card:hover .h5,
+  .icon-card:hover .body-text,
+  .icon-card:hover .lead-text,
+  .icon-card:hover .boxed-icon,
+  .icon-card:hover .widget__embed-icons {
+    color: var(--color-light-1);
+  }
+  .icon-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  @media (max-width: 991px) {
+    .wide-flow {
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .flow-icon { width: 110px; height: 110px; }
+    .about-image-section .parallax-wrap { height: 300px; }
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroService from '../components/sections/HeroService.astro';
+import IntroSplit from '../components/sections/IntroSplit.astro';
+import ValueMetrics from '../components/sections/ValueMetrics.astro';
+import ProblemsGrid from '../components/sections/ProblemsGrid.astro';
+import ServiceCardGrid from '../components/sections/ServiceCardGrid.astro';
+import NumberedListSplit from '../components/sections/NumberedListSplit.astro';
+import WhyChooseAccordion from '../components/sections/WhyChooseAccordion.astro';
+import ServiceAreas from '../components/sections/ServiceAreas.astro';
+import Accreditations from '../components/sections/Accreditations.astro';
+import AwardsBanner from '../components/sections/AwardsBanner.astro';
+import TestimonialsSlider from '../components/sections/TestimonialsSlider.astro';
+import FaqSection from '../components/sections/FaqSection.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+import { SECONDARY_LOCATIONS } from '../data/secondary-locations';
+import Breadcrumb from '../components/Breadcrumb.astro';
+
+const loc = SECONDARY_LOCATIONS.find(l => l.slug === 'hollywood-it-support')!;
+---
+
+<Base title={loc.title} description={loc.description} canonical={loc.canonical} schema={loc.schema as Record<string, unknown>[]}>
+  <HeroService heading={loc.heroHeading} lead={loc.heroLead} image={loc.heroImage} imageAlt={loc.heroImageAlt} />
+  <div class="container">
+    <Breadcrumb crumbs={[{ label: 'Home', href: '/' }, { label: loc.cityName }]} />
+  </div>
+
+  <IntroSplit
+    heading={loc.problemStatementHeading}
+    body={loc.problemStatementBody}
+    image={loc.problemStatementImage}
+    imageAlt={loc.problemStatementImageAlt}
+  />
+
+  {loc.hasValueMetrics && (
+    <ValueMetrics
+      heading={loc.valueMetricsHeading}
+      metrics={loc.valueMetrics}
+    />
+  )}
+
+  {loc.hasProblems && (
+    <ProblemsGrid
+      heading={loc.problemsGridHeading || `Problems We Solve for Businesses in ${loc.cityName}`}
+      intro={loc.problemsGridIntro}
+      problems={loc.problemsGridProblems}
+    />
+  )}
+
+  {loc.servicesOverviewHeading && (
+    <ServiceCardGrid heading={loc.servicesOverviewHeading} />
+  )}
+  {!loc.servicesOverviewHeading && <ServiceCardGrid />}
+
+  {loc.hasIndustries && (
+    <NumberedListSplit
+      heading={loc.industriesHeading}
+      intro={loc.industriesIntro}
+      items={loc.industries}
+      image={loc.industriesImage}
+      imageAlt={loc.industriesImageAlt}
+    />
+  )}
+
+  {loc.hasWhyChoose && (
+    <WhyChooseAccordion
+      heading={loc.whyChooseHeading}
+      intro={loc.whyChooseIntro}
+      items={loc.whyChooseItems}
+      image={loc.whyChooseImage}
+      imageAlt={loc.whyChooseImageAlt}
+      imageLeft
+    />
+  )}
+
+  {loc.hasServiceAreas && (
+    <ServiceAreas
+      heading={loc.serviceAreasHeading}
+      image={loc.serviceAreasImage}
+      imageAlt={loc.serviceAreasImageAlt}
+      bg="plain"
+    >
+      <p set:html={loc.serviceAreasBody}></p>
+    </ServiceAreas>
+  )}
+
+  <Accreditations heading={loc.accreditationsHeading} body={loc.accreditationsBody} />
+
+  <AwardsBanner
+    heading={loc.awardsHeading}
+    body={loc.awardsBody}
+    image={loc.awardsImage}
+    imageAlt={loc.awardsImageAlt}
+  />
+
+  <TestimonialsSlider />
+
+  <FaqSection
+    faqs={loc.faqs}
+    heading={loc.faqHeading}
+  />
+
+  <ContactSection />
+</Base>

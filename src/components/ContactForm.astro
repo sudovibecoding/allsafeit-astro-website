@@ -1,0 +1,414 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Cloudflare Turnstile — same widget as InquiryForm so we only manage
+// ONE captcha provider across the site. Public site key — safe to commit.
+// Production key lives in the Cloudflare dashboard:
+//   Turnstile → allsafeit.com → Site key. Server verifies with the
+//   matching secret stored as `TURNSTILE_SECRET` (wrangler secret put).
+const TURNSTILE_SITEKEY = '0x4AAAAAADcqmhIiEFkI_rGB';
+
+const services = [
+  { id: 'Managed-IT',                    label: 'Managed IT' },
+  { id: 'Co-Managed-IT',                 label: 'Co-Managed IT' },
+  { id: 'IT-Consulting',                 label: 'IT Consulting' },
+  { id: 'AI-Automation',                 label: 'AI & Automation' },
+  { id: 'Cybersecurity-Compliance',      label: 'Cybersecurity & Compliance' },
+  { id: 'Cloud-Solutions',               label: 'Cloud Solutions' },
+  { id: 'Network-Management',            label: 'Network Management' },
+  { id: 'Unified-Communications-and-VOIP', label: 'Unified Communications and VOIP' },
+  { id: 'Purchasing-and-IT-Projects',      label: 'Purchasing and IT Projects' },
+  { id: 'Not-sure',                      label: 'Not sure' },
+];
+---
+
+<div class:list={['form-block-3', className]}>
+  {/* Submits to /api/contact (see src/pages/api/contact.ts + src/lib/forms/).
+      Client controller (src/scripts/contactForm.ts) intercepts submit,
+      posts via fetch(), toggles .form-success / .form-error inline —
+      no page reload on success OR error. The action+method here are a
+      safety net if JS fails to attach; the <noscript> block tells those
+      users to call directly. */}
+  <form
+    id="wf-form-Contact-Form"
+    name="wf-form-Contact-Form"
+    data-name="Contact Form"
+    method="post"
+    action="/api/contact"
+    class="form"
+    data-contact-form
+    novalidate
+  >
+    <!-- Name row -->
+    <div class="flex">
+      <input
+        class="form-input"
+        maxlength="256"
+        name="Firstname"
+        placeholder="First Name"
+        type="text"
+        id="Firstname"
+        required
+      />
+      <input
+        class="form-input"
+        maxlength="256"
+        name="Lastname"
+        placeholder="Last name"
+        type="text"
+        id="Lastname"
+        required
+      />
+    </div>
+
+    <input
+      class="form-input"
+      maxlength="256"
+      name="Company-Name"
+      placeholder="Your Company Name"
+      type="text"
+      id="Company-Name"
+      required
+    />
+    <input
+      class="form-input"
+      maxlength="256"
+      name="Email"
+      placeholder="Email Address"
+      type="email"
+      id="Email"
+      required
+    />
+    <input
+      class="form-input"
+      maxlength="256"
+      name="Phone-no"
+      placeholder="(123) 456 - 7890"
+      type="tel"
+      id="Phone-no"
+      required
+    />
+
+    <!-- Services — <details>/<summary> replaces Webflow's JS dropdown -->
+    <div class="services">
+      <div class="lead-text services-label"><strong>What service(s) are you interested in?</strong></div>
+      <details class="services-dropdown">
+        <summary class="form-input services-toggle">
+          <span class="services-toggle-text">Select all that apply</span>
+          <span class="services-toggle-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM7.29 15.29L3.7 11.7C3.31 11.31 3.31 10.68 3.7 10.29C4.09 9.9 4.72 9.9 5.11 10.29L8 13.17L14.88 6.29C15.27 5.9 15.9 5.9 16.29 6.29C16.68 6.68 16.68 7.31 16.29 7.7L8.7 15.29C8.32 15.68 7.68 15.68 7.29 15.29Z" fill="currentColor"/>
+            </svg>
+          </span>
+        </summary>
+        <div class="select-dropdown">
+          <div class="services-list-inner">
+            {services.map(({ id, label }) => (
+              <label class="checkbox-field-b" for={id}>
+                <input
+                  id={id}
+                  type="checkbox"
+                  name={id}
+                  class="checkbox-native"
+                />
+                <span class="custom-checkbox-label-b">{label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Cloudflare Turnstile — same provider as InquiryForm. -->
+    <div
+      class="cf-turnstile"
+      data-sitekey={TURNSTILE_SITEKEY}
+    ></div>
+
+    <input
+      type="submit"
+      class="button form-button"
+      value="Send Message"
+    />
+
+    <!-- Populated by JS: records the page URL the form was submitted from -->
+    <input
+      class="hidden-form-input"
+      maxlength="256"
+      name="source_url"
+      type="text"
+      id="source_url"
+      tabindex="-1"
+      aria-hidden="true"
+    />
+
+    {/* Honeypot — bots auto-fill every input they find. This field is
+        positioned off-screen (see .hp-field in global.css), invisible to
+        humans (both visually and via tab order). If the server sees any
+        content here on submit, it returns success silently — the bot
+        moves on without retrying. */}
+    <div class="hp-field" aria-hidden="true">
+      <label for="contact-form-hp">Website (leave blank)</label>
+      <input
+        type="text"
+        name="website"
+        id="contact-form-hp"
+        tabindex="-1"
+        autocomplete="off"
+      />
+    </div>
+  </form>
+
+  <div class="form-success" role="alert" hidden>
+    <div>Thank you! Your submission has been received!</div>
+  </div>
+  <div class="form-error" role="alert" hidden>
+    <div data-error-text>Oops! Something went wrong while submitting the form.</div>
+  </div>
+
+  {/* JS-disabled fallback. reCAPTCHA already requires JS, so this form
+      is JS-only by design — call out the phone number for those users. */}
+  <noscript>
+    <div class="form-error" role="alert" style="display:block;">
+      <div>
+        This form requires JavaScript. Please enable it, or call us
+        directly at <a href="tel:+18884002748">(888) 400-2748</a>.
+      </div>
+    </div>
+  </noscript>
+</div>
+
+<!-- Turnstile loaded lazily — only when the form enters the viewport,
+     and only once per page (multiple ContactForms share one script). -->
+<script>
+  const turnstileTargets = document.querySelectorAll('.cf-turnstile');
+  if (turnstileTargets.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          if (!document.querySelector('script[src*="challenges.cloudflare.com"]')) {
+            const s = document.createElement('script');
+            s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+            s.async = true;
+            s.defer = true;
+            document.head.appendChild(s);
+          }
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    turnstileTargets.forEach((t) => observer.observe(t));
+  }
+</script>
+
+<script>
+  // Populate hidden source_url field with current page URL
+  document.querySelectorAll<HTMLInputElement>('input[name="source_url"]').forEach((el) => {
+    el.value = window.location.href;
+  });
+</script>
+
+<style>
+  .flex {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .form-input {
+    width: 100%;
+    height: var(--input-height);
+    border: 1px solid var(--color-dark-border);
+    border-radius: var(--radius-default);
+    color: var(--color-text-dark);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    background-color: transparent;
+    padding: 0 16px;
+    transition: border-color 0.2s;
+    font-family: var(--font-body);
+  }
+
+  .form-input::placeholder {
+    color: #3b3b33cc;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  /* Services section */
+  .services {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .services-label {
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+  }
+
+  /* Dropdown built with <details>/<summary> */
+  .services-dropdown {
+    position: relative;
+  }
+
+  .services-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+    gap: 8px;
+  }
+
+  .services-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .services-toggle-text {
+    flex: 1;
+    color: #3b3b33cc;
+  }
+
+  .services-toggle-icon {
+    display: flex;
+    align-items: center;
+    color: #1d894e;
+    flex-shrink: 0;
+  }
+
+  .select-dropdown {
+    border: 0.5px solid var(--color-brand-dark);
+    background-color: #fff;
+    border-radius: var(--radius-default);
+    max-height: 300px;
+    padding: 0.5rem 0.5rem 0.25rem;
+    overflow-y: auto;
+    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
+
+  .services-list-inner {
+    height: 100%;
+  }
+
+  .checkbox-field-b {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.4em;
+    cursor: pointer;
+    border-radius: var(--radius-default);
+    transition: background-color 0.15s;
+  }
+
+  .checkbox-field-b:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .checkbox-native {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    z-index: -1;
+  }
+
+  .custom-checkbox-label-b {
+    width: 100%;
+    color: var(--color-text-base);
+    font-size: var(--text-body);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Checked state: blue border + checkmark */
+  .checkbox-native:checked ~ .custom-checkbox-label-b::before {
+    content: '✓';
+    display: inline-block;
+    margin-right: 8px;
+    color: var(--color-accent);
+  }
+
+  /* Turnstile widget — keeps a placeholder height so layout doesn't
+     jump when the widget loads. */
+  .cf-turnstile {
+    min-height: 65px;
+  }
+
+  /* Submit button */
+  .form-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height);
+    padding: 0 var(--btn-px);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .form-button:hover {
+    opacity: 0.85;
+  }
+
+  /* Hidden field */
+  .hidden-form-input {
+    display: none;
+  }
+
+  /* Success / error states */
+  .form-success {
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+    padding: 18px;
+    margin-top: 12px;
+  }
+
+  .form-error {
+    border-radius: var(--radius-default);
+    margin-top: 12px;
+    padding: 18px;
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+
+  /* Mobile */
+  @media (max-width: 479px) {
+    .flex {
+      flex-direction: column;
+    }
+  }
+</style>

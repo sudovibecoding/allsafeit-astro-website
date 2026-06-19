@@ -1,0 +1,102 @@
+---
+/**
+ * Thank You — `/thank-you`.
+ *
+ * Form-submission confirmation. Webflow reference: `thank-you.html` —
+ * `.utility-page-wrap` with photo background, white type, H2 "Thank you!",
+ * twin CTAs ("Contact Us" + "Back to Home"). We keep the visual treatment
+ * (dark bg + white type) and pair it with an `<h1>` (correct page semantics
+ * even though Webflow happens to use `<h2>` for the headline).
+ *
+ * Also adds an urgent-call phone link below the body — for users who
+ * submitted the form because something is actively broken.
+ *
+ * `noindex` so the confirmation URL never surfaces in search.
+ */
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Thank You | AllSafe IT"
+  description="Thank you for getting in touch with AllSafe IT. We've received your request and will respond as soon as possible."
+  noindex={true}
+>
+  <section class="thankyou-section">
+    <div class="container">
+      <div class="thankyou-wrap">
+        <h1 class="h2 color__white-shade1">Thank you!</h1>
+        <p class="lead-text color__white-shade1">
+          We've received your message and will be in touch within one business day. For urgent matters, call us directly:
+        </p>
+        <a href="tel:+18884002748" class="phone-link">(888) 400-2748</a>
+        <div class="thankyou-actions">
+          <a href="/" class="button small">Back to Home</a>
+          <a href="/contact-us" class="button small ghost">Contact us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Webflow `.utility-page-wrap` analogue — full viewport dark photo bg
+     with a translucent navy overlay for readable white type. Same treatment
+     as `/404` for visual consistency across utility pages. */
+  .thankyou-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-brand-dark);
+    background-image:
+      linear-gradient(rgba(0, 25, 68, 0.7), rgba(0, 25, 68, 0.85)),
+      url('/images/DSC_1695DSC_1694.avif');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 4rem 0;
+  }
+
+  .thankyou-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: var(--container-6col);
+    align-items: flex-start;
+  }
+  .thankyou-wrap .h2 { margin: 0; }
+  .thankyou-wrap .lead-text { margin: 0; }
+
+  /* Phone CTA — H4-scale link in accent color so it reads as the urgent
+     contact path. */
+  .phone-link {
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .phone-link:hover { text-decoration: underline; }
+
+  .thankyou-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  /* Ghost CTA — same outline pattern as `/404`. */
+  .button.ghost {
+    background-color: transparent;
+    border: 1px solid var(--color-light-1);
+    color: var(--color-light-1);
+  }
+  .button.ghost:hover {
+    background-color: var(--color-light-1);
+    color: var(--color-brand-dark);
+  }
+
+  @media (max-width: 767px) {
+    .thankyou-wrap { align-items: center; text-align: center; }
+    .thankyou-actions { justify-content: center; }
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+interface Review {
+  quote: string;
+  author: string;
+  photo?: string;
+}
+
+interface Props {
+  heading?: string;
+  reviews: Review[];
+}
+
+const { heading = 'Reviews from Our Customers', reviews } = Astro.props;
+---
+
+{reviews.length > 0 && (
+  <section class="section">
+    <div class="container">
+      <div class="section-content">
+        <div class="title">
+          <h2 class="h3">{heading}</h2>
+        </div>
+        <div class="reviews-grid">
+          {reviews.map((t) => (
+            <div class="review-card">
+              <div class="review-author">
+                {t.photo ? (
+                  <img src={t.photo} alt={t.author} class="avatar" width="54" height="54" loading="lazy" />
+                ) : (
+                  <div class="avatar-initial" aria-hidden="true">
+                    {t.author.charAt(0)}
+                  </div>
+                )}
+                <p class="badge-text">{t.author}</p>
+              </div>
+              <p class="h5 review-quote">{t.quote}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-default);
+    background: var(--color-white-shade2, #f8fafc);
+  }
+  .review-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .review-author .badge-text {
+    margin: 0;
+  }
+  .review-quote {
+    margin: 0;
+  }
+  @media (max-width: 991px) {
+    .reviews-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 767px) {
+    .reviews-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

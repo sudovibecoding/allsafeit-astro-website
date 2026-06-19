@@ -1,0 +1,30 @@
+---
+interface Props {
+  image: string;
+  imageAlt?: string;
+  background?: 'white' | 'gradient';
+}
+
+const { image, imageAlt = '', background = 'white' } = Astro.props;
+const bgClass = background === 'gradient' ? 'bg-gradient' : '';
+---
+
+<section class={`section padding-small ${bgClass}`}>
+  <div class="container">
+    <div class="parallax-wrap">
+      <img src={image} alt={imageAlt} class="parallax-image" loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .parallax-wrap {
+    border-radius: var(--radius-default);
+    overflow: hidden;
+  }
+  .parallax-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

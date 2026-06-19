@@ -1,0 +1,41 @@
+---
+import NumberedListSplit from '../../components/sections/NumberedListSplit.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, resolveRichOrHtml, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface ItemBlok {
+  term?: string;
+  body?: unknown;
+  body_html?: string;
+}
+
+interface Props {
+  blok: {
+    heading: unknown;
+    intro?: unknown;
+    outro?: unknown;
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt?: string;
+    background?: 'white' | 'gradient';
+    items?: ItemBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+const items = (blok.items ?? []).map((i) => ({
+  term: i.term ?? '',
+  body: resolveRichOrHtml(i.body_html, i.body),
+}));
+---
+
+<NumberedListSplit
+  heading={headingPlainText(blok.heading)}
+  intro={stripHtmlTags(renderBodyContentInner(blok.intro)) || undefined}
+  outro={stripHtmlTags(renderBodyContentInner(blok.outro)) || undefined}
+  items={items}
+  image={resolveImage(blok.image, blok.image_path) ?? ''}
+  imageAlt={blok.image_alt ?? ''}
+  bg={blok.background ?? 'white'}
+/>

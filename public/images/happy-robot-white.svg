@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="white">
+  <!-- Antenna -->
+  <circle cx="320" cy="48" r="24"/>
+  <rect x="312" y="64" width="16" height="56" rx="8"/>
+  
+  <!-- Head/Body -->
+  <rect x="128" y="120" width="384" height="340" rx="48"/>
+  
+  <!-- Eyes - happy arc shapes -->
+  <g fill="none" stroke="black" stroke-width="20" stroke-linecap="round">
+    <!-- Left happy eye (upside-down arc) -->
+    <path d="M216 260 Q240 220 264 260"/>
+    <!-- Right happy eye (upside-down arc) -->
+    <path d="M376 260 Q400 220 424 260"/>
+  </g>
+  
+  <!-- Smile -->
+  <path d="M240 330 Q320 410 400 330" fill="none" stroke="black" stroke-width="18" stroke-linecap="round"/>
+  
+  <!-- Cheek blush circles -->
+  <circle cx="200" cy="320" r="28" opacity="0.15" fill="black"/>
+  <circle cx="440" cy="320" r="28" opacity="0.15" fill="black"/>
+  
+  <!-- Left arm -->
+  <rect x="16" y="240" width="80" height="160" rx="40"/>
+  
+  <!-- Right arm -->
+  <rect x="544" y="240" width="80" height="160" rx="40"/>
+  
+  <!-- Feet -->
+  <rect x="192" y="460" width="112" height="80" rx="32"/>
+  <rect x="336" y="460" width="112" height="80" rx="32"/>
+  
+  <!-- Belly button / power indicator -->
+  <circle cx="320" cy="400" r="16" fill="black" opacity="0.3"/>
+</svg>

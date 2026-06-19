@@ -1,0 +1,30 @@
+---
+import TiredOfWaiting from '../../../components/sections/TiredOfWaiting.astro';
+
+interface Props {
+  blok: {
+    heading?: string;
+    image_path?: string;
+    image_alt?: string;
+    item_1_heading?: string;
+    item_1_body?: string;
+    item_2_heading?: string;
+    item_2_body?: string;
+    item_3_heading?: string;
+    item_3_body?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+<TiredOfWaiting
+  heading={blok.heading}
+  imagePath={blok.image_path}
+  imageAlt={blok.image_alt}
+  item1Heading={blok.item_1_heading}
+  item1Body={blok.item_1_body}
+  item2Heading={blok.item_2_heading}
+  item2Body={blok.item_2_body}
+  item3Heading={blok.item_3_heading}
+  item3Body={blok.item_3_body}
+/>

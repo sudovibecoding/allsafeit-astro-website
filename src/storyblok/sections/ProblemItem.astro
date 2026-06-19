@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { title?: string; body?: string; icon_html?: string };
+}
+---
+
+<div hidden data-problem={Astro.props.blok.title} />

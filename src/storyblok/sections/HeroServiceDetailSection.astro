@@ -1,0 +1,25 @@
+---
+import HeroServiceDetail from '../../components/sections/HeroServiceDetail.astro';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { stripHtmlTags, renderBodyContentInner } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    badge?: string;
+    heading?: unknown;
+    lead?: unknown;
+    image_path?: string;
+    image_alt?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<HeroServiceDetail
+  badge={blok.badge ?? '[IT Services]'}
+  heading={headingPlainText(blok.heading)}
+  lead={stripHtmlTags(renderBodyContentInner(blok.lead))}
+  image={blok.image_path ?? ''}
+  imageAlt={blok.image_alt ?? ''}
+/>

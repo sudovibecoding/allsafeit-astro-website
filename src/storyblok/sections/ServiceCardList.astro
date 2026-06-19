@@ -1,0 +1,41 @@
+---
+import ServiceCardList from '../../components/sections/ServiceCardList.astro';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, resolveRichOrHtml, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface ItemBlok {
+  title?: string;
+  description?: unknown;
+  description_html?: string;
+  href?: string;
+  cta?: string;
+}
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    lead?: unknown;
+    default_href?: string;
+    items?: ItemBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+const items = (blok.items ?? []).map((i) => ({
+  title: i.title ?? '',
+  description: stripHtmlTags(
+    resolveRichOrHtml(i.description_html, i.description),
+  ),
+  href: i.href,
+  cta: i.cta,
+})).filter((i) => i.title);
+---
+
+{items.length > 0 && (
+  <ServiceCardList
+    heading={headingPlainText(blok.heading) || undefined}
+    lead={blok.lead ? stripHtmlTags(renderBodyContentInner(blok.lead)) : undefined}
+    items={items}
+    defaultHref={blok.default_href ?? '/contact-us'}
+  />
+)}

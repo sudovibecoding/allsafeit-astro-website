@@ -1,0 +1,131 @@
+---
+/**
+ * Positive Experience Program — Google review incentive page.
+ *
+ * Existing clients who leave a 5-star Google review get a $25 Amazon
+ * gift card. Page provides instructions + the official rules + a clear
+ * external link to AllSafe IT's Google review form.
+ *
+ * Components reused:
+ *   - Base (SEO, layout)
+ *   - inline compact hero
+ *   - OnboardingProcess (3 instructions, stepLabel="Step")
+ *   - inline rules list
+ *   - Button primitive for the external Google review CTA
+ *   - TalkToExpertCta closing banner
+ *
+ * NOTE: GOOGLE_REVIEW_URL is a placeholder — replace with the actual
+ *       Google Business "leave a review" link once provided.
+ */
+
+import Base from '../layouts/Base.astro';
+import OnboardingProcess from '../components/sections/OnboardingProcess.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+import Button from '../components/Button.astro';
+
+// TODO: Replace with the actual AllSafe IT Google review URL.
+// Format: https://search.google.com/local/writereview?placeid=<YOUR_PLACE_ID>
+const GOOGLE_REVIEW_URL = 'https://www.google.com/maps/place/AllSafe+IT';
+
+const reviewSteps = [
+  {
+    number: 1,
+    title: 'Click the button below and sign in with your Google account.',
+    body: 'You\'ll be taken to our Google Business page where you can leave a review.',
+  },
+  {
+    number: 2,
+    title: 'Rate us and share an honest review of AllSafe IT.',
+    body: 'Tell other businesses what your experience has been like — the good, the great, and what we could do better.',
+  },
+  {
+    number: 3,
+    title: 'Send us the email where we should deliver your gift card.',
+    body: 'Once we see your review, we\'ll email your $25 Amazon gift card within 3–5 business days.',
+  },
+];
+
+const officialRules = [
+  'You must be a current customer of AllSafe IT to be eligible for this promotion.',
+  'You must use a valid email address and have a Google account to submit a review.',
+  'All entries comply with our privacy policy and the terms of Google Reviews.',
+  'Gift cards are delivered within 3–5 business days of review verification.',
+  'AllSafe IT reserves the right to modify, suspend, or end this promotion at any time.',
+];
+---
+
+<Base
+  title="Positive Experience Program - Google | AllSafe IT"
+  description="Share your love with AllSafe IT. Managed services provider in Los Angeles Pasadena."
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h1">Love AllSafe IT?</h1>
+        {/* Webflow renders an H2 subheading directly under the H1 — it
+            spells out the offer so users see both the prompt and the reward
+            without scrolling. */}
+        <h2 class="h4">Share Your Positive Experience in a Google Review and Receive a $25 Amazon Gift Card!</h2>
+        <p class="lead-text">
+          Leave us a Google review and we'll send you a <strong>$25 Amazon
+          gift card</strong> as a thank-you. We value your feedback — and we
+          want to hear from you.
+        </p>
+        <Button href={GOOGLE_REVIEW_URL} rel="noopener" target="_blank">
+          Leave a Google Review
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <OnboardingProcess
+    heading="How it works"
+    phases={reviewSteps}
+    stepLabel="Step"
+    image="/images/customer-02.webp"
+    imageAlt="Happy AllSafe IT customer"
+  />
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="rules-card">
+        <h2 class="h4">Official rules</h2>
+        <ul class="rules-list">
+          {officialRules.map((rule) => (
+            <li class="body-text">{rule}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <TalkToExpertCta
+    heading="Ready for a fully secure organization with zero downtime?"
+    body="Let us remove IT from your worry list — permanently."
+  />
+</Base>
+
+<style>
+  .rules-card {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .rules-list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+  }
+  .rules-list li {
+    color: var(--color-text-dark-body);
+  }
+</style>

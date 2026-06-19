@@ -1,0 +1,13 @@
+---
+import CustomHtmlBlock from '../../components/sections/CustomHtmlBlock.astro';
+
+interface Props {
+  blok: {
+    html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<CustomHtmlBlock html={blok.html ?? ''} />

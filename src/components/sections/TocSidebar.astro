@@ -1,0 +1,77 @@
+---
+/**
+ * TocSidebar — table of contents for support docs.
+ *
+ * Renders as an inline boxed contents list on top of the article (single
+ * column). For now, deliberately inline — a true sticky-sidebar layout
+ * would require restructuring each page to a 2-column grid; we can
+ * extend this component to support `position: "sidebar"` later if
+ * support docs grow long enough to need it.
+ *
+ * Anchors are click-only navigation to in-page section ids; pair with
+ * the matching `id` prop on TutorialStep components or `<section id>` blocks.
+ */
+
+interface TocItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  items: TocItem[];
+  /** Heading shown above the items. */
+  heading?: string;
+}
+
+const { items, heading = 'Contents' } = Astro.props;
+---
+
+<aside class="toc-sidebar" aria-label="Page contents">
+  <p class="badge-text toc-heading">{heading}</p>
+  <ol class="toc-list">
+    {items.map((item) => (
+      <li class="toc-item">
+        <a href={`#${item.id}`} class="toc-link">{item.label}</a>
+      </li>
+    ))}
+  </ol>
+</aside>
+
+<style>
+  .toc-sidebar {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .toc-heading {
+    color: var(--color-accent);
+    margin: 0;
+  }
+  .toc-list {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toc-item {
+    color: var(--color-text-dark-body);
+  }
+  .toc-link {
+    color: var(--color-text-dark-body);
+    text-decoration: none;
+    border-bottom: 1px dotted transparent;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .toc-link:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>

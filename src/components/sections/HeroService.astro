@@ -1,0 +1,364 @@
+---
+interface VideoSources {
+  /** Poster image displayed before/while video loads (and used as a fallback
+   *  when JS is off / video fails). */
+  poster: string;
+  /** MP4 source URL. */
+  mp4: string;
+  /** Optional WebM source — preferred by browsers that support it. */
+  webm?: string;
+}
+
+interface Props {
+  heading: string;
+  /**
+   * Hero subhead copy. Pass a single string for a one-paragraph lead, or
+   * an array for multi-paragraph leads — each item renders as its own
+   * `<p class="lead-text">`. Matches the Webflow location-page pattern
+   * where the lead is split into a "pain" paragraph and a "solution"
+   * paragraph (LA / OC use two `<p>`; Pasadena uses a single `<p>` with
+   * `<br><br>` — we render both as proper two-paragraph markup for cleaner
+   * semantics and CSS spacing).
+   */
+  lead: string | string[];
+  /** Static square (1:1) image for the hero. Mutually exclusive with `video`. */
+  image?: string;
+  imageAlt?: string;
+  /**
+   * Auto-playing muted background video — used on the four service pillar
+   * pages (managed-it, cybersecurity, it-consulting, it-infrastructure-and-cloud).
+   * Webflow ships this as `.w-background-video` with MP4 + optional WebM
+   * sources and a poster JPG. When provided, takes precedence over `image`.
+   */
+  video?: VideoSources;
+}
+
+const { heading, lead, image, imageAlt = '', video } = Astro.props;
+const leadParagraphs = Array.isArray(lead) ? lead : [lead];
+const hasMedia = Boolean(image) || Boolean(video);
+---
+
+<div class="hero-service-wrap">
+  <div aria-hidden="true" style="height: var(--navbar-height)"></div>
+  <section class="section bg-brand-2 hero-service-inner">
+    <div class="container">
+      <div class={hasMedia ? 'hero-grid' : 'hero-single'}>
+        {video ? (
+          /* Webflow `.w-background-video` analogue — autoplay/muted/loop/
+             playsinline gives the inline background-video behavior with no
+             JS. The poster covers the box before the video loads and during
+             prefers-reduced-motion (handled by CSS below). */
+          <div class="h-left">
+            <video
+              class="square-parallax-image hero-video"
+              poster={video.poster}
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+              aria-hidden="true"
+            >
+              {video.webm && <source src={video.webm} type="video/webm" />}
+              <source src={video.mp4} type="video/mp4" />
+            </video>
+          </div>
+        ) : image && (
+          <div class="h-left">
+            <img
+              src={image}
+              alt={imageAlt}
+              class="square-parallax-image"
+              width="600"
+              height="600"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+        )}
+        {/* Webflow `.h-right` wraps two siblings: `.hero_title` (h1 only) and
+            `.content` (paragraph + CTA + marquee). `justify-content: space-between`
+            on the parent pushes the title to the top and the content stack to
+            the bottom, matching the live Webflow layout. */}
+        <div class="h-right">
+          <div class="hero_title">
+            <h1 class="h2 color__white-shade1">{heading}</h1>
+          </div>
+          <div class="hero-content">
+          <div class="hero-lead-stack">
+            {leadParagraphs.map((p) => (
+              <p class="lead-text color__white-shade1" set:html={p}></p>
+            ))}
+          </div>
+          <a href="#form" class="button small hero-cta">Talk to an expert</a>
+          <div class="partner-addendum">
+            <p class="badge-text partner-label color__white-shade1">Some of our<br />multi-national partners</p>
+            <div class="partner-marquee">
+              <div class="partner-marquee-group">
+                <div class="partner-logos">
+                  <div class="plogo"><img src="/images/Sophos_logo_colored.avif" alt="Sophos" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/Veeam-Logo.png" alt="Veeam" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/Open-AI-White-Logo-PNG.avif" alt="OpenAI" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/microsoft-logo-png-13.avif" alt="Microsoft" loading="lazy" /></div>
+                  <div class="plogo plogo--ring-central"><img src="/images/ring-central-colored-logo.avif" alt="RingCentral" loading="lazy" /></div>
+                  <div class="plogo plogo--apple"><img src="/images/Apple_logo_with_text_white.avif" alt="Apple" loading="lazy" /></div>
+                  <div class="plogo plogo--datto"><img src="/images/Datto_logo_colored.avif" alt="Datto" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/anthropic-text.avif" alt="Anthropic" loading="lazy" /></div>
+                </div>
+              </div>
+              <div class="partner-marquee-group" aria-hidden="true">
+                <div class="partner-logos">
+                  <div class="plogo"><img src="/images/Sophos_logo_colored.avif" alt="" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/Veeam-Logo.png" alt="" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/Open-AI-White-Logo-PNG.avif" alt="" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/microsoft-logo-png-13.avif" alt="" loading="lazy" /></div>
+                  <div class="plogo plogo--ring-central"><img src="/images/ring-central-colored-logo.avif" alt="" loading="lazy" /></div>
+                  <div class="plogo plogo--apple"><img src="/images/Apple_logo_with_text_white.avif" alt="" loading="lazy" /></div>
+                  <div class="plogo plogo--datto"><img src="/images/Datto_logo_colored.avif" alt="" loading="lazy" /></div>
+                  <div class="plogo"><img src="/images/anthropic-text.avif" alt="" loading="lazy" /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>{/* /.hero-content */}
+        </div>
+      </div>
+    </div>
+    <div class="line-wrapper"></div>
+  </section>
+</div>
+
+<style>
+  .hero-service-wrap {
+    margin-top: var(--navbar-negative-height);
+    background-color: var(--color-brand-dark);
+  }
+
+  .hero-service-inner {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Webflow `.hero-grid` — 1fr 1fr, 2rem gap. `align-items: stretch` lets
+     `.h-right { height: 100%; justify-content: space-between }` actually
+     fill the row height (so the marquee anchors to the bottom of the image)
+     — matches Webflow's live layout. */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .hero-single {
+    max-width: var(--container-6col);
+  }
+
+  /* Webflow `.h-left` — square aspect, min-width: 0 so the column can
+     shrink with the grid track. Aspect-ratio is 1:1 at ALL breakpoints. */
+  .h-left {
+    border-radius: var(--radius-default);
+    overflow: hidden;
+    aspect-ratio: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .square-parallax-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Hero video — same crop behavior as the image variant. */
+  .hero-video {
+    background-color: var(--color-brand-dark);
+  }
+
+  /* Respect reduced-motion: pause the video by hiding it and falling back
+     to the poster image (set as background of the <video> wrapper). */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video {
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  /* Webflow `.h-right` — 2rem gap, padding 6px top/bottom, height 100% +
+     justify-content: space-between pushes the title to the top and the
+     content stack (paragraph + CTA + marquee) to the bottom of the column,
+     matching the image height. Also min-width: 0 prevents long words from
+     pushing the column past its grid track. */
+  .h-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    height: 100%;
+    padding: 6px 0;
+    min-width: 0;
+  }
+  .h-right .h2 {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Webflow `.hero_title` — 0.5rem gap (used when there's a badge above
+     the H1; we keep the wrapper for structural parity). */
+  .hero_title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  /* Webflow `.content` — inner stack with 1.5rem gap between paragraph,
+     CTA, and marquee. */
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  /* Multi-paragraph lead — Webflow `.content` is a flex column with
+     `grid-row-gap: 1.5rem`, which is the spacing it uses between the two
+     hero `<p>`s on LA / OC. Pasadena uses `<br><br>` inline (~one line
+     height of lead-size text) which lands at a visually similar gap.
+     Matching 1.5rem keeps the three pages consistent. */
+  .hero-lead-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+  .hero-lead-stack p { margin: 0; }
+
+  .hero-cta {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height-sm);
+    padding: 0 var(--btn-px-sm);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .hero-cta:hover {
+    opacity: 0.85;
+  }
+
+  /* Webflow `.logo-addendum` — pinned to the bottom of the column via the
+     parent `.h-right` `space-between`. No top margin needed; the parent gap
+     handles spacing from the CTA above. */
+  .partner-addendum {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .partner-label {
+    opacity: 0.7;
+  }
+
+  .partner-marquee {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .partner-marquee-group {
+    flex: none;
+    animation: partner-scroll 30s linear infinite;
+  }
+
+  .partner-logos {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding-right: 72px;
+  }
+
+  /* Webflow `.marqueelogo__holder` — natural-color brand logos. Each image
+     is already provided in its intended color (Sophos/Veeam/Datto/RingCentral
+     are pre-colored; OpenAI/Apple/Anthropic ship as white variants). NO
+     blanket filter — drop the previous brightness/invert that homogenized
+     everything to white. */
+  .plogo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    max-width: 100px;
+    transition: filter 0.2s;
+  }
+
+  .plogo img {
+    width: auto;
+    max-width: 100%;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Per-logo width tweaks mirror Webflow's per-class sizing (.dattos, .apple,
+     .ring-central) so each brandmark renders at its intended proportion. */
+  .plogo--ring-central img { height: 18px; }
+  .plogo--apple img { height: 22px; }
+  .plogo--datto img { height: 22px; }
+
+  @keyframes partner-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+  }
+
+  /* Responsive — Webflow `.hero-grid` figures, breakpoint by breakpoint:
+       Desktop (>991px):  gap 2rem
+       Tablet  (≤991):    gap 2rem (inherited; only place-items changes)
+       Mobile  (≤767):    gap 1rem  — Webflow tightens to keep the stacked
+                                       image + text close together
+       Phone   (≤479):    gap 3.5rem — Webflow opens it back up for visual
+                                       separation between stacked blocks
+     On small screens we also swap with CSS `order` so TEXT renders above
+     IMAGE (per user request), keeping DOM untouched for desktop. The image
+     keeps its 1:1 aspect-ratio everywhere. */
+  @media (max-width: 991px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .h-right { order: 1; height: auto; padding: 0; }
+    .h-left { order: 2; width: 100%; aspect-ratio: 1; }
+
+    /* Headline scales down so it never overflows the single column. */
+    .h-right .h2 { font-size: clamp(2rem, 8vw, 2.5rem); line-height: 1.1; }
+  }
+
+  @media (max-width: 767px) {
+    .hero-grid { gap: 1rem; }
+  }
+
+  @media (max-width: 479px) {
+    .hero-grid { gap: 3.5rem; }
+    .h-right .h2 { font-size: clamp(1.75rem, 9vw, 2.1rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .partner-marquee-group { animation: none; }
+  }
+</style>

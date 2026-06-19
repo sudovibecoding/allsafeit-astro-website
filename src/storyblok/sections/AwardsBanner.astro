@@ -1,0 +1,29 @@
+---
+import AwardsBanner from '../../components/sections/AwardsBanner.astro';
+import { storyblokAssetUrl } from '../../lib/storyblok-asset';
+import { renderBodyContentInner } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading: string;
+    body: unknown;
+    image: { filename?: string } | string;
+    image_alt: string;
+    background?: 'white' | 'gradient';
+    show_logos?: boolean;
+  };
+}
+
+const { blok } = Astro.props;
+const body =
+  renderBodyContentInner(blok.body) || (typeof blok.body === 'string' ? blok.body : '');
+---
+
+<AwardsBanner
+  heading={blok.heading}
+  body={body}
+  image={storyblokAssetUrl(blok.image) ?? ''}
+  imageAlt={blok.image_alt}
+  bg={blok.background ?? 'gradient'}
+  showLogos={blok.show_logos ?? false}
+/>

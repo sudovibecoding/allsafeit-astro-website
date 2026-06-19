@@ -1,0 +1,36 @@
+---
+import ServiceAreas from '../../components/sections/ServiceAreas.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading: string;
+    body?: unknown;
+    body_html?: string;
+    map_embed_url?: string;
+    address_line?: string;
+    pin_label?: string;
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt?: string;
+    background?: 'gradient' | 'plain';
+  };
+}
+
+const { blok } = Astro.props;
+const bodyHtml = resolveRichOrHtml(blok.body_html, blok.body);
+const image = resolveImage(blok.image, blok.image_path);
+---
+
+<ServiceAreas
+  heading={blok.heading}
+  mapEmbedUrl={blok.map_embed_url}
+  addressLine={blok.address_line}
+  pinLabel={blok.pin_label}
+  image={image}
+  imageAlt={blok.image_alt}
+  bg={blok.background ?? 'plain'}
+>
+  {bodyHtml && <div set:html={bodyHtml} />}
+</ServiceAreas>

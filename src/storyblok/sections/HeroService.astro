@@ -1,0 +1,54 @@
+---
+import HeroService from '../../components/sections/HeroService.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading: unknown;
+    lead?: unknown;
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt?: string;
+    poster?: { filename?: string } | string;
+    mp4?: { filename?: string } | string;
+    webm?: { filename?: string } | string;
+  };
+}
+
+const { blok } = Astro.props;
+const image = resolveImage(blok.image, blok.image_path);
+const poster = resolveImage(blok.poster, (blok as { poster_path?: string }).poster_path);
+const mp4 =
+  typeof blok.mp4 === 'string'
+    ? blok.mp4
+    : blok.mp4?.filename ?? (blok as { mp4_path?: string }).mp4_path;
+const webm =
+  typeof blok.webm === 'string'
+    ? blok.webm
+    : blok.webm?.filename ?? (blok as { webm_path?: string }).webm_path;
+
+function leadFromCms(value: unknown): string | string[] {
+  if (!value) return '';
+  if (typeof value === 'string') {
+    return value.includes('\n\n') ? value.split('\n\n').map((p) => p.trim()).filter(Boolean) : value;
+  }
+  const html = renderBodyContentInner(value);
+  const parts = html.split(new RegExp('</p>', 'i')).filter(Boolean);
+  if (parts.length > 1) {
+    return parts.map((p) => stripHtmlTags(p)).filter(Boolean);
+  }
+  return stripHtmlTags(html);
+}
+
+const lead = leadFromCms(blok.lead);
+---
+
+<HeroService
+  heading={headingPlainText(blok.heading)}
+  lead={lead}
+  image={image}
+  imageAlt={blok.image_alt}
+  video={poster && mp4 ? { poster, mp4, webm: webm ?? mp4 } : undefined}
+/>

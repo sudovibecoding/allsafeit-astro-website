@@ -1,0 +1,156 @@
+---
+/**
+ * Hero for service-detail CMS pages.
+ * Matches Webflow `section.hero-2-section`: dark bg, 2-col grid with image
+ * on the LEFT (bordered, width-95) and title/lead/button on the RIGHT.
+ * No partner marquee (that's the standard HeroService variant only).
+ */
+
+interface Props {
+  /** Bracketed label rendered above the H1, e.g. "[IT Services]". */
+  badge?: string;
+  heading: string;
+  lead: string;
+  image: string;
+  imageAlt: string;
+}
+
+const {
+  badge = '[IT Services]',
+  heading,
+  lead,
+  image,
+  imageAlt,
+} = Astro.props;
+---
+
+<section class="section hero-2-section hero-detail">
+  <div class="container">
+    <div class="grid hero-detail-grid">
+      <div class="hero-detail-image-col">
+        <div class="featuredimg width-95">
+          <img
+            src={image}
+            alt={imageAlt}
+            class="image-27"
+            width="800"
+            height="600"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+
+      <div class="h-right hero-title">
+        <div class="title">
+          <div class="badge-text color__white-shade1">{badge}</div>
+          <h1 class="h2 color__white-shade1">{heading}</h1>
+        </div>
+        <div class="content large-content">
+          <p class="lead-text color__white-shade1">{lead}</p>
+          <a href="#form" class="button small hero-detail-cta">Talk to an expert</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-detail {
+    margin-top: var(--navbar-negative-height);
+    padding-top: calc(var(--navbar-height) + var(--spacing-section-sm));
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+  }
+
+  .hero-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hero-detail-image-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Webflow .width-95.featuredimg specs */
+  .featuredimg.width-95 {
+    max-width: 95%;
+    border: 9px solid #ffffff29;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .image-27 {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: fill;
+  }
+
+  .h-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  .h-right .title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .h-right .content.large-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Match the navbar CTA (.nav-cta-btn) exactly. The global `.button` /
+     `.small` classes live scoped inside Button.astro, so they don't reach
+     this <a> — style it locally instead. */
+  .hero-detail-cta {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height-sm);
+    padding: 0 var(--btn-px-sm);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .hero-detail-cta:hover {
+    opacity: 0.85;
+  }
+
+  @media (max-width: 991px) {
+    .hero-detail-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .hero-detail-image-col {
+      order: -1;
+    }
+
+    .featuredimg.width-95 {
+      max-width: 100%;
+    }
+  }
+</style>

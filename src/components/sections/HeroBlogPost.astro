@@ -1,0 +1,174 @@
+---
+/**
+ * Hero for blog-post detail pages.
+ * Matches Webflow `detail_blog.html`:
+ *   - Breadcrumb (Home / Blogs / Title) flush above the section content
+ *   - Title block: `.blog-meta` (category badge + date badge) + H1
+ *   - Full-width featured image below the title block
+ *   - `.article-wrapper`: H5 lead intro + (article body — passed via `<slot />`)
+ *
+ * The article body slot is rendered here rather than in a separate component
+ * so the lead/intro and the body share the same narrowed column (max-width
+ * 6-col, centered) per Webflow `.article-wrapper`.
+ */
+import Breadcrumb from '../Breadcrumb.astro';
+
+interface Props {
+  title: string;
+  lead: string;
+  featuredImage: string;
+  featuredImageAlt: string;
+  category: string;
+  categoryHref?: string;
+  publishDate: Date;
+}
+
+const {
+  title,
+  lead,
+  featuredImage,
+  featuredImageAlt,
+  category,
+  categoryHref,
+  publishDate,
+} = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+}).format(publishDate);
+
+const isoDate = publishDate.toISOString();
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Blogs', href: '/blog' },
+  { label: title },
+];
+---
+
+<section class="section padding-small blog-post-hero">
+  <div class="container detail-breadcrumb-container">
+    <Breadcrumb crumbs={crumbs} />
+  </div>
+
+  <div class="container">
+    <div class="section-content blog-post">
+      <div class="title blog-post-title-block">
+        <div class="blog-meta">
+          {categoryHref ? (
+            <a href={categoryHref} class="badge-text blog-meta-category">{category}</a>
+          ) : (
+            <span class="badge-text blog-meta-category">{category}</span>
+          )}
+          <time class="badge-text blog-meta-date" datetime={isoDate}>{formattedDate}</time>
+        </div>
+        <h1 class="h2 blog-post-title">{title}</h1>
+      </div>
+
+      <img
+        src={featuredImage}
+        alt={featuredImageAlt}
+        class="main-post-image"
+        width="1200"
+        height="675"
+        loading="eager"
+        fetchpriority="high"
+      />
+
+      <div class="article-wrapper article-richtext">
+        <p class="h5 article-intro">{lead}</p>
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .detail-breadcrumb-container {
+    margin-bottom: 1rem;
+  }
+
+  /* Webflow `.section-content.blog-post` — 72px gap between title/image/article. */
+  .section-content.blog-post {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-section-sm); /* 72px per Webflow */
+  }
+
+  /* Title block sits at full container width, left-aligned (Webflow `.title`). */
+  .blog-post-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  /* Webflow `.blog-meta` — 24px gap, justify-flex-start, align-center. */
+  .blog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+  }
+
+  /* `.badge-text` color override — category gets accent, date stays muted. */
+  .blog-meta-category {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  a.blog-meta-category:hover {
+    opacity: 0.7;
+  }
+
+  .blog-meta-date {
+    color: var(--color-text-dark-body);
+    opacity: 0.7;
+  }
+
+  .blog-post-title {
+    margin: 0;
+  }
+
+  /* Webflow `.main-post-image` — 16:9 aspect ratio, LARGE border-radius (12px). */
+  .main-post-image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-large);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  /* Article wrapper — narrowed to 6-col, centered. */
+  .article-wrapper.article-richtext {
+    max-width: var(--container-6col);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+  /* Webflow `.article-intro` — h5 sized, 48px padding-bottom to separate
+     visually from the article body below. */
+  .article-intro {
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+    color: var(--color-brand-dark);
+    font-weight: 500;
+    margin: 0;
+    padding-bottom: 48px;
+  }
+
+  @media (max-width: 991px) {
+    .main-post-image {
+      aspect-ratio: 4 / 3;
+    }
+
+    .article-intro {
+      font-size: var(--text-h6);
+    }
+  }
+</style>

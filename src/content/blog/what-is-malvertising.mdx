@@ -1,0 +1,185 @@
+---
+name: What Is Malvertising and Why Should Your Business Care?
+status: published
+mainImage: /images/blog/what-is-malvertising/blog-post-malvertising.jpeg
+mainImageAlt: What is Malvertising? — AllSafe IT blog
+thumbnailImage: /images/blog/what-is-malvertising/blog-post-malvertising.jpeg
+introductionParagraph: Malvertising is malicious online advertising that can infect your devices with malware, ransomware, and other threats. Learn how to prevent it.
+category: business
+author: bones-ijeoma
+firstPublishedDate: "2022-05-31T00:00:00.000Z"
+postFeatured: false
+metaTitleForBlogs: What Is Malvertising and Why Should Your Business Care?
+metaDescriptionForBlogs: Malvertising is malicious online advertising that can infect your devices with malware, ransomware, and other threats. Learn how to prevent it.
+---
+
+You don't have to click anything to get infected.
+
+That's what makes malvertising different from most cyber threats. A regular phishing attack needs you to open an email and act on it. Malvertising can deliver malware the moment a page loads, through an ad you never even noticed.
+
+It happens on legitimate websites. It happens on news sites, streaming platforms, and search results pages. The websites themselves are often completely unaware. And it's getting more common. Malvertising surged 10% in 2024, with forced redirects dominating attacks and accounting for 81% of all malicious ads in October of that year, according to [AdMonsters](https://www.admonsters.com/digital-advertising-malware-in-2024-lessons-for-2025-and-beyond/).
+
+For businesses, the risk isn't abstract. Employees browse the web every day on work devices. One infected page on one device connected to your network is enough to create a serious problem.
+
+This guide covers what malvertising is, how it works, what it can do to a business, and the practical steps that reduce your exposure.
+
+## What Is Malvertising
+
+Malvertising is short for malicious advertising. It's the practice of injecting harmful code into online ads that then get distributed through legitimate ad networks.
+
+The ads themselves look normal. A banner promotion, a search result, a video pre-roll. Nothing about them signals danger. The threat is hidden inside the code that runs when the ad loads.
+
+What makes malvertising particularly effective is where it appears. Because attackers work through real ad networks, their malicious ads can end up on high-traffic, well-known websites. The publisher has no idea the ad is harmful. The visitor has no reason to suspect anything is wrong.
+
+Malvertising is not the malware itself. It's the delivery system. Once it loads, it can deploy ransomware, spyware, cryptojacking tools, or backdoor access depending on what the attacker has configured.
+
+## How Malvertising Works
+
+Understanding the mechanics helps explain why it's hard to stop at the source.
+
+### The online ad ecosystem creates the opening
+
+Online advertising involves a chain of parties. Publishers display ads on their websites. Ad exchanges connect publishers to advertisers through automated auctions. Ad servers deliver the actual ad content. Content delivery networks handle distribution at scale.
+
+When a page loads, multiple redirects happen between different servers in a matter of milliseconds. Attackers exploit this chain by compromising one of the links and inserting malicious code without the publisher or ad network detecting it. By the time the ad appears on a page, it has already passed through systems that assumed it was legitimate.
+
+### Two ways it reaches your device
+
+The first is a drive-by download. The malware installs automatically when a page loads, with no click required from the user. The visitor simply lands on a page with an infected ad and the code runs in the background. They may not notice anything immediately.
+
+The second requires a click. The user clicks the ad and gets redirected to a malicious site or triggers a download. In some cases the destination looks completely legitimate, a fake login page for a commonly used business tool, designed to harvest credentials.
+
+Both methods have the same result. The device is compromised and the attacker has a foothold.
+
+### What the malware can do once it's in
+
+The payload varies by campaign and attacker objective.
+
+Ransomware encrypts files on the infected device and spreads to connected systems before the user realizes anything is wrong. Internal link: [don't get held hostage by ransomware](https://www.allsafeit.com/blog/dont-get-held-hostage-by-ransomware).
+
+Spyware and keyloggers run silently in the background, recording login credentials, financial data, and anything else the user types. That data gets sent to the attacker for exploitation or sale.
+
+Cryptojacking hijacks device processing power to mine cryptocurrency for the attacker. The device slows down, runs hot, and the owner has no idea why.
+
+Backdoors create hidden access points the attacker can return to later, often well after the initial infection has been forgotten or dismissed as a software glitch.
+
+## Real Examples of Malvertising Attacks
+
+Named examples matter here because malvertising has a long, documented history across platforms that most people trust.
+
+-   **The New York Times (2009):** Readers were served ads falsely claiming their devices were infected and directing them to install malicious security software. The ads ran through the paper's legitimate ad network.
+-   **Yahoo (2013):** A malvertising campaign targeting Yahoo's 6.9 billion monthly visitors delivered CryptoWall ransomware to infected machines through the site's display advertising.
+-   **Spotify (2011):** An early drive-by download attack infected users through Spotify's ad-supported free tier without requiring any user interaction.
+-   **Los Angeles Times (2012):** A large-scale drive-by download campaign hit the paper and became a template for future attacks targeting major news portals.
+
+These are older examples by design. Malvertising has been a documented threat for over 15 years, which speaks to how persistent and adaptive it is. Modern campaigns are more sophisticated, not less.
+
+In 2025, Microsoft Threat Intelligence uncovered a malvertising campaign that compromised nearly one million devices globally by redirecting users from streaming sites to malware hosted on GitHub, a trusted platform. Separately, attackers impersonating AI tools like Luma AI and Canva Dream Lab ran paid campaigns on Facebook and LinkedIn that delivered infostealers disguised as software downloads.
+
+The tactics change. The underlying approach stays the same.
+
+## Malvertising vs Adware
+
+The two are often confused and the distinction matters for how you protect against each.
+
+Adware installs on a user's device and runs persistently. It displays unwanted ads, tracks browsing behavior, and often arrives bundled with other software the user intentionally downloaded. Once it's on the device, it stays there until removed.
+
+Malvertising operates through the ad network, not from software on the device. A user can have a completely clean machine and still encounter malvertising on a legitimate website. The threat exists at the network level, not the device level.
+
+The practical implication is that endpoint security alone is not a complete defense against malvertising. Adware gets caught by endpoint tools. Malvertising requires a combination of browser security, endpoint protection, and network-level controls to address effectively.
+
+## How to Recognize a Malvertisement
+
+Sophisticated malvertising is designed to be indistinguishable from legitimate ads. That said, some patterns are worth knowing.
+
+Ads with spelling errors or noticeably poor design are a flag. Legitimate advertisers invest in professional creative. Malvertisers often do not.
+
+Tech support scam ads that claim your device has a problem and urge you to call a number to fix it are almost always malicious. No legitimate software company reaches out through a browser ad to warn you about an infection.
+
+Scareware pop-ups that prevent you from closing a browser window and display alarming warnings about viruses or account breaches are a common malvertising format. Closing the browser entirely or using the task manager to end the process is the right response.
+
+Fake software update prompts, especially those appearing on video streaming or adult content sites, asking you to install a codec or media player to view content are a well-documented delivery method.
+
+Any ad offering something that requires immediate action or claims you have won something should be treated with skepticism regardless of what website it appears on.
+
+The honest caveat: many malvertising campaigns look completely professional and appear on reputable sites. Recognizing obvious warning signs helps, but it is not a complete defense on its own.
+
+## How to Protect Your Business From Malvertising
+
+### Keep browsers and software updated
+
+Most drive-by download attacks exploit known vulnerabilities in outdated browsers and plugins. When a browser update is available, it usually includes patches for recently discovered security gaps. Leaving devices on old browser versions keeps those gaps open.
+
+Automated patch management removes the human dependency from this process. Across a distributed team, manual updates do not happen consistently. Every device used for work should be current, including personal devices used under a BYOD policy.
+
+### Use endpoint detection and response
+
+Many malvertising payloads are fileless, meaning they run in memory using JavaScript or PowerShell rather than downloading a traditional file. Standard antivirus tools that scan files at rest often miss them entirely.
+
+Endpoint detection and response software monitors device behavior in real time and catches suspicious activity regardless of how it arrived. It is a more effective defense against modern malvertising payloads than traditional antivirus alone. AllSafe IT's [SafeTotal cybersecurity suite](https://www.allsafeit.com/services/cybersecurity/cybersecurity-and-antivirus) includes EDR as part of its endpoint protection layer.
+
+### Configure browser security settings
+
+Click-to-play settings prevent automatic execution of content requiring browser plugins. With this enabled, multimedia content and plugin-dependent ads do not run unless the user specifically chooses to activate them.
+
+Ad blockers reduce exposure by preventing many ad types from loading at all. On company-managed devices, these should be configured as a default rather than left to individual employees to set up.
+
+### Train employees to recognize suspicious ads
+
+An employee who knows what a tech support scam ad looks like will not call the number. One who has never seen scareware before might close their browser out of frustration, or worse, follow the instructions on screen.
+
+Security awareness training that covers ad-based threats alongside phishing and social engineering gives employees a more complete picture of how attacks actually arrive. AllSafe IT's [security awareness training](https://www.allsafeit.com/services/cybersecurity/security-awareness-training) includes scenarios built around current attack patterns, not theoretical examples.
+
+### Have an incident response plan
+
+If malvertising delivers ransomware or installs a backdoor on a work device, how quickly your team responds determines how far the damage spreads. Knowing who to contact, what steps to take, and how to isolate the affected device before running a [security audit](https://www.allsafeit.com/blog/security-audits-every-business-should-conduct) makes a meaningful difference in the outcome.
+
+## Why Malvertising Is a Business Problem, Not Just a Personal One
+
+Most people think of malvertising as something that happens to individual users on personal devices. For businesses, the risk is more direct.
+
+Employees browse the web during the workday on company-issued or personal devices connected to the business network. A single infected device on that network becomes an entry point for lateral movement. The attack does not need to target the business directly. It just needs to reach one device.
+
+Remote and hybrid workers add more surface area. Devices connecting from home networks, coffee shops, and shared spaces encounter a wider range of ad content with fewer network-level controls in place.
+
+Mobile devices present a specific risk as well. Security settings on phones are often less configured than on laptops. Employees accessing work email and cloud applications on the same device they use for personal browsing creates a straightforward path for malvertising to reach business systems.
+
+## How AllSafe IT Helps Southern California Businesses Stay Protected
+
+Malvertising is one of several web-based threats that managed cybersecurity addresses at the infrastructure level rather than depending on individual employees to catch every dangerous ad.
+
+AllSafe IT's SafeTotal suite covers endpoint detection and response, browser security configuration, and security awareness training built for small and mid-sized teams. For businesses across [Los Angeles](https://www.allsafeit.com/locations/managed-it-services-los-angeles) managing distributed or remote workforces, protecting every device from web-based threats is part of the managed security offering rather than an add-on.
+
+If you want to know how your current security stack holds up against web-based threats like malvertising, a security assessment is a practical starting point.
+
+## Frequently Asked Questions
+
+### What is malvertising?
+
+Malvertising is the practice of injecting malicious code into online advertisements that are then distributed through legitimate ad networks. It can deliver malware, ransomware, spyware, or other threats to users who view or click on infected ads, sometimes without any interaction at all.
+
+### How is malvertising different from adware?
+
+Adware installs on a user's device and runs persistently, displaying unwanted ads from within the device. Malvertising operates through the ad network itself. A user with a completely clean device can encounter malvertising on a legitimate website because the threat lives in the ad delivery chain, not on the device.
+
+### Can malvertising infect your device without clicking an ad?
+
+Yes. Drive-by download attacks deliver malware automatically when a page loads, without the user clicking anything. This happens when the malicious code exploits vulnerabilities in the browser or its components.
+
+### What are the signs of a malvertising attack?
+
+Common signs include unusual device slowdowns, unexpected software installations, browser redirects to unfamiliar sites, and pop-ups that cannot be closed normally. In many cases there are no obvious signs until the malware has already run.
+
+### How do businesses protect against malvertising?
+
+The most effective approach combines keeping browsers and software updated through automated patch management, deploying endpoint detection and response software, configuring browser security settings on all work devices, and providing regular security awareness training to employees.
+
+### Do ad blockers stop malvertising?
+
+Ad blockers reduce exposure by preventing many types of ads from loading. They are a useful layer of protection but not a complete solution. Some malvertising campaigns bypass ad blockers, and certain legitimate sites disable content for users with blockers active.
+
+### What should I do if I think I've been hit by malvertising?
+
+Disconnect the affected device from the network immediately to prevent lateral movement. Contact your IT team or managed security provider. Do not attempt to remove the malware manually. A proper forensic review of the device is needed to confirm what was installed and whether it spread to other systems.
+
+‍

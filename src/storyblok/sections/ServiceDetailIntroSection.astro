@@ -1,0 +1,22 @@
+---
+import ServiceDetailIntro from '../../components/sections/ServiceDetailIntro.astro';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    service_category?: string;
+    title?: string;
+    overview?: unknown;
+    overview_html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const overviewHtml = resolveRichOrHtml(blok.overview_html, blok.overview);
+---
+
+<ServiceDetailIntro
+  category={blok.service_category ?? ''}
+  title={blok.title ?? ''}
+  overview={overviewHtml}
+/>

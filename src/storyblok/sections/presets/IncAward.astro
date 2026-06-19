@@ -1,0 +1,28 @@
+---
+import IncAward from '../../../components/sections/IncAward.astro';
+
+interface Props {
+  blok: {
+    heading?: string;
+    body_html?: string;
+    cta_text?: string;
+    cta_href?: string;
+    image_path?: string;
+    image_alt?: string;
+    logo_path?: string;
+    logo_alt?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+<IncAward
+  heading={blok.heading}
+  bodyHtml={blok.body_html}
+  ctaText={blok.cta_text}
+  ctaHref={blok.cta_href}
+  imagePath={blok.image_path}
+  imageAlt={blok.image_alt}
+  logoPath={blok.logo_path}
+  logoAlt={blok.logo_alt}
+/>

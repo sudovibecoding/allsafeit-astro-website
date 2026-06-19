@@ -1,0 +1,202 @@
+---
+/**
+ * ProblemsGrid — Webflow `.accrdion-grid` Problems-We-Solve section, rendered
+ * as two columns of native <details>/<summary> dropdowns. No blocking JS.
+ *
+ * Webflow rendering reference (location pages):
+ *   - Each item shows a boxed Font Awesome icon (no chevron/arrow toggle).
+ *   - Boxed-icon uses `.lightbackground` (very pale blue tint).
+ *   - Title sits inline next to the icon.
+ *   - Body content sits underneath, padded.
+ *
+ * Each Problem may include an `icon` (inline SVG string) — pages compose the
+ * Font Awesome SVG inline so we don't ship a separate icon font for one page.
+ */
+interface Problem {
+  title: string;
+  /** Body copy. HTML allowed for inline anchors. */
+  body: string;
+  /** Inline SVG markup for the boxed icon (Font Awesome paths from Webflow). */
+  icon?: string;
+}
+
+interface Props {
+  heading: string;
+  intro: string;
+  problems: Problem[];
+}
+
+const { heading, intro, problems } = Astro.props;
+
+// Webflow renders items in two vertical columns (top-to-bottom), not row-flow.
+const half = Math.ceil(problems.length / 2);
+const colA = problems.slice(0, half);
+const colB = problems.slice(half);
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-content">
+      <div class="centered-title">
+        <h2 class="h3 text_center">{heading}</h2>
+        <p class="lead-text text_center">{intro}</p>
+      </div>
+      <div class="problems-grid">
+        {[colA, colB].map(col => (
+          <div class="problems-col">
+            {col.map(p => (
+              <details class="problem-accordion">
+                <summary class="problem-summary">
+                  <div class="accordion-icon-title">
+                    <div class="boxed-icon lightbackground">
+                      {p.icon ? (
+                        <div class="widget__embed-icons" set:html={p.icon} />
+                      ) : (
+                        /* Fallback dot — keeps the icon slot present so
+                           pages without per-item SVGs still align visually
+                           with Webflow's boxed-icon column. */
+                        <div class="widget__embed-icons">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64z"/></svg>
+                        </div>
+                      )}
+                    </div>
+                    <h3 class="accordion-title no_padding">{p.title}</h3>
+                  </div>
+                </summary>
+                <div class="accordion-content-wrap">
+                  <p class="body-text accordion-text" set:html={p.body}></p>
+                </div>
+              </details>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .centered-title {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    align-items: center;
+    max-width: var(--container-6col);
+    margin: 0 auto 3rem;
+  }
+
+  /* Webflow `.accrdion-grid` — 2-col @ desktop, 1-col @ mobile, 1rem gap. */
+  .problems-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+  }
+
+  /* Tighter inter-item gap — Webflow `.accordion { gap: 12px }`. */
+  .problems-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Soft card per item — Webflow has each accordion item on a light surface
+     against the section bg. We use a subtle light-2 fill + rounded corners
+     to give visual separation without heavy chrome. */
+  .problem-accordion {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    overflow: hidden;
+    transition: background-color 0.2s ease;
+  }
+  .problem-accordion[open] {
+    background-color: var(--color-light-2);
+  }
+
+  /* Click target — entire row. 18px padding all around (Webflow
+     `.accordion-title-borderless { padding: 18px }`). No chevron. */
+  .problem-summary {
+    cursor: pointer;
+    padding: 18px;
+    list-style: none;
+    user-select: none;
+  }
+  .problem-summary::-webkit-details-marker { display: none; }
+  .problem-summary::marker { content: ''; }
+
+  /* Webflow `.accordion-icon-title` — flex row, icon + title. */
+  .accordion-icon-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  /* Webflow `.boxed-icon.lightbackground` — 60×60, pale-blue tint, brand
+     icon color. Bumped opacity so the box is actually visible against
+     the light item bg (Webflow's #0b5de905 was 2% alpha — disappeared on
+     a non-white surface). */
+  .boxed-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: none;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-default);
+    background-color: transparent;
+    color: var(--color-accent);
+  }
+  .boxed-icon.lightbackground {
+    background-color: rgba(11, 93, 233, 0.08);
+    color: var(--color-brand-primary);
+  }
+  .widget__embed-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+  }
+  .widget__embed-icons :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Webflow `.accordion-title.no_padding` — 1.4rem dark heading, no padding. */
+  .accordion-title.no_padding {
+    margin: 0;
+    padding: 0;
+    color: var(--color-brand-dark);
+    font-size: 1.4rem;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  /* Webflow `.accordion-content` — 18px sides + 24px bottom (we use
+     less than Webflow's 48px because each item now has card chrome). The
+     left padding aligns the body under the title text past the 60px icon
+     column + 0.75rem gap. */
+  .accordion-content-wrap {
+    padding: 0 18px 24px calc(60px + 18px + 0.75rem);
+  }
+  /* Use the universal .body-text class size (--text-lead = 18px) by inheriting
+     from the markup class. Local overrides reset margin only. */
+  .accordion-text {
+    margin: 0;
+    color: var(--color-text-dark-body);
+  }
+
+  @media (max-width: 991px) {
+    .problems-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .accordion-title.no_padding { font-size: 1.15rem; }
+    .boxed-icon { width: 48px; height: 48px; }
+    .accordion-content-wrap {
+      padding-left: calc(48px + 18px + 0.75rem);
+    }
+  }
+</style>

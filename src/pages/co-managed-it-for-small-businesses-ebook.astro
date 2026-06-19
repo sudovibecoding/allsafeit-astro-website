@@ -1,0 +1,204 @@
+---
+/**
+ * Ebook landing — Co-Managed IT for Small Businesses.
+ *
+ * Long-form marketing page. The email-capture form posts to
+ * /co-managed-it-for-small-businesses-ebook-download which then delivers
+ * the PDF.
+ *
+ * Composed from existing/extended design-system components:
+ *   - Base
+ *   - inline ebook hero (cover image right, benefits left, scroll-to-form CTA)
+ *   - Accreditations (extended `badges` prop — 8 awards)
+ *   - IntroSplit (Transform your business)
+ *   - NumberedListSplit (5 learning outcomes 01–05)
+ *   - SplitContent × 2 (Why download + Uptime credibility)
+ *   - EbookCta (refactored — pass per-page heading/body/action/cover)
+ *
+ * Indexing: indexable — this is a high-intent SEO landing.
+ */
+
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Accreditations from '../components/sections/Accreditations.astro';
+import IntroSplit from '../components/sections/IntroSplit.astro';
+import NumberedListSplit from '../components/sections/NumberedListSplit.astro';
+import SplitContent from '../components/sections/SplitContent.astro';
+import EbookCta from '../components/sections/EbookCta.astro';
+
+const COVER_IMAGE = '/images/co-managed-it-small-businesses-cover.avif';
+
+const AWARD_BADGES = [
+  { src: '/images/CRN_MSP-500_optimized.avif', alt: 'CRN MSP 500 award' },
+  { src: '/images/inc-500-medallion-optimized.avif', alt: 'Inc. 5000 fastest-growing companies' },
+  { src: '/images/AICPA-Logo-1.avif', alt: 'AICPA SOC 2 certified' },
+  { src: '/images/BBBrating.avif', alt: 'BBB Accredited Business' },
+  { src: '/images/top_clutch.co_help_desk_service_provider_los_angeles_2023.avif', alt: 'Clutch Top Help Desk Service Provider Los Angeles' },
+  { src: '/images/top_clutch.co_it_services_company_retail_california.avif', alt: 'Clutch Top IT Services Company Retail California' },
+  { src: '/images/top_it_provider.avif', alt: 'UpCity Top IT Provider' },
+  { src: '/images/Compliancy-Group---HIPAA.avif', alt: 'AllSafe IT HIPAA Compliant' },
+];
+
+const learningOutcomes = [
+  { term: '01', body: 'How co-managed IT services can enhance your existing IT team\'s capabilities and fill specific skill gaps.' },
+  { term: '02', body: 'The role of AI and automation in modernizing IT management — and where to start.' },
+  { term: '03', body: 'How to choose the right co-managed IT provider for your business size and stage.' },
+  { term: '04', body: 'Aligning IT strategy with your business goals so technology drives growth, not friction.' },
+  { term: '05', body: 'Real-world success stories from small businesses who unlocked productivity through co-managed IT.' },
+];
+---
+
+<Base
+  title="Guide eBook | Co-Managed IT Services for Small Businesses"
+  description="Download our eBook on Co-Managed IT Services for small businesses in Los Angeles. Learn how to enhance your IT operations with expert support for IT needs."
+>
+  <!-- Hero — cover image on right, benefits and CTA on left -->
+  <section class="section padding-small ebook-hero">
+    <div class="container">
+      <div class="ebook-hero-grid">
+        <div class="ebook-hero-content">
+          <h1 class="h1">Download Free IT E-Book: Master Smarter IT Strategies Today!</h1>
+          <ul class="hero-benefits">
+            <li><strong>Reduce costs</strong> — practical strategies that cut wasted IT spend without losing capability.</li>
+            <li><strong>Enhance security</strong> — modern guardrails for cloud, identity, and endpoints.</li>
+            <li><strong>Boost efficiency</strong> — AI-driven automation that frees your team for higher-value work.</li>
+          </ul>
+          <Button href="#download-form">Get the e-book!</Button>
+        </div>
+        <div class="ebook-hero-cover">
+          <img
+            src={COVER_IMAGE}
+            alt="Co-Managed IT for Small Businesses ebook cover"
+            width="280"
+            height="364"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Accreditations
+    heading="One of the most respected IT providers in North America"
+    body="AllSafe IT is recognized by industry leaders and clients alike. Our credentials and awards reflect our commitment to excellence in managed IT services."
+    badges={AWARD_BADGES}
+  />
+
+  <IntroSplit
+    heading="Transform Your Business with Next-Level IT Support"
+    body="The IT landscape is evolving fast. Small businesses can no longer afford a reactive approach to technology. This e-book gives you a strategic framework for building IT that supports your growth — covering managed services, AI integration, cybersecurity, and how to choose the right partner."
+  />
+
+  <NumberedListSplit
+    heading="What You'll Learn:"
+    intro="A five-part roadmap, from understanding co-managed IT all the way to seeing it work in real businesses."
+    items={learningOutcomes}
+    image="/images/Hero-image-optiized.avif"
+    imageAlt="Business owner reviewing IT strategy with AllSafe IT team"
+  />
+
+  <SplitContent
+    heading="Why Download This Free IT E-Book?"
+    image="/images/allsafeitdreamteam-p-800.avif"
+    imageAlt="The AllSafe IT team"
+    imageRight={true}
+  >
+    <p class="lead-text">
+      This isn't another generic IT-strategy PDF padded with stock photos.
+      It's a working guide from a team that has built 7-time CRN MSP 500
+      processes for hundreds of small businesses across Southern California.
+    </p>
+    <p class="body-text">
+      Every recommendation is one we use with real clients. Every framework
+      is one we've stress-tested. Read it, apply it, and call us when
+      you're ready to implement.
+    </p>
+  </SplitContent>
+
+  <SplitContent
+    heading="This Is How We Keep Our 99.999% Uptime Record"
+    image="/images/Inc-2024-optmized.avif"
+    imageAlt="Inc. 5000 fastest-growing private companies award — AllSafe IT"
+  >
+    <p class="lead-text">
+      As an Inc. 5000 company, we've worked with Los Angeles businesses to
+      achieve a 99.999% uptime record, <strong>making downtime practically
+      non-existent</strong>.
+    </p>
+    <p class="lead-text">
+      The strategies in this downloadable free IT e-book come straight from
+      real-world success stories we've helped create.
+    </p>
+    <p class="lead-text">
+      Get the insights <strong>backed by our experience and tested by our
+      clients</strong>.
+    </p>
+  </SplitContent>
+
+  <EbookCta
+    heading="Download Your Free E-Book Now"
+    body="Enter your email to get the PDF in your inbox immediately."
+    redirectTo="/co-managed-it-for-small-businesses-ebook-download"
+    coverImage={COVER_IMAGE}
+    coverImageAlt="Co-Managed IT for Small Businesses ebook cover"
+    submitText="Get the e-book!"
+    formId="download-form"
+  />
+</Base>
+
+<style>
+  .ebook-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .ebook-hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .hero-benefits {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .hero-benefits li {
+    padding-left: 28px;
+    position: relative;
+    color: var(--color-text-dark-body);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+  }
+  .hero-benefits li::before {
+    content: '✓';
+    color: var(--color-accent);
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .hero-benefits li strong {
+    color: var(--color-brand-dark);
+  }
+  .ebook-hero-cover {
+    display: flex;
+    justify-content: center;
+  }
+  .ebook-hero-cover img {
+    border-radius: var(--radius-default);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.16);
+    max-width: 100%;
+    height: auto;
+  }
+  @media (max-width: 991px) {
+    .ebook-hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .ebook-hero-cover { order: -1; }
+  }
+</style>

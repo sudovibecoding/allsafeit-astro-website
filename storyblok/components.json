@@ -1,0 +1,969 @@
+[
+  {
+    "name": "page",
+    "display_name": "Page",
+    "is_root": true,
+    "is_nestable": false,
+    "schema": {
+      "meta_title": {
+        "type": "text",
+        "display_name": "SEO Title",
+        "description": "Browser tab / Google title"
+      },
+      "meta_description": {
+        "type": "textarea",
+        "display_name": "SEO Meta Description"
+      },
+      "canonical": {
+        "type": "text",
+        "display_name": "Canonical URL",
+        "description": "Optional. Defaults to https://www.allsafeit.com/{slug}"
+      },
+      "preview_path": {
+        "type": "text",
+        "display_name": "Public URL path (reference)",
+        "description": "Public path e.g. /services/managed-it/co-managed. Synced to Storyblok Real path via npm run storyblok:sync-paths. Space Preview URL should be only your dev origin, e.g. https://localhost:4322"
+      },
+      "indexable": {
+        "type": "boolean",
+        "display_name": "Allow search engines to index this page",
+        "default_value": true
+      },
+      "schema_json": {
+        "type": "textarea",
+        "display_name": "Schema.org JSON-LD",
+        "description": "JSON array of schema objects. Leave blank to use page defaults."
+      },
+      "use_seo_for_social": {
+        "type": "boolean",
+        "display_name": "Use SEO title & description for social sharing",
+        "default_value": true
+      },
+      "featured_image": {
+        "type": "asset",
+        "filetypes": ["images"],
+        "display_name": "Featured / social image",
+        "description": "Used for Open Graph when no override is set. Falls back to site default."
+      },
+      "og_title": {
+        "type": "text",
+        "display_name": "Social share title (override)",
+        "description": "Leave blank to use SEO title (when toggle above is on)."
+      },
+      "og_description": {
+        "type": "textarea",
+        "display_name": "Social share description (override)"
+      },
+      "og_image": {
+        "type": "asset",
+        "filetypes": ["images"],
+        "display_name": "Social share image (override)"
+      },
+      "nav_heading": { "type": "text", "display_name": "Navigation menu label" },
+      "project_number": { "type": "number", "display_name": "Nav sort order" },
+      "publish_date": { "type": "text", "display_name": "Publish date (ISO, blog posts)" },
+      "blog_category": { "type": "text", "display_name": "Blog category slug" },
+      "service_category": { "type": "text", "display_name": "Service category slug" },
+      "body": {
+        "type": "bloks",
+        "display_name": "Page sections",
+        "restrict_components": true,
+        "component_whitelist": [
+          "hero_service",
+          "hero_centered",
+          "section_intro",
+          "intro_split",
+          "content_image_left",
+          "content_image_right",
+          "wide_image",
+          "service_card_grid",
+          "service_card_list",
+          "value_metrics",
+          "numbered_list_split",
+          "why_choose_accordion",
+          "tabs_section",
+          "faq_section",
+          "testimonials_slider",
+          "contact_section",
+          "contact_form_section",
+          "contact_info_section",
+          "legal_page",
+          "reviews_grid",
+          "custom_html",
+          "hero_industry",
+          "hero_service_detail",
+          "service_detail_intro",
+          "article_with_sidebar",
+          "hero_blog_post",
+          "blog_listing",
+          "blog_category_listing",
+          "author_profile",
+          "related_posts",
+          "industries_grid",
+          "onboarding_process",
+          "problems_grid",
+          "service_areas",
+          "location_cards"
+        ]
+      }
+    }
+  },
+  {
+    "name": "hero_split",
+    "display_name": "Hero Banner (homepage style)",
+    "is_nestable": true,
+    "schema": {
+      "title_line1": { "type": "text", "display_name": "Title line 1" },
+      "title_line2": { "type": "text", "display_name": "Title line 2" },
+      "lead": { "type": "textarea", "display_name": "Lead paragraph" },
+      "cta_text": { "type": "text", "display_name": "CTA label" },
+      "cta_href": { "type": "text", "display_name": "CTA link" },
+      "hero_image": { "type": "asset", "filetypes": ["images"], "display_name": "Hero image" },
+      "hero_image_alt": { "type": "text", "display_name": "Hero image alt text" }
+    }
+  },
+  {
+    "name": "section_intro",
+    "display_name": "Heading + Text (stacked)",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "body": { "preset": "body_richtext", "display_name": "Body content" },
+      "body_html": { "type": "textarea", "display_name": "Body HTML (full paragraphs, links)" }
+    }
+  },
+  {
+    "name": "split_content",
+    "display_name": "Image + Text (choose side)",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "required": true, "display_name": "Section heading" },
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Image" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" },
+      "image_right": { "type": "boolean", "display_name": "Image on right side" },
+      "background": {
+        "type": "option",
+        "display_name": "Background",
+        "options": [
+          { "name": "White", "value": "white" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      },
+      "body": { "preset": "body_richtext", "display_name": "Body content" },
+      "buttons": {
+        "type": "bloks",
+        "display_name": "Buttons / links",
+        "restrict_components": true,
+        "component_whitelist": ["button_link"]
+      }
+    }
+  },
+  {
+    "name": "service_card_grid",
+    "display_name": "Service Cards Grid",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "lead": { "preset": "simple_richtext", "display_name": "Intro text" },
+      "cards": {
+        "type": "bloks",
+        "display_name": "Service cards",
+        "restrict_components": true,
+        "component_whitelist": ["service_card"]
+      }
+    }
+  },
+  {
+    "name": "service_card",
+    "display_name": "Service card",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "required": true, "display_name": "Card title" },
+      "tagline": { "type": "text", "display_name": "Tagline" },
+      "body": { "preset": "simple_richtext", "display_name": "Description" },
+      "href": { "type": "text", "display_name": "Link URL" },
+      "link_label": { "type": "text", "display_name": "Link label" },
+      "icon_image": { "type": "asset", "filetypes": ["images"], "display_name": "Icon (upload)" },
+      "image_path": { "type": "text", "display_name": "Icon path (static)" }
+    }
+  },
+  {
+    "name": "faq_section",
+    "display_name": "FAQ Accordion",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "lead": { "preset": "simple_richtext", "display_name": "Intro text" },
+      "items": {
+        "type": "bloks",
+        "restrict_components": true,
+        "component_whitelist": ["faq_item"]
+      }
+    }
+  },
+  {
+    "name": "faq_item",
+    "display_name": "FAQ item",
+    "is_nestable": true,
+    "schema": {
+      "q": { "type": "text", "display_name": "Question", "required": true },
+      "a": { "preset": "body_richtext", "display_name": "Answer" }
+    }
+  },
+  {
+    "name": "contact_section",
+    "display_name": "Contact Form Section",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Form heading" },
+      "body": { "preset": "body_richtext", "display_name": "Intro text" }
+    }
+  },
+  {
+    "name": "hero_service",
+    "display_name": "Hero Banner (with image)",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Hero title" },
+      "lead": { "preset": "body_richtext", "display_name": "Lead text" },
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Hero image (upload)" },
+      "image_path": {
+        "type": "text",
+        "display_name": "Hero image path (static)",
+        "description": "Local path e.g. /images/hero.avif — used when no asset uploaded."
+      },
+      "image_alt": { "type": "text" },
+      "poster": { "type": "asset", "filetypes": ["images"] },
+      "poster_path": { "type": "text", "display_name": "Video poster path (static)" },
+      "mp4": { "type": "asset", "filetypes": ["videos"] },
+      "mp4_path": { "type": "text", "display_name": "MP4 path (static)" },
+      "webm": { "type": "asset", "filetypes": ["videos"] },
+      "webm_path": { "type": "text", "display_name": "WebM path (static)" }
+    }
+  },
+  {
+    "name": "location_cards",
+    "display_name": "Location cards",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text" }
+    }
+  },
+  {
+    "name": "award_marquee",
+    "display_name": "Award marquee",
+    "is_nestable": true,
+    "schema": {
+      "title": { "type": "text", "display_name": "Title" }
+    }
+  },
+  {
+    "name": "tired_of_waiting",
+    "display_name": "Tired of waiting",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "display_name": "Section heading" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" },
+      "item_1_heading": { "type": "text", "display_name": "Card 1 heading" },
+      "item_1_body": { "type": "textarea", "display_name": "Card 1 body" },
+      "item_2_heading": { "type": "text", "display_name": "Card 2 heading" },
+      "item_2_body": { "type": "textarea", "display_name": "Card 2 body" },
+      "item_3_heading": { "type": "text", "display_name": "Card 3 heading" },
+      "item_3_body": { "type": "textarea", "display_name": "Card 3 body" }
+    }
+  },
+  {
+    "name": "strategic_support",
+    "display_name": "Strategic support",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "display_name": "Section heading" },
+      "subheading": { "type": "textarea", "display_name": "Subheading (HTML allowed)" },
+      "lead": { "type": "textarea", "display_name": "Lead paragraph" },
+      "bullet_1_title": { "type": "text", "display_name": "Bullet 1 title" },
+      "bullet_1_body": { "type": "textarea", "display_name": "Bullet 1 body" },
+      "bullet_2_title": { "type": "text", "display_name": "Bullet 2 title" },
+      "bullet_2_body": { "type": "textarea", "display_name": "Bullet 2 body" },
+      "bullet_3_title": { "type": "text", "display_name": "Bullet 3 title" },
+      "bullet_3_body": { "type": "textarea", "display_name": "Bullet 3 body" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" }
+    }
+  },
+  {
+    "name": "it_services_section",
+    "display_name": "IT services section",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "display_name": "Section heading" },
+      "body_html": { "type": "textarea", "display_name": "Body HTML" },
+      "metric_1_text": { "type": "text", "display_name": "Metric 1 text" },
+      "metric_1_value": { "type": "text", "display_name": "Metric 1 value" },
+      "metric_2_text": { "type": "text", "display_name": "Metric 2 text" },
+      "metric_2_value": { "type": "text", "display_name": "Metric 2 value" },
+      "metric_3_text": { "type": "text", "display_name": "Metric 3 text" },
+      "metric_3_value": { "type": "text", "display_name": "Metric 3 value" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" }
+    }
+  },
+  {
+    "name": "testimonials_slider",
+    "display_name": "Testimonials Slider",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "lead": { "preset": "simple_richtext", "display_name": "Intro text" },
+      "items": {
+        "type": "bloks",
+        "display_name": "Testimonials (optional — uses site defaults if empty)",
+        "restrict_components": true,
+        "component_whitelist": ["testimonial_item"]
+      }
+    }
+  },
+  {
+    "name": "inc_award",
+    "display_name": "Inc 5000 award",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "display_name": "Section heading" },
+      "body_html": { "type": "textarea", "display_name": "Body HTML" },
+      "cta_text": { "type": "text", "display_name": "CTA text" },
+      "cta_href": { "type": "text", "display_name": "CTA URL" },
+      "logo_path": { "type": "text", "display_name": "Logo path" },
+      "logo_alt": { "type": "text", "display_name": "Logo alt text" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" }
+    }
+  },
+  {
+    "name": "industries_grid",
+    "display_name": "Industries grid",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "cards": {
+        "type": "bloks",
+        "display_name": "Industry cards",
+        "restrict_components": true,
+        "component_whitelist": ["industry_card"]
+      }
+    }
+  },
+  {
+    "name": "industry_card",
+    "display_name": "Industry card",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "required": true, "display_name": "Industry name" },
+      "description": { "preset": "simple_richtext", "display_name": "Description" },
+      "href": { "type": "text", "display_name": "Link URL" },
+      "icon_white": { "type": "asset", "filetypes": ["images"], "display_name": "Icon (white, upload)" },
+      "icon_white_path": { "type": "text", "display_name": "Icon (white) URL or path" },
+      "icon_blue": { "type": "asset", "filetypes": ["images"], "display_name": "Icon (blue, upload)" },
+      "icon_blue_path": { "type": "text", "display_name": "Icon (blue) URL or path" }
+    }
+  },
+  {
+    "name": "ebook_cta",
+    "display_name": "eBook CTA",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text" },
+      "body": { "preset": "simple_richtext", "display_name": "Supporting text" },
+      "redirect_to": { "type": "text", "display_name": "Redirect after submit" },
+      "cover_image": { "type": "asset", "filetypes": ["images"] },
+      "cover_image_alt": { "type": "text" },
+      "submit_text": { "type": "text", "display_name": "Button label" }
+    }
+  },
+  {
+    "name": "trust_checklist",
+    "display_name": "Trust checklist",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "display_name": "Section heading" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" },
+      "item_1_label": { "type": "text", "display_name": "Item 1 label" },
+      "item_1_body": { "type": "textarea", "display_name": "Item 1 body" },
+      "item_2_label": { "type": "text", "display_name": "Item 2 label" },
+      "item_2_body": { "type": "textarea", "display_name": "Item 2 body" },
+      "item_3_label": { "type": "text", "display_name": "Item 3 label" },
+      "item_3_body": { "type": "textarea", "display_name": "Item 3 body" },
+      "item_4_label": { "type": "text", "display_name": "Item 4 label" },
+      "item_4_body": { "type": "textarea", "display_name": "Item 4 body" }
+    }
+  },
+  {
+    "name": "blog_grid",
+    "display_name": "Blog grid",
+    "is_nestable": true,
+    "schema": {
+      "badge": { "type": "text" },
+      "heading": { "type": "text" },
+      "max_items": { "type": "number", "display_name": "Max posts", "default_value": 3 }
+    }
+  },
+  {
+    "name": "intro_split",
+    "display_name": "Intro Section (heading + text + image)",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "body": { "preset": "body_richtext", "display_name": "Body content" },
+      "body_html": { "type": "textarea", "display_name": "Body HTML (links, inline markup)" },
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Image (upload)" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text" }
+    }
+  },
+  {
+    "name": "value_metrics",
+    "display_name": "Value Metrics Grid",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "metrics": {
+        "type": "bloks",
+        "restrict_components": true,
+        "component_whitelist": ["metric_item"]
+      }
+    }
+  },
+  {
+    "name": "metric_item",
+    "display_name": "Metric item",
+    "is_nestable": true,
+    "schema": {
+      "label": { "type": "text", "required": true },
+      "body": { "preset": "simple_richtext", "display_name": "Supporting text" },
+      "icon_html": { "type": "textarea", "display_name": "Icon SVG HTML" },
+      "icon_class": { "type": "text", "display_name": "Icon CSS class" }
+    }
+  },
+  {
+    "name": "problems_grid",
+    "display_name": "Problems Grid",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "required": true, "display_name": "Section heading" },
+      "intro": { "preset": "body_richtext", "display_name": "Intro text" },
+      "problems": {
+        "type": "bloks",
+        "restrict_components": true,
+        "component_whitelist": ["problem_item"]
+      }
+    }
+  },
+  {
+    "name": "problem_item",
+    "display_name": "Problem item",
+    "is_nestable": true,
+    "schema": {
+      "title": { "type": "text", "required": true },
+      "body": { "preset": "simple_richtext", "display_name": "Supporting text" },
+      "body_html": { "type": "textarea", "display_name": "Body HTML (links allowed)" },
+      "icon_html": { "type": "textarea", "display_name": "Icon SVG HTML" }
+    }
+  },
+  {
+    "name": "numbered_list_split",
+    "display_name": "Numbered List + Image",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "intro": { "preset": "body_richtext", "display_name": "Intro text" },
+      "outro": { "preset": "body_richtext", "display_name": "Closing text" },
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Image (upload)" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text" },
+      "background": {
+        "type": "option",
+        "options": [
+          { "name": "White", "value": "white" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      },
+      "items": {
+        "type": "bloks",
+        "restrict_components": true,
+        "component_whitelist": ["numbered_item"]
+      }
+    }
+  },
+  {
+    "name": "numbered_item",
+    "display_name": "Numbered list item",
+    "is_nestable": true,
+    "schema": {
+      "term": { "type": "text", "required": true },
+      "body": { "preset": "simple_richtext", "display_name": "Item description" },
+      "body_html": { "type": "textarea", "display_name": "Item HTML" }
+    }
+  },
+  {
+    "name": "why_choose_accordion",
+    "display_name": "Why Choose Accordion",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "intro": { "preset": "body_richtext", "display_name": "Intro text" },
+      "intro_html": { "type": "textarea", "display_name": "Intro HTML" },
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Image (upload)" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text" },
+      "image_left": { "type": "boolean", "display_name": "Image on left" },
+      "background": {
+        "type": "option",
+        "options": [
+          { "name": "Gradient", "value": "gradient" },
+          { "name": "Plain", "value": "plain" }
+        ]
+      },
+      "items": {
+        "type": "bloks",
+        "restrict_components": true,
+        "component_whitelist": ["accordion_item"]
+      }
+    }
+  },
+  {
+    "name": "accordion_item",
+    "display_name": "Accordion item",
+    "is_nestable": true,
+    "schema": {
+      "label": { "type": "text", "required": true },
+      "body": { "preset": "simple_richtext", "display_name": "Item description" },
+      "body_html": { "type": "textarea", "display_name": "Item HTML" }
+    }
+  },
+  {
+    "name": "service_areas",
+    "display_name": "Service areas",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "required": true },
+      "body": { "preset": "body_richtext", "display_name": "Area description" },
+      "body_html": { "type": "textarea", "display_name": "Area description HTML" },
+      "map_embed_url": { "type": "text", "display_name": "Google Maps embed URL" },
+      "address_line": { "type": "textarea", "display_name": "Address line (HTML allowed)" },
+      "pin_label": { "type": "text", "display_name": "Map pin label" },
+      "image": { "type": "asset", "filetypes": ["images"] },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text" },
+      "background": {
+        "type": "option",
+        "options": [
+          { "name": "Plain", "value": "plain" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      }
+    }
+  },
+  {
+    "name": "accreditations",
+    "display_name": "Accreditations",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "required": true },
+      "body": { "preset": "simple_richtext", "display_name": "Item description" }
+    }
+  },
+  {
+    "name": "awards_banner",
+    "display_name": "Awards banner",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "required": true },
+      "body": { "preset": "simple_richtext", "display_name": "Supporting text" },
+      "image": { "type": "asset", "filetypes": ["images"], "required": true },
+      "image_alt": { "type": "text", "required": true },
+      "background": {
+        "type": "option",
+        "options": [
+          { "name": "White", "value": "white" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      },
+      "show_logos": { "type": "boolean", "display_name": "Show award logos" }
+    }
+  },
+  {
+    "name": "hero_centered",
+    "display_name": "Hero Banner (centered title)",
+    "is_nestable": true,
+    "schema": {
+      "badge": { "type": "text" },
+      "title": { "preset": "heading_richtext", "display_name": "Hero title", "required": true }
+    }
+  },
+  {
+    "name": "wide_image",
+    "display_name": "Full-width Image Banner",
+    "is_nestable": true,
+    "schema": {
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Image (upload)" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Alt text" },
+      "background": {
+        "type": "option",
+        "display_name": "Background",
+        "options": [
+          { "name": "White", "value": "white" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      }
+    }
+  },
+  {
+    "name": "tabs_section",
+    "display_name": "Tabs Section",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "lead": { "preset": "simple_richtext", "display_name": "Intro text" },
+      "background": {
+        "type": "option",
+        "options": [
+          { "name": "White", "value": "white" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      },
+      "tabs": {
+        "type": "bloks",
+        "display_name": "Tabs",
+        "restrict_components": true,
+        "component_whitelist": ["tab_item"]
+      }
+    }
+  },
+  {
+    "name": "tab_item",
+    "display_name": "Tab",
+    "is_nestable": true,
+    "schema": {
+      "label": { "type": "text", "required": true, "display_name": "Tab label" },
+      "content": { "preset": "body_richtext", "display_name": "Tab content (rich text)" },
+      "content_html": {
+        "type": "textarea",
+        "display_name": "Tab content (HTML)",
+        "description": "Use for tables and custom markup. Takes priority over rich text when set."
+      }
+    }
+  },
+  {
+    "name": "legal_page",
+    "display_name": "Legal Page Content",
+    "is_nestable": true,
+    "schema": {
+      "title": { "type": "text", "required": true, "display_name": "Page title" },
+      "last_updated": { "type": "text", "display_name": "Version / last updated" },
+      "body": { "preset": "body_richtext", "display_name": "Legal body content" },
+      "body_html": { "type": "textarea", "display_name": "Legal body HTML" }
+    }
+  },
+  {
+    "name": "service_card_list",
+    "display_name": "Service Card List (3-up)",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "lead": { "preset": "simple_richtext", "display_name": "Intro text" },
+      "default_href": { "type": "text", "display_name": "Default link URL" },
+      "items": {
+        "type": "bloks",
+        "display_name": "Service items",
+        "restrict_components": true,
+        "component_whitelist": ["service_list_item"]
+      }
+    }
+  },
+  {
+    "name": "service_list_item",
+    "display_name": "Service list item",
+    "is_nestable": true,
+    "schema": {
+      "title": { "type": "text", "required": true },
+      "description": { "preset": "simple_richtext", "display_name": "Description" },
+      "description_html": { "type": "textarea", "display_name": "Description HTML" },
+      "href": { "type": "text", "display_name": "Link URL" },
+      "cta": { "type": "text", "display_name": "Link label" }
+    }
+  },
+  {
+    "name": "contact_form_section",
+    "display_name": "Contact Form Hero",
+    "is_nestable": true,
+    "schema": {
+      "badge": { "type": "text", "display_name": "Badge text" },
+      "heading": { "preset": "heading_richtext", "display_name": "Page heading" },
+      "subheading": { "type": "text", "display_name": "Subheading" }
+    }
+  },
+  {
+    "name": "contact_info_section",
+    "display_name": "Contact Info Box",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "type": "text", "display_name": "Heading" },
+      "sales_phone": { "type": "text", "display_name": "Sales phone" },
+      "support_phone": { "type": "text", "display_name": "Support phone" },
+      "locations": {
+        "type": "bloks",
+        "display_name": "Office locations",
+        "restrict_components": true,
+        "component_whitelist": ["contact_location"]
+      }
+    }
+  },
+  {
+    "name": "contact_location",
+    "display_name": "Office location",
+    "is_nestable": true,
+    "schema": {
+      "city": { "type": "text", "required": true },
+      "address": { "type": "text", "required": true },
+      "city_line": { "type": "text", "display_name": "City, state, zip" }
+    }
+  },
+  {
+    "name": "onboarding_process",
+    "display_name": "Onboarding Process",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "step_label": { "type": "text", "display_name": "Step label prefix", "default_value": "Phase" },
+      "image": { "type": "asset", "filetypes": ["images"] },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text" },
+      "phases": {
+        "type": "bloks",
+        "display_name": "Phases",
+        "restrict_components": true,
+        "component_whitelist": ["onboarding_phase"]
+      }
+    }
+  },
+  {
+    "name": "onboarding_phase",
+    "display_name": "Onboarding phase",
+    "is_nestable": true,
+    "schema": {
+      "number": { "type": "number", "display_name": "Phase number" },
+      "title": { "type": "text", "required": true },
+      "body": { "preset": "simple_richtext", "display_name": "Description" }
+    }
+  },
+  {
+    "name": "content_image_left",
+    "display_name": "Image Left + Text + Buttons",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "body": { "preset": "body_richtext", "display_name": "Body content" },
+      "body_html": { "type": "textarea", "display_name": "Body HTML (full paragraphs, links)" },
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Image (upload)" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" },
+      "background": {
+        "type": "option",
+        "display_name": "Background",
+        "options": [
+          { "name": "White", "value": "white" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      },
+      "buttons": {
+        "type": "bloks",
+        "display_name": "Buttons / links",
+        "restrict_components": true,
+        "component_whitelist": ["button_link"]
+      }
+    }
+  },
+  {
+    "name": "content_image_right",
+    "display_name": "Image Right + Text + Buttons",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "body": { "preset": "body_richtext", "display_name": "Body content" },
+      "body_html": { "type": "textarea", "display_name": "Body HTML (full paragraphs, links)" },
+      "image": { "type": "asset", "filetypes": ["images"], "display_name": "Image (upload)" },
+      "image_path": { "type": "text", "display_name": "Image path (static)" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" },
+      "background": {
+        "type": "option",
+        "display_name": "Background",
+        "options": [
+          { "name": "White", "value": "white" },
+          { "name": "Gradient", "value": "gradient" }
+        ]
+      },
+      "buttons": {
+        "type": "bloks",
+        "display_name": "Buttons / links",
+        "restrict_components": true,
+        "component_whitelist": ["button_link"]
+      }
+    }
+  },
+  {
+    "name": "button_link",
+    "display_name": "Button / Link",
+    "is_nestable": true,
+    "schema": {
+      "label": { "type": "text", "required": true, "display_name": "Button label" },
+      "href": { "type": "text", "required": true, "display_name": "Link URL" },
+      "style": {
+        "type": "option",
+        "display_name": "Style",
+        "options": [
+          { "name": "Primary button", "value": "button" },
+          { "name": "Arrow link", "value": "link" }
+        ]
+      }
+    }
+  },
+  {
+    "name": "custom_html",
+    "display_name": "Custom HTML Block",
+    "is_nestable": true,
+    "schema": {
+      "html": {
+        "type": "textarea",
+        "display_name": "HTML code",
+        "description": "Advanced: embed custom HTML. Use only when the rich text editor is not enough."
+      }
+    }
+  },
+  {
+    "name": "reviews_grid",
+    "display_name": "Customer Reviews Grid",
+    "is_nestable": true,
+    "schema": {
+      "heading": { "preset": "heading_richtext", "display_name": "Section heading" },
+      "reviews": {
+        "type": "bloks",
+        "display_name": "Reviews",
+        "restrict_components": true,
+        "component_whitelist": ["review_item"]
+      }
+    }
+  },
+  {
+    "name": "review_item",
+    "display_name": "Review",
+    "is_nestable": true,
+    "schema": {
+      "author": { "type": "text", "required": true, "display_name": "Customer name" },
+      "quote": { "preset": "simple_richtext", "display_name": "Review text" },
+      "photo": { "type": "asset", "filetypes": ["images"], "display_name": "Photo (optional)" }
+    }
+  },
+  {
+    "name": "testimonial_item",
+    "display_name": "Testimonial",
+    "is_nestable": true,
+    "schema": {
+      "author": { "type": "text", "required": true, "display_name": "Customer name" },
+      "quote": { "preset": "simple_richtext", "display_name": "Quote" },
+      "photo": { "type": "asset", "filetypes": ["images"], "display_name": "Photo (optional)" }
+    }
+  },
+  {
+    "name": "hero_industry",
+    "display_name": "Industry detail hero",
+    "is_nestable": true,
+    "schema": {
+      "title": { "type": "text", "required": true },
+      "lead": { "type": "textarea", "display_name": "Subheading" },
+      "image_path": { "type": "text", "display_name": "Featured image path" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" }
+    }
+  },
+  {
+    "name": "hero_service_detail",
+    "display_name": "Service detail hero",
+    "is_nestable": true,
+    "schema": {
+      "badge": { "type": "text", "default_value": "[IT Services]" },
+      "heading": { "preset": "heading_richtext", "display_name": "Title" },
+      "lead": { "preset": "body_richtext", "display_name": "Subheading" },
+      "image_path": { "type": "text", "display_name": "Featured image path" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" }
+    }
+  },
+  {
+    "name": "service_detail_intro",
+    "display_name": "Service detail intro",
+    "is_nestable": true,
+    "schema": {
+      "service_category": { "type": "text", "display_name": "Category slug" },
+      "title": { "type": "text", "display_name": "Service name" },
+      "overview": { "preset": "body_richtext", "display_name": "Overview (visual editor)" },
+      "overview_html": { "type": "textarea", "display_name": "Overview HTML (legacy)" }
+    }
+  },
+  {
+    "name": "article_with_sidebar",
+    "display_name": "Article + contact sidebar",
+    "is_nestable": true,
+    "schema": {
+      "body": { "type": "richtext", "display_name": "Article body (visual editor)" },
+      "body_html": { "type": "textarea", "display_name": "Article body HTML (tables, embeds)" }
+    }
+  },
+  {
+    "name": "hero_blog_post",
+    "display_name": "Blog post hero + body",
+    "is_nestable": true,
+    "schema": {
+      "title": { "type": "text", "required": true },
+      "lead": { "type": "textarea", "display_name": "Introduction" },
+      "image_path": { "type": "text", "display_name": "Featured image path" },
+      "image_alt": { "type": "text", "display_name": "Image alt text" },
+      "category": { "type": "text", "display_name": "Category slug" },
+      "publish_date": { "type": "text", "display_name": "Publish date (ISO)" },
+      "body": { "type": "richtext", "display_name": "Article body (visual editor)" },
+      "body_html": { "type": "textarea", "display_name": "Article body HTML (tables, embeds)" }
+    }
+  },
+  {
+    "name": "blog_listing",
+    "display_name": "Blog index listing",
+    "is_nestable": true,
+    "schema": {}
+  },
+  {
+    "name": "blog_category_listing",
+    "display_name": "Blog category listing",
+    "is_nestable": true,
+    "schema": {
+      "category_slug": { "type": "text", "display_name": "Category slug" }
+    }
+  },
+  {
+    "name": "author_profile",
+    "display_name": "Author profile",
+    "is_nestable": true,
+    "schema": {
+      "name": { "type": "text", "required": true },
+      "position": { "type": "text" },
+      "picture_path": { "type": "text", "display_name": "Photo path" },
+      "bio": { "preset": "body_richtext", "display_name": "Bio (visual editor)" },
+      "bio_html": { "type": "textarea", "display_name": "Bio HTML (legacy)" }
+    }
+  },
+  {
+    "name": "related_posts",
+    "display_name": "Related blog posts",
+    "is_nestable": true,
+    "schema": {
+      "count": { "type": "number", "default_value": 3, "display_name": "Number of posts" }
+    }
+  }
+]

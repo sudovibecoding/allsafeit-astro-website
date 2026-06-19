@@ -1,0 +1,46 @@
+---
+import IndustriesGrid from '../../components/sections/IndustriesGrid.astro';
+import { INDUSTRIES } from '../../data/industries';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { renderHeading } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface CardBlok {
+  heading?: string;
+  description?: unknown;
+  href?: string;
+  icon_white?: { filename?: string; id?: number } | string;
+  icon_white_path?: string;
+  icon_blue?: { filename?: string; id?: number } | string;
+  icon_blue_path?: string;
+}
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    cards?: CardBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+
+function mapCard(card: CardBlok) {
+  const iconWhite =
+    resolveImage(card.icon_white, card.icon_white_path) ?? card.icon_white_path ?? '';
+  const iconBlue =
+    resolveImage(card.icon_blue, card.icon_blue_path) ?? card.icon_blue_path ?? '';
+  return {
+    heading: card.heading ?? '',
+    href: card.href ?? '#',
+    desc: stripHtmlTags(renderBodyContentInner(card.description)),
+    iconWhite,
+    iconBlue,
+  };
+}
+
+const cards = blok.cards ?? [];
+const industries = cards.length > 0 ? cards.map(mapCard) : INDUSTRIES;
+const headingHtml = blok.heading ? renderHeading(blok.heading) : undefined;
+---
+
+<IndustriesGrid headingHtml={headingHtml} industries={industries} />

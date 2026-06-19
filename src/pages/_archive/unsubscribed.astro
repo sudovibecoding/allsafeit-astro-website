@@ -1,0 +1,88 @@
+---
+/**
+ * Unsubscribed — `/unsubscribed`.
+ *
+ * Shown after a recipient clicks the unsubscribe link in an AllSafe email.
+ *
+ * Webflow reference: `unsubscribed.html` — `.utility-page-wrap` with a dark
+ * photo bg, white type, twin CTAs (Contact Us + Back to Home). We mirror the
+ * dark hero treatment for visual consistency with `/404`, `/thank-you`,
+ * `/form-not-received`. Title kept as `Unsubscribed | AllSafe IT` — more
+ * descriptive than Webflow's bare "Unsubscribed".
+ *
+ * Indexing: noindex — transactional landing, not a marketing page.
+ */
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Unsubscribed | AllSafe IT"
+  description="You've successfully unsubscribed from AllSafe IT communications. We're sorry to see you go and hope to reconnect in the future."
+  noindex={true}
+>
+  <section class="utility-section">
+    <div class="container">
+      <div class="utility-wrap">
+        <h1 class="h2 color__white-shade1">We're sorry to see you go!</h1>
+        <p class="lead-text color__white-shade1">
+          We have removed your email address from our list.
+        </p>
+        <div class="utility-actions">
+          <a href="/contact-us" class="button small">Contact us</a>
+          <a href="/" class="button small ghost">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Webflow `.utility-page-wrap` analogue — same dark photo + overlay used
+     on `/404`, `/thank-you`, `/form-not-received` for consistent treatment
+     across confirmation/utility landings. */
+  .utility-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-brand-dark);
+    background-image:
+      linear-gradient(rgba(0, 25, 68, 0.7), rgba(0, 25, 68, 0.85)),
+      url('/images/DSC_1695DSC_1694.avif');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 4rem 0;
+  }
+
+  .utility-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: var(--container-6col);
+    align-items: flex-start;
+  }
+  .utility-wrap .h2 { margin: 0; }
+  .utility-wrap .lead-text { margin: 0; }
+
+  .utility-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+  .button.ghost {
+    background-color: transparent;
+    border: 1px solid var(--color-light-1);
+    color: var(--color-light-1);
+  }
+  .button.ghost:hover {
+    background-color: var(--color-light-1);
+    color: var(--color-brand-dark);
+  }
+
+  @media (max-width: 767px) {
+    .utility-wrap { align-items: center; text-align: center; }
+    .utility-actions { justify-content: center; }
+  }
+</style>

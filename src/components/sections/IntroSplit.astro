@@ -1,0 +1,63 @@
+---
+interface Props {
+  heading?: string;
+  headingHtml?: string;
+  body: string;
+  image?: string;
+  imageAlt?: string;
+}
+
+const { heading, headingHtml, body, image, imageAlt = '' } = Astro.props;
+---
+
+<section class="section padding-small">
+  <div class="container">
+    <div class="section-content">
+      <div class="content_grid">
+        <div class="title">
+          {headingHtml ? (
+            <Fragment set:html={headingHtml} />
+          ) : (
+            <h2 class="h3">{heading}</h2>
+          )}
+        </div>
+        <div class="lead-text" set:html={body} />
+      </div>
+      {image && (
+        <div class="wide-flow-wrap">
+          <img
+            src={image}
+            alt={imageAlt}
+            class="parallax-image"
+            width="1600"
+            height="700"
+            loading="lazy"
+          />
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .content_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 991px) {
+    .content_grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .wide-flow-wrap {
+    border-radius: var(--radius-default);
+    overflow: hidden;
+  }
+  .parallax-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

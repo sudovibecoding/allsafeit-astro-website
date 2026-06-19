@@ -1,0 +1,170 @@
+---
+/**
+ * "Have Additional Questions?" sidebar block used on every service-detail page.
+ * Static — same on every page. Matches Webflow `.service-details-sidebar-wrapper`:
+ *   - border-radius: 6px
+ *   - padding: 40px
+ *   - position: sticky; top: 100px
+ *   - box-shadow: 0 0 20px #0000001a
+ *
+ * Contains: H5 heading → phone + email rows → "Contact us" button →
+ * 2x2 grid of 4 accreditation badges.
+ */
+
+const phone = '+12137841959';
+const phoneDisplay = '+1 (213) 784-1959';
+const email = 'info@allsafeit.com';
+
+const badges = [
+  { src: '/images/top_clutch.co_it_services_company_retail_california.avif', alt: 'Top IT services Company batch' },
+  { src: '/images/top_it_provider.avif', alt: 'AllSafeIT Certified by Upcity' },
+  { src: '/images/top_clutch.co_help_desk_service_provider_los_angeles_2023.avif', alt: 'Top help desk service provider batch' },
+  { src: '/images/Compliancy-Group---HIPAA.avif', alt: 'Compliancy Group - HIPAA image' },
+] as const;
+
+const phoneIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor"><path d="M224.2 89C216.3 70.1 195.7 60.1 176.1 65.4L170.6 66.9C106 84.5 50.8 147.1 66.9 223.3C104 398.3 241.7 536 416.7 573.1C493 589.3 555.5 534 573.1 469.4L574.6 463.9C580 444.2 569.9 423.6 551.1 415.8L453.8 375.3C437.3 368.4 418.2 373.2 406.8 387.1L368.2 434.3C297.9 399.4 241.3 341 208.8 269.3L253 233.3C266.9 222 271.6 202.9 264.8 186.3L224.2 89z"/></svg>`;
+
+const emailIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor"><path d="M112 128C85.5 128 64 149.5 64 176C64 191.1 71.1 205.3 83.2 214.4L291.2 370.4C308.3 383.2 331.7 383.2 348.8 370.4L556.8 214.4C568.9 205.3 576 191.1 576 176C576 149.5 554.5 128 528 128L112 128zM64 260L64 448C64 483.3 92.7 512 128 512L512 512C547.3 512 576 483.3 576 448L576 260L377.6 408.8C343.5 434.4 296.5 434.4 262.4 408.8L64 260z"/></svg>`;
+---
+
+<div class="service-details-sidebar-wrapper">
+  <h5 class="heading-13">Have Additional Questions?</h5>
+
+  <div class="footer-2-contact-details cta">
+    <a href={`tel:${phone}`} class="icon-horizontal center-on-mobile">
+      <span class="svg-embeded-icon" set:html={phoneIcon} />
+      <p class="contact-information">{phoneDisplay}</p>
+    </a>
+    <a href={`mailto:${email}`} class="icon-horizontal center-on-mobile">
+      <span class="svg-embeded-icon footer-icon" set:html={emailIcon} />
+      <p class="contact-information">{email}</p>
+    </a>
+  </div>
+
+  <a href="#form" class="button sidebar-contact-button">Contact us</a>
+
+  <div class="flow-horizontal-wrap grid sidebar-badges">
+    {badges.map(b => (
+      <div class="flow-item no_bg">
+        <img src={b.src} alt={b.alt} loading="lazy" width="156" height="156" />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* Webflow `.service-details-sidebar-wrapper` */
+  .service-details-sidebar-wrapper {
+    width: 100%;
+    padding: 40px;
+    border-radius: var(--radius-default);
+    background-color: #fff;
+    box-shadow: 0 0 20px #0000001a;
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* Webflow `.heading-13` */
+  .heading-13 {
+    margin: 0;
+    font-family: var(--font-headings);
+    font-size: var(--text-h6);
+    line-height: var(--leading-h5);
+    color: var(--color-brand-dark);
+    font-weight: 500;
+  }
+
+  /* Webflow `.footer-2-contact-details.cta` — phone/email column */
+  .footer-2-contact-details.cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Webflow `.icon-horizontal.center-on-mobile` */
+  .icon-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #333;
+    font-size: 18px;
+    text-decoration: none;
+    justify-content: flex-start;
+    transition: color 0.2s ease;
+  }
+
+  .icon-horizontal:hover {
+    color: var(--color-brand-primary);
+  }
+
+  .svg-embeded-icon {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .svg-embeded-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .contact-information {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.4em;
+    color: inherit;
+  }
+
+  .sidebar-contact-button {
+    align-self: stretch;
+    text-align: center;
+  }
+
+  /* Webflow `.flow-horizontal-wrap.grid` — 2x2 badge grid */
+  .flow-horizontal-wrap.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    column-gap: 0;
+    row-gap: 0;
+    margin-top: 20px;
+  }
+
+  /* Webflow `.flow-item.no_bg` */
+  .flow-item.no_bg {
+    background-color: transparent;
+    max-width: 156px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: var(--radius-default);
+    padding: 8px;
+  }
+
+  .flow-item.no_bg img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* On stacked mobile layout, expand the sticky behavior off */
+  @media (max-width: 991px) {
+    .service-details-sidebar-wrapper {
+      position: static;
+      padding: 32px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .service-details-sidebar-wrapper {
+      padding: 24px;
+    }
+  }
+</style>

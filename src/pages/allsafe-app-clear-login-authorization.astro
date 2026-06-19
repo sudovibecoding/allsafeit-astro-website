@@ -1,0 +1,155 @@
+---
+/**
+ * Support doc — clearing login + authorization in the AllSafe App.
+ *
+ * Pure tutorial layout: hero → TocSidebar → 4 TutorialSteps → brief
+ * about-app section → TalkToExpertCta.
+ */
+
+import Base from '../layouts/Base.astro';
+import TocSidebar from '../components/sections/TocSidebar.astro';
+import TutorialStep from '../components/sections/TutorialStep.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+
+const toc = [
+  { id: 'steps', label: 'Steps to clear login cache and authorization' },
+  { id: 'about-app', label: 'About the AllSafe App' },
+  { id: 'help', label: 'Have additional questions?' },
+];
+
+const SUPPORT_PHONE = 'tel:+12137841959';
+const SUPPORT_EMAIL = 'mailto:info@allsafeit.com';
+const HELPDESK_EMAIL = 'mailto:helpdesk@allsafeit.com';
+---
+
+<Base
+  title="How to Clear Login and Authorization in the AllSafe App | AllSafe IT"
+  description="If you are having trouble logging in to the AllSafe App, you may need to clear your login cache and reset the authorization."
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h2">How to Clear Login Cache and Authorization in the AllSafe App</h1>
+        <p class="lead-text">
+          If you are having trouble logging in to the AllSafe App, clearing your
+          login cache and resetting authorization usually solves it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <TocSidebar items={toc} />
+    </div>
+  </section>
+
+  <section id="steps" class="section padding-small">
+    <div class="container">
+      <h2 class="h3" style="text-align:center; margin-bottom:32px;">Please follow the steps below</h2>
+      <div class="tutorial-steps">
+        <TutorialStep
+          stepNumber={1}
+          title="Open the AllSafe App and click Help > About"
+          screenshot="/images/allsafeapp-clear-login-authorization-01_1allsafeapp-clear-login-authorization-01.avif"
+          screenshotAlt="AllSafe App showing Help > About menu"
+        >
+          <p>From the desktop app, click <strong>Help</strong> in the top menu, then choose <strong>About</strong>.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={2}
+          title="Click Clear Login Cache"
+          screenshot="/images/allsafeapp-clear-login-authorization-02-1024x610_1allsafeapp-clear-login-authorization-02-1024x610.avif"
+          screenshotAlt="AllSafe App About dialog with Clear Login Cache button"
+        >
+          <p>In the About dialog, click <strong>Clear Login Cache</strong>. If asked to confirm, click <strong>Yes</strong>.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={3}
+          title="Click Clear Authorization"
+          screenshot="/images/allsafeapp-clear-login-authorization-03_1allsafeapp-clear-login-authorization-03.avif"
+          screenshotAlt="AllSafe App About dialog with Clear Authorization button"
+        >
+          <p>Still in the About dialog, click <strong>Clear Authorization</strong>. If asked to confirm, click <strong>Yes</strong>.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={4}
+          title="The app will restart and you should be able to log in"
+          screenshot="/images/allsafeapp-clear-login-authorization-04_1allsafeapp-clear-login-authorization-04.avif"
+          screenshotAlt="AllSafe App login screen after restart"
+        >
+          <p>The app will close and reopen. Sign in normally — your issue should be resolved.</p>
+          <p>If you're using the <strong>browser</strong> version of the app, instead of these steps, clear your browser cache for <a href="https://app.allsafeit.com" rel="noopener">app.allsafeit.com</a>.</p>
+          <p>If you still can't log in, email <a href={HELPDESK_EMAIL}>helpdesk@allsafeit.com</a> and we'll get you back in.</p>
+        </TutorialStep>
+      </div>
+    </div>
+  </section>
+
+  <section id="about-app" class="section padding-small">
+    <div class="container">
+      <div class="about-app-card">
+        <h2 class="h3">About the AllSafe App</h2>
+        <p class="lead-text">The AllSafe App is your front door to support. From the app you can:</p>
+        <ul class="body-text app-feature-list">
+          <li>Open a new ticket for any IT issue</li>
+          <li>Chat directly with the technician handling your ticket</li>
+          <li>Request new hardware or software</li>
+          <li>Check the status of any open ticket</li>
+          <li>Access our internal knowledge base</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="help" class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h2 class="h4">Have additional questions?</h2>
+        <p class="body-text">
+          Call <a href={SUPPORT_PHONE}>+1 (213) 784-1959</a> or email
+          <a href={SUPPORT_EMAIL}>info@allsafeit.com</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <TalkToExpertCta />
+</Base>
+
+<style>
+  .tutorial-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .about-app-card {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .app-feature-list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+  }
+  .centered-title a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>

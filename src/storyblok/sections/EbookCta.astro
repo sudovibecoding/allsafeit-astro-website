@@ -1,0 +1,26 @@
+---
+import EbookCta from '../../components/sections/EbookCta.astro';
+import { storyblokAssetUrl } from '../../lib/storyblok-asset';
+
+interface Props {
+  blok: {
+    heading?: string;
+    body?: string;
+    redirect_to?: string;
+    cover_image?: { filename?: string } | string;
+    cover_image_alt?: string;
+    submit_text?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<EbookCta
+  heading={blok.heading}
+  body={blok.body}
+  redirectTo={blok.redirect_to}
+  coverImage={storyblokAssetUrl(blok.cover_image)}
+  coverImageAlt={blok.cover_image_alt}
+  submitText={blok.submit_text}
+/>

@@ -1,0 +1,179 @@
+---
+/**
+ * EbookCta — single-email-capture banner for ebook lead-magnet flows.
+ *
+ * Refactored to accept props. Defaults preserve the original homepage
+ * usage (the generic AllSafe IT support ebook), so existing pages
+ * continue to render unchanged.
+ *
+ * Pass custom values to reuse this on per-ebook landing pages —
+ * `/co-managed-it-for-small-businesses-ebook` and
+ * `/it-services-for-manufacturing-los-angeles` do exactly that.
+ */
+
+interface Props {
+  heading?: string;
+  /** Plain text body. */
+  body?: string;
+  /**
+   * Where to send the user AFTER successful submission. Mirrors Webflow's
+   * `redirect` attribute on `email-book-download-form`.
+   */
+  redirectTo?: string;
+  /** Cover image shown on the right side of the CTA banner. */
+  coverImage?: string;
+  coverImageAlt?: string;
+  /** Submit button label. */
+  submitText?: string;
+  /** Optional DOM id for deep-linking to the form. */
+  formId?: string;
+}
+
+const {
+  heading = 'Everything to know about AllSafe IT support in California',
+  body =
+    'This e-book contains everything you need to know about our local IT support across Southern California. Get your free copy now and gain a sneak peek into our world of IT bliss.',
+  redirectTo = '/lead-magnet-download',
+  coverImage = '/images/book.avif',
+  coverImageAlt = 'E-book PDF about local IT support California',
+  submitText = 'Download Ebook',
+  formId = 'email-book-download-form',
+} = Astro.props;
+
+// Same Turnstile sitekey as every form on the site — public key, safe to commit.
+const TURNSTILE_SITEKEY = '0x4AAAAAAAQTptj2So4dx43e';
+---
+
+<section class="section margin-top-small">
+  <section class="quote-below-title">
+    <div class="container">
+      <div class="large-quote-box book">
+        <div class="large-quote-box-text">
+          <div class="section-content">
+            <div class="content">
+              <h2 class="h4 color__white-shade1">{heading}</h2>
+              <p class="lead-text color__white-shade1">{body}</p>
+            </div>
+            <form
+              id={formId}
+              name="email-form"
+              data-name="Email Form"
+              method="post"
+              action="/api/ebook-download"
+              data-ebook-form
+              data-redirect-to={redirectTo}
+              class="form book"
+            >
+              <input
+                class="form-input whiteversion"
+                maxlength="256"
+                name="Email"
+                placeholder="Email Address"
+                type="email"
+                required
+              />
+              <input
+                class="hidden-form-input"
+                maxlength="256"
+                name="source_url"
+                type="text"
+                id={`${formId}-source_url`}
+                tabindex="-1"
+                aria-hidden="true"
+              />
+              <div
+                class="cf-turnstile"
+                data-sitekey={TURNSTILE_SITEKEY}
+              ></div>
+              <input
+                type="submit"
+                class="button form-button"
+                value={submitText}
+              />
+            </form>
+            <div class="form-success" role="alert" hidden>
+              <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="form-error" role="alert" hidden>
+              <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+          </div>
+        </div>
+        <div class="quote-author">
+          <img
+            src={coverImage}
+            loading="lazy"
+            alt={coverImageAlt}
+            width="200"
+            height="260"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- Lazy-load Turnstile API (once per page, shared with other ebook/contact forms) -->
+<script>
+  const ebookCtaTurnstile = document.querySelectorAll('.large-quote-box.book .cf-turnstile');
+  if (ebookCtaTurnstile.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          if (!document.querySelector('script[src*="challenges.cloudflare.com"]')) {
+            const s = document.createElement('script');
+            s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+            s.async = true;
+            s.defer = true;
+            document.head.appendChild(s);
+          }
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    ebookCtaTurnstile.forEach((w) => observer.observe(w));
+  }
+</script>
+
+<!-- Submit handler — shared with EbookEmailForm via src/scripts/ebookForm.ts -->
+<script>
+  import '../../scripts/ebookForm';
+</script>
+
+<style>
+  .form.book {
+    flex-direction: row;
+    width: auto;
+    gap: 12px;
+  }
+  .cf-turnstile {
+    min-height: 65px;
+    align-self: center;
+  }
+
+  .form-input.whiteversion {
+    border-color: var(--color-light-1);
+    color: var(--color-light-2);
+  }
+
+  .form-input.whiteversion::placeholder {
+    color: var(--color-light-1);
+  }
+
+  .quote-author {
+    gap: 24px;
+    border-left: 1px dotted var(--color-dark-faded);
+    justify-content: center;
+    align-items: center;
+    padding-left: 48px;
+    padding-right: 48px;
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 767px) {
+    .form.book    { flex-direction: column; }
+    .quote-author { border-left: none; padding-left: 0; padding-right: 0; }
+  }
+</style>

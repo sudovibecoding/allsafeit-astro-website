@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="2025 Make a Difference IT Grant | LA & OC Nonprofits"
+  description="Win a year of free managed IT support! AllSafe IT's 2025 Make a Difference Grant helps LA & Orange County nonprofits (10-100 employees) focus on their mission. Apply Oct 15-31."
+  canonical="https://www.allsafeit.com/makeadifference"
+>
+  <div aria-hidden="true" style="height: var(--navbar-height)"></div>
+
+  <section class="section grant-hero">
+    <div class="container">
+      <h1 class="h2">2025 Make a Difference Grant</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grant-grid">
+
+        <div class="grant-body">
+          <h2 class="h4">Empowering Local Nonprofits with IT Support</h2>
+          <p class="lead-text">AllSafe IT believes that technology should empower every organization — including those making a difference in our communities. Through our Make a Difference Grant, we provide qualifying nonprofits with enterprise-grade IT services at no cost.</p>
+
+          <h3 class="h5">What You'll Receive</h3>
+          <p class="lead-text">Grant recipients receive a full suite of AllSafe IT managed services:</p>
+          <ul class="grant-list">
+            <li>Unlimited 24/7 Help Desk support</li>
+            <li>Advanced Cybersecurity with managed detection and response</li>
+            <li>Cloud &amp; Network Administration including Microsoft 365</li>
+            <li>Strategic vCIO Leadership and technology planning</li>
+          </ul>
+
+          <h3 class="h5">Who Can Apply</h3>
+          <p class="lead-text">We welcome applications from nonprofit organizations that meet the following criteria:</p>
+          <ul class="grant-list">
+            <li>Registered 501(c)(3) nonprofit organization</li>
+            <li>Between 10 and 100 employees</li>
+            <li>Located in Los Angeles County or Orange County, California</li>
+          </ul>
+
+          <h3 class="h5">Application Timeline</h3>
+          <p class="lead-text">Applications for the 2025 grant cycle are now closed. We look forward to reopening applications in 2026. Follow us on LinkedIn or check back here for announcements.</p>
+
+          <h3 class="h5">About AllSafe IT</h3>
+          <p class="lead-text">AllSafe IT is a SOC 2-certified managed IT services provider serving businesses and nonprofits across Southern California for over 20 years. We believe that strong IT infrastructure shouldn't be a barrier to doing good work in the world.</p>
+        </div>
+
+        <aside class="grant-sidebar">
+          <div class="sidebar-card">
+            <h3 class="h5">Apply for the Grant</h3>
+            <p class="body-text">Complete the application form below. We review applications on a rolling basis and will be in touch within two weeks.</p>
+            <!-- ActiveHosted form embed — replace with actual embed code from form ID 36 -->
+            <div class="form-placeholder">
+              <p class="body-text">Form loading…</p>
+            </div>
+            <script is:inline>
+              // ActiveHosted form ID 36 embed
+              // Replace this comment with the actual embed script from your ActiveHosted account
+              // e.g. _form_36_
+            </script>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .grant-hero {
+    background: var(--color-light-2, #f5f7fa);
+    padding-bottom: 2rem;
+  }
+
+  .grant-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .grant-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .grant-list {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .grant-list li {
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    color: var(--color-brand-dark);
+  }
+
+  .sidebar-card {
+    position: sticky;
+    top: calc(var(--navbar-height) + 2rem);
+    background: var(--color-light-2, #f5f7fa);
+    border-radius: var(--radius-default);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-placeholder {
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: var(--radius-default);
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 991px) {
+    .grant-grid {
+      grid-template-columns: 1fr;
+    }
+    .sidebar-card { position: static; }
+  }
+</style>

@@ -1,0 +1,65 @@
+{
+  "heading_richtext": {
+    "type": "richtext",
+    "display_name": "Section heading",
+    "customize_toolbar": true,
+    "toolbar": ["h1", "h2", "h3", "h4", "h5", "h6", "bold", "italic", "underline", "strike", "link", "undo", "redo"],
+    "style_options": [],
+    "allow_target_blank": true,
+    "restrict_type": "",
+    "restrict_components": false
+  },
+  "body_richtext": {
+    "type": "richtext",
+    "customize_toolbar": true,
+    "toolbar": [
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      "code",
+      "paragraph",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "bullet_list",
+      "ordered_list",
+      "quote",
+      "hr",
+      "link",
+      "image",
+      "undo",
+      "redo"
+    ],
+    "style_options": [
+      { "name": "Lead text", "value": "lead-text" },
+      { "name": "Body text", "value": "body-text" }
+    ],
+    "allow_target_blank": true,
+    "allow_custom_attributes": false
+  },
+  "simple_richtext": {
+    "type": "richtext",
+    "customize_toolbar": true,
+    "toolbar": [
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      "link",
+      "paragraph",
+      "bullet_list",
+      "ordered_list",
+      "undo",
+      "redo"
+    ],
+    "style_options": [
+      { "name": "Body text", "value": "body-text" },
+      { "name": "Lead text", "value": "lead-text" }
+    ],
+    "allow_target_blank": true
+  }
+}

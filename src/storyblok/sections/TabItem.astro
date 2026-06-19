@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { label?: string; content?: unknown };
+}
+---
+
+<div hidden data-tab={Astro.props.blok.label} />

@@ -1,0 +1,76 @@
+---
+interface Props {
+  heading: string;
+  image: string;
+  imageAlt: string;
+  imageRight?: boolean;
+  bg?: 'gradient' | 'white';
+}
+
+const { heading, image, imageAlt, imageRight = false, bg = 'white' } = Astro.props;
+const bgClass = bg === 'gradient' ? 'bg-gradient' : '';
+---
+
+<div class={`section ${bgClass}`}>
+  <div class="container">
+    <div class="section-content">
+      <div class={`split-grid ${imageRight ? 'img-right' : ''}`}>
+        <div class="square-image-wrap">
+          <img
+            src={image}
+            alt={imageAlt}
+            class="square-parallax-image"
+            width="600"
+            height="600"
+            loading="lazy"
+          />
+        </div>
+        <div class="content">
+          <h2 class="h3">{heading}</h2>
+          <slot />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    /* Top-align so the text starts level with the top of the image
+       (Webflow grids are top-aligned, not vertically centered). */
+    align-items: start;
+  }
+
+  .split-grid.img-right .square-image-wrap { order: 2; }
+  .split-grid.img-right .content { order: 1; }
+
+  .square-image-wrap {
+    border-radius: var(--radius-default);
+    overflow: hidden;
+    aspect-ratio: 1;
+  }
+
+  .square-parallax-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 991px) {
+    .split-grid {
+      grid-template-columns: 1fr;
+    }
+    .split-grid.img-right .square-image-wrap { order: -1; }
+    .split-grid.img-right .content { order: 0; }
+    .square-image-wrap { max-height: 320px; }
+  }
+</style>

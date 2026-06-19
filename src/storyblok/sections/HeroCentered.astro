@@ -1,0 +1,15 @@
+---
+import HeroCentered from '../../components/sections/HeroCentered.astro';
+import { renderHeading } from '../../lib/storyblok-heading';
+
+interface Props {
+  blok: {
+    badge?: string;
+    title: unknown;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<HeroCentered badge={blok.badge} title={renderHeading(blok.title)} />

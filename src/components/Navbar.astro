@@ -1,0 +1,743 @@
+---
+import { Image } from 'astro:assets';
+import logoColored from '../assets/logos/logo.avif';
+import logoWhite from '../assets/logos/allsafeit-white.svg';
+import { NAV_CONFIG } from '../data/navigation';
+import { fetchIndustryNavLinks, fetchServiceNavColumns } from '../lib/storyblok-nav';
+
+interface Props {
+  variant?: 'light' | 'transparent';
+}
+
+const { variant = 'light' } = Astro.props;
+const isTransparent = variant === 'transparent';
+const path = Astro.url.pathname;
+
+// ── Local nav shapes (match the render loop below) ──────────────────
+type NavLink = { label: string; href: string; emphasis?: boolean };
+type NavColumn = { header?: NavLink; items: NavLink[] };
+type NavItem =
+  | { kind: 'link'; label: string; href: string }
+  | { kind: 'group'; label: string; variant: 'big' | 'small'; columns: NavColumn[] };
+
+// ── Navigation (Storyblok-backed auto menus) ────────────────────────
+const navConfig = NAV_CONFIG;
+const serviceColumns = await fetchServiceNavColumns();
+const industryLinks = await fetchIndustryNavLinks();
+
+function buildServicesGroup(label: string): NavItem {
+  return { kind: 'group', label, variant: 'big', columns: serviceColumns };
+}
+
+function buildIndustriesGroup(label: string): NavItem {
+  return {
+    kind: 'group',
+    label,
+    variant: 'small',
+    columns: [{ items: industryLinks }],
+  };
+}
+
+// ── Resolve the editable config into render-ready NavItems ──────────
+const resolvedNav: NavItem[] = navConfig.items.map((item): NavItem => {
+  switch (item.type) {
+    case 'auto-services':
+      return buildServicesGroup(item.label);
+    case 'auto-industries':
+      return buildIndustriesGroup(item.label);
+    case 'group':
+      return {
+        kind: 'group',
+        label: item.label,
+        variant: 'small',
+        columns: [
+          {
+            items: (item.links ?? []).map((l) => ({
+              label: l.label,
+              href: l.href,
+              emphasis: l.emphasis,
+            })),
+          },
+        ],
+      };
+    case 'link':
+    default:
+      return { kind: 'link', label: item.label, href: item.href ?? '#' };
+  }
+});
+
+const CONTACT_CTA = navConfig.cta;
+
+const arrowSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12" aria-hidden="true" focusable="false"><path d="M31.5 192h257c28.4 0 42.8 34.5 22.6 54.6l-128.5 128c-12.5 12.5-32.8 12.5-45.3 0l-128.5-128C-11.3 226.5 3.1 192 31.5 192z" fill="currentColor"/></svg>`;
+
+// Helper: stable class string for a dropdown link based on its emphasis.
+function linkClass(link: NavLink, base: string): string {
+  return link.emphasis ? `${base} toplinks` : base;
+}
+---
+
+<div
+  class:list={['navbar', { 'navbar--transparent': isTransparent }]}
+  role="banner"
+>
+  <div class="nav-container">
+    <div class="nav-contents">
+
+      <!-- Logo -->
+      <div class="nav-left">
+        <a href="/" class="nav-logo-link" aria-label="AllSafe IT — home">
+          {isTransparent
+            ? <img src={logoWhite.src} alt="AllSafe IT logo" class="nav-logo" width="183" height="56" loading="eager" decoding="async" />
+            : <Image src={logoColored} alt="AllSafe IT logo" class="nav-logo" width="183" height="56" loading="eager" decoding="async" />
+          }
+        </a>
+      </div>
+
+      <!-- Desktop nav links (hidden on mobile via CSS) -->
+      <nav aria-label="Main navigation" class="nav-menu-desktop">
+        <ul class="nav-links" role="list">
+          {resolvedNav.map((item) => {
+            if (item.kind === 'link') {
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    class="nav-link"
+                    aria-current={path === item.href ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            }
+
+            const contentClass =
+              item.variant === 'big' ? 'dropdown-content widget__biggerwidth' : 'dropdown-content smaller';
+
+            return (
+              <li
+                class:list={['dropdown', { 'dropdown--mega': item.variant === 'big' }]}
+                data-dropdown
+              >
+                <button
+                  class="dropdown-toggle nav-link"
+                  data-dropdown-trigger
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  type="button"
+                >
+                  {item.label}
+                  <span class="dropdown-arrow" set:html={arrowSvg} />
+                </button>
+                <div class="dropdown-list" data-dropdown-menu>
+                  <div class="dropdown-content-wrapper">
+                    <div class={contentClass}>
+                      {item.columns.map((col) => (
+                        <div class="dropdown-column">
+                          {col.header && (
+                            <a href={col.header.href} class={linkClass(col.header, 'dropdown-link')}>
+                              {col.header.label}
+                            </a>
+                          )}
+                          {col.items.map((link) => (
+                            <a href={link.href} class={linkClass(link, 'dropdown-link')}>
+                              {link.label}
+                            </a>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+
+      <!-- Right: CTA + hamburger -->
+      <div class="nav-right">
+        <a href={CONTACT_CTA.href} class="nav-cta-btn">{CONTACT_CTA.label}</a>
+        <button
+          class="menu-button"
+          data-nav-toggle
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          aria-label="Open navigation menu"
+        >
+          <span class="menu-icon menu-icon--open" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </span>
+          <span class="menu-icon menu-icon--close" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{/* Mobile nav drawer — MUST live OUTSIDE `.navbar` because the navbar
+    uses `backdrop-filter: blur(...)`, which creates a new containing
+    block. Any `position: fixed` descendant inside that block is positioned
+    relative to the navbar (height = var(--navbar-height)) instead of the
+    viewport — meaning when a user scrolled mid-page and tapped the
+    hamburger, the open drawer rendered up at the document top and they'd
+    have to scroll up to find it. Hoisting it to a sibling of `.navbar`
+    restores true viewport-relative fixed positioning. */}
+<nav
+  id="mobile-nav"
+  aria-label="Mobile navigation"
+  data-nav-menu
+  class="mobile-nav"
+>
+    <ul class="mobile-nav-list" role="list">
+      {resolvedNav.map((item) => {
+        if (item.kind === 'link') {
+          return (
+            <li class="mobile-nav-item">
+              <a
+                href={item.href}
+                class="mobile-nav-trigger"
+                aria-current={path === item.href ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        }
+        return (
+          <li class="mobile-nav-item" data-dropdown>
+            <button
+              class="mobile-nav-trigger"
+              data-dropdown-trigger
+              aria-expanded="false"
+              aria-haspopup="true"
+              type="button"
+            >
+              {item.label}
+              <span class="dropdown-arrow" set:html={arrowSvg} />
+            </button>
+            <ul class="mobile-dropdown" role="list">
+              {item.columns.flatMap((col) => {
+                const headerLi = col.header ? [
+                  <li>
+                    <a href={col.header.href} class="mobile-nav-link mobile-nav-link--emphasis">
+                      {col.header.label}
+                    </a>
+                  </li>
+                ] : [];
+                const itemLis = col.items.map((link) => (
+                  <li>
+                    <a href={link.href} class="mobile-nav-link">{link.label}</a>
+                  </li>
+                ));
+                return [...headerLi, ...itemLis];
+              })}
+            </ul>
+          </li>
+        );
+      })}
+    </ul>
+
+    <!-- CTA at bottom of mobile drawer -->
+    <div class="mobile-nav-footer">
+      <a href={CONTACT_CTA.href} class="mobile-cta-btn">{CONTACT_CTA.label}</a>
+    </div>
+</nav>
+
+<style>
+  /* ── Layout ─────────────────────────────────────────────────── */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    height: var(--navbar-height);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: var(--color-navbar-bg);
+    border-bottom: 1px solid var(--color-dark-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .navbar--transparent {
+    position: relative;
+    background-color: transparent;
+    border-bottom-color: var(--color-light-1-faded);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav-container {
+    width: 100%;
+    max-width: var(--container-main);
+    padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .nav-contents {
+    height: var(--navbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Logo ───────────────────────────────────────────────────── */
+  .nav-logo-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-logo {
+    width: 140px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* ── Desktop nav ────────────────────────────────────────────── */
+  .nav-menu-desktop {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    color: var(--color-text-dark);
+    font-size: var(--text-body);
+    font-family: var(--font-body);
+    padding: 6px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    border-radius: 6px;
+  }
+
+  .nav-link:hover { opacity: 0.6; }
+
+  .navbar--transparent .nav-link { color: var(--color-text-light); }
+
+  /* ── Dropdown arrow ─────────────────────────────────────────── */
+  .dropdown-arrow {
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+  }
+
+  /* ── Desktop dropdown ─────────────────────────────────────────
+     KEY FIX: the dropdown-list now sits FLUSH against the trigger
+     (top: 100%) and pushes its visible content down via a
+     transparent `padding-top: 8px`. This gives the cursor a
+     contiguous hover area from trigger → visible dropdown box, so
+     the dropdown no longer disappears while the cursor crosses
+     the gap. Webflow's original implementation used `data-delay`
+     to achieve the same effect — we use a hover-bridge instead. */
+  .dropdown { position: relative; }
+
+  .dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    /* Push visible content down 8px, but keep the dropdown-list's
+       own hitbox flush with the trigger (no transparent gap). */
+    padding-top: 8px;
+    transform: translateX(-50%) translateY(4px);
+    opacity: 0;
+    pointer-events: none;
+    /* Close transitions get a 120ms delay so a quick mis-move
+       doesn't snap the dropdown shut — mirrors Webflow `data-delay="150"`. */
+    transition:
+      opacity 0.15s ease 0.12s,
+      transform 0.15s ease 0.12s,
+      visibility 0s linear 0.27s;
+    visibility: hidden;
+    z-index: 1000;
+  }
+
+  @media (min-width: 992px) {
+    .dropdown:hover > .dropdown-list,
+    .dropdown:focus-within > .dropdown-list {
+      opacity: 1;
+      pointer-events: all;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+      /* Opening: no delay, instant feedback. */
+      transition:
+        opacity 0.15s ease 0s,
+        transform 0.15s ease 0s,
+        visibility 0s linear 0s;
+    }
+
+    .dropdown:hover > .dropdown-toggle .dropdown-arrow,
+    .dropdown:focus-within > .dropdown-toggle .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* ── Big "IT Services" mega-menu ──────────────────────────────
+       The 4-column panel is wider than the room beside its trigger, so
+       anchoring it to the trigger always hangs off one edge (centered →
+       clips left; left-aligned → clips right). And centering it on the
+       viewport left a diagonal dead-zone that snapped the menu shut.
+
+       Fix (standard mega-menu pattern): a FULL-WIDTH transparent strip
+       pinned under the navbar, with the visible box CENTERED inside the
+       page container.
+         • Full-width strip → the cursor's path down from the trigger
+           always lands on it, so the menu never disappears.
+         • Centered + gutter-padded box → it can't run off either edge,
+           so it never clips.
+       The strip is invisible; only .dropdown-content (the box) shows.
+
+       The trigger <li> is stretched to the full navbar height so the
+       strip (which starts at the navbar's bottom edge) is reachable
+       with no vertical gap. */
+    .dropdown--mega {
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+    }
+
+    .dropdown--mega > .dropdown-list {
+      position: fixed;
+      /* Raised ~20px above the navbar's bottom edge so the box lines up
+         vertically with the small dropdowns (which anchor to the
+         trigger's bottom, mid-navbar). The full-height trigger <li>
+         overlaps this, so the hover path stays gap-free. */
+      top: calc(var(--navbar-height) - 20px);
+      left: 0;
+      right: 0;
+      /* Full width — drop the inherited left:50%/translateX(-50%). */
+      transform: translateY(4px);
+    }
+
+    .dropdown--mega:hover > .dropdown-list,
+    .dropdown--mega:focus-within > .dropdown-list {
+      transform: translateY(0);
+    }
+
+    /* Center the visible box within the page container; gutters keep it
+       clear of both screen edges. The full-width strip (above) — not the
+       box's proximity to the trigger — is what keeps hover seamless, so
+       centering is safe and never disappears. */
+    .dropdown--mega .dropdown-content-wrapper {
+      display: flex;
+      justify-content: center;
+      padding-left: var(--container-gutter);
+      padding-right: var(--container-gutter);
+    }
+
+    .dropdown--mega .dropdown-content {
+      max-width: 100%;
+    }
+  }
+
+  .dropdown-content-wrapper { position: relative; }
+
+  .dropdown-content {
+    display: flex;
+    gap: 24px;
+    min-width: 220px;
+    padding: 18px;
+    background-color: var(--color-light-1);
+    border: 1px solid var(--color-dark-border);
+    border-radius: var(--radius-default);
+    box-shadow: 0 4px 36px #00000014;
+    white-space: nowrap;
+  }
+
+  .dropdown-content.widget__biggerwidth {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    min-width: 560px;
+  }
+
+  .dropdown-content.smaller { min-width: 160px; }
+
+  .dropdown-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 6px;
+  }
+
+  .dropdown-link {
+    color: var(--color-brand-dark);
+    font-size: var(--text-body);
+    transition: opacity 0.2s;
+    text-decoration: none;
+  }
+
+  .dropdown-link.toplinks {
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .dropdown-link:hover {
+    opacity: 0.5;
+    text-decoration: underline;
+  }
+
+  /* ── Right side ─────────────────────────────────────────────── */
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  /* ── Desktop CTA ────────────────────────────────────────────── */
+  .nav-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height-sm);
+    padding: 0 var(--btn-px-sm);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+
+  .nav-cta-btn:hover { opacity: 0.85; }
+
+  /* ── Hamburger ──────────────────────────────────────────────── */
+  .menu-button {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--color-brand-dark);
+    border-radius: 6px;
+    transition: background-color 0.15s;
+  }
+
+  .menu-button:hover { background-color: var(--color-dark-border); }
+
+  .navbar--transparent .menu-button { color: var(--color-text-light); }
+
+  .menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  .menu-icon--close { display: none; }
+
+  /* ── Mobile nav drawer ──────────────────────────────────────── */
+  /* Hidden by default (desktop + closed mobile) */
+  .mobile-nav {
+    display: none;
+  }
+
+  @keyframes navSlideIn {
+    from { opacity: 0; transform: translateX(-24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Mobile: show as fixed full-height panel when open */
+  @media (max-width: 991px) {
+    .mobile-nav[data-open="true"] {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: var(--navbar-height);
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: calc(100vh - var(--navbar-height));
+      height: calc(100dvh - var(--navbar-height));
+      background-color: var(--color-light-1);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      z-index: 998;
+      padding: 0;
+      animation: navSlideIn 0.25s ease forwards;
+    }
+  }
+
+  /* ── Mobile nav list ────────────────────────────────────────── */
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+  }
+
+  .mobile-nav-item {
+    border-bottom: 1px solid var(--color-dark-border);
+  }
+
+  .mobile-nav-item:first-child {
+    border-top: 1px solid var(--color-dark-border);
+  }
+
+  /* ── Mobile trigger (top-level items) ──────────────────────── */
+  .mobile-nav-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 18px var(--container-gutter);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: var(--text-lead);
+    font-weight: 500;
+    color: var(--color-brand-dark);
+    text-decoration: none;
+    text-align: left;
+    transition: background-color 0.15s;
+  }
+
+  .mobile-nav-trigger:hover {
+    background-color: var(--color-light-2);
+  }
+
+  /* Arrow rotates when dropdown open */
+  [data-dropdown][data-open="true"] > .mobile-nav-trigger .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  /* ── Mobile sub-links ───────────────────────────────────────── */
+  .mobile-dropdown {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-light-2);
+    display: none;
+    border-top: 1px solid var(--color-dark-border);
+  }
+
+  [data-dropdown][data-open="true"] > .mobile-dropdown {
+    display: block;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: 14px var(--container-gutter) 14px calc(var(--container-gutter) + 16px);
+    font-size: var(--text-body);
+    color: var(--color-brand-dark);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--color-dark-border);
+    transition: background-color 0.15s;
+  }
+
+  .mobile-nav-link:last-child { border-bottom: none; }
+  .mobile-nav-link:hover { background-color: var(--color-light-1); color: var(--color-accent); }
+
+  /* IT Services column headers get accent emphasis on mobile too. */
+  .mobile-nav-link--emphasis {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  /* ── Mobile CTA ─────────────────────────────────────────────── */
+  .mobile-nav-footer {
+    padding: 24px var(--container-gutter);
+    border-top: 1px solid var(--color-dark-border);
+    background-color: var(--color-light-1);
+  }
+
+  .mobile-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px 24px;
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: opacity 0.15s;
+  }
+
+  .mobile-cta-btn:hover { opacity: 0.85; }
+
+  /* ── Responsive: tablet breakpoint ─────────────────────────── */
+  @media (max-width: 991px) {
+    /* On mobile, hide desktop nav and show hamburger */
+    .nav-menu-desktop { display: none; }
+    .nav-cta-btn       { display: none; }
+    .menu-button       { display: flex; }
+
+    /* Hide the transparent hero nav entirely on mobile */
+    .navbar--transparent { display: none; }
+
+    /* MOBILE NAVBAR — switch from sticky to fixed.
+       `position: sticky` is unreliable on mobile (iOS Safari's address-bar
+       collapse + Chrome's URL-bar tricks can drift sticky elements off
+       screen; some browsers also disengage sticky when an ancestor
+       containing block changes). `position: fixed` is rock-solid on every
+       mobile browser — the hamburger button always stays at the top of
+       the viewport, so users can open/close the menu from anywhere on
+       the page without scrolling back up.
+
+       Body gets matching `padding-top` so page content isn't hidden
+       beneath the now out-of-flow navbar. */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+    :global(body) {
+      padding-top: var(--navbar-height);
+    }
+  }
+
+  /* ── Close-icon swap ────────────────────────────────────────── */
+  :global(body[data-nav-open]) .menu-icon--open  { display: none; }
+  :global(body[data-nav-open]) .menu-icon--close { display: flex; }
+
+  /* ── Reduced motion ─────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-nav,
+    .dropdown-list,
+    .dropdown-arrow,
+    .mobile-nav-trigger .dropdown-arrow { transition: none; }
+  }
+</style>

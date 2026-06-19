@@ -1,0 +1,94 @@
+---
+/**
+ * Breadcrumb trail.
+ *
+ * Every crumb — including the current page — renders as an anchor. This is
+ * a SEO/accessibility improvement (recommended by Google's breadcrumb
+ * guidance: each item in the list should have a URL so the crawler can map
+ * the full hierarchy). The current page becomes a self-link to its own
+ * pathname, marked with `aria-current="page"` so assistive tech still
+ * announces it as the active location.
+ *
+ * Consumer API: pass `crumbs` — `{ label, href? }`. If the last crumb has
+ * no `href`, the component fills it from `Astro.url.pathname` so existing
+ * pages don't have to update. To override, pass an explicit `href`.
+ */
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  crumbs: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+
+// Normalize: every crumb gets a guaranteed href. The last crumb falls back
+// to the current pathname, every other crumb falls back to the homepage if
+// the consumer forgot — both ensure no anchor renders without a target.
+const currentPath = Astro.url.pathname;
+const resolved = crumbs.map((c, i) => {
+  const isLast = i === crumbs.length - 1;
+  return {
+    label: c.label,
+    href: c.href ?? (isLast ? currentPath : '/'),
+  };
+});
+---
+
+<nav class="breadcrumbs-wrapper section-title" aria-label="Breadcrumb">
+  {resolved.map((crumb, i) => {
+    const isLast = i === resolved.length - 1;
+    return (
+      <>
+        <a
+          href={crumb.href}
+          class:list={['breadcrumb-link', isLast && 'breadcrumb-current']}
+          aria-current={isLast ? 'page' : undefined}
+        >
+          {crumb.label}
+        </a>
+        {!isLast && <div class="breadcrumb-sep" aria-hidden="true">/</div>}
+      </>
+    );
+  })}
+</nav>
+
+<style>
+  .breadcrumbs-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    color: var(--color-brand-dark);
+    font-size: 1rem;
+    line-height: var(--leading-body);
+    padding: 1rem 0;
+  }
+
+  .breadcrumb-link {
+    color: var(--color-brand-dark);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .breadcrumb-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Current-page anchor — dimmed so it still reads visually as the
+     active location, even though it's now clickable. Hover lifts the
+     opacity back up so users get clear feedback that it's a link. */
+  .breadcrumb-current {
+    opacity: 0.6;
+  }
+  .breadcrumb-current:hover {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  .breadcrumb-sep {
+    color: var(--color-brand-dark);
+    opacity: 0.4;
+  }
+</style>

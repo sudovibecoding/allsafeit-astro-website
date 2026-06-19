@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { label?: string; body?: string };
+}
+---
+
+<div hidden data-accordion-item={Astro.props.blok.label} />

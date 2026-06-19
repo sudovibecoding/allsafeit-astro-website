@@ -1,0 +1,113 @@
+---
+import Icon from '../primitives/Icon.astro';
+
+export interface ServiceCardItem {
+  href: string;
+  label: string;
+  heading: string;
+  tagline: string;
+  body: string;
+  /** SVG/HTML string or <img> markup for the icon */
+  icon: string;
+}
+
+interface Props {
+  heading?: string;
+  lead?: string;
+  services?: ServiceCardItem[];
+}
+
+const DEFAULT_SERVICES: ServiceCardItem[] = [
+  {
+    href: '/services/managed-it',
+    label: 'Explore Managed IT Services',
+    heading: 'Managed IT Services',
+    tagline: 'Reliable IT solutions that work for you.',
+    body: 'Round the clock monitoring. Proactive maintenance. A help desk with real people who help. We manage Microsoft 365, optimize cloud, and handle day-to-day IT services California businesses need to keep operations running smoothly.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M160 96C124.7 96 96 124.7 96 160L96 224C96 259.3 124.7 288 160 288L480 288C515.3 288 544 259.3 544 224L544 160C544 124.7 515.3 96 480 96L160 96zM376 168C389.3 168 400 178.7 400 192C400 205.3 389.3 216 376 216C362.7 216 352 205.3 352 192C352 178.7 362.7 168 376 168zM432 192C432 178.7 442.7 168 456 168C469.3 168 480 178.7 480 192C480 205.3 469.3 216 456 216C442.7 216 432 205.3 432 192zM160 352C124.7 352 96 380.7 96 416L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 416C544 380.7 515.3 352 480 352L160 352zM376 424C389.3 424 400 434.7 400 448C400 461.3 389.3 472 376 472C362.7 472 352 461.3 352 448C352 434.7 362.7 424 376 424zM432 448C432 434.7 442.7 424 456 424C469.3 424 480 434.7 480 448C480 461.3 469.3 472 456 472C442.7 472 432 461.3 432 448z"/></svg>`,
+  },
+  {
+    href: 'https://www.allsafeit.com/services/it-consulting/artificial-intelligence',
+    label: 'Explore AllSafe Intelligence',
+    heading: 'AllSafe Intelligence',
+    tagline: 'AI that amplifies your team.',
+    body: 'With your foundation secure, multiply what your team can do. AllSafe Intelligence builds AI-powered workflows and custom agents that work in the real world. Technology becomes a force multiplier for business growth.',
+    icon: `<img src="/images/happy-robot-white.svg" alt="" width="32" height="32" loading="lazy" />`,
+  },
+  {
+    href: '/services/it-infrastructure-and-cloud',
+    label: 'Explore Infrastructure & Cloud',
+    heading: 'Infrastructure & Cloud',
+    tagline: 'Scalable, cost-effective cloud management.',
+    body: 'Cloud Solutions that fit your business objectives. We manage Microsoft 365, optimize Azure, and cut what you don\'t need. Scale infrastructure with confidence as your business operations expand.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M32 400C32 479.5 96.5 544 176 544L480 544C550.7 544 608 486.7 608 416C608 364.4 577.5 319.9 533.5 299.7C540.2 286.6 544 271.7 544 256C544 203 501 160 448 160C430.3 160 413.8 164.8 399.6 173.1C375.5 127.3 327.4 96 272 96C192.5 96 128 160.5 128 240C128 248 128.7 255.9 129.9 263.5C73 282.7 32 336.6 32 400z"/></svg>`,
+  },
+  {
+    href: '/services/cybersecurity',
+    label: 'Explore Managed Cybersecurity',
+    heading: 'Managed Cybersecurity',
+    tagline: 'Security that lets you focus on winning.',
+    body: 'We run 24/7 Managed Detection and Response. Real humans actively respond to cyber threats. Safe Cloud monitors business email compromise and AI-powered attacks that traditional security misses. Enhanced security for California organizations under HIPAA, CCPA, and PCI DSS requirements.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M320 64C324.6 64 329.2 65 333.4 66.9L521.8 146.8C543.8 156.1 560.2 177.8 560.1 204C559.6 303.2 518.8 484.7 346.5 567.2C329.8 575.2 310.4 575.2 293.7 567.2C121.3 484.7 80.6 303.2 80.1 204C80 177.8 96.4 156.1 118.4 146.8L306.7 66.9C310.9 65 315.4 64 320 64zM320 130.8L320 508.9C458 442.1 495.1 294.1 496 205.5L320 130.9L320 130.9z"/></svg>`,
+  },
+  {
+    href: '/services/it-consulting',
+    label: 'Explore IT Consulting Services',
+    heading: 'IT Consulting Services',
+    tagline: 'Strategic planning turning IT into a business asset.',
+    body: 'vCIO planning turns IT management from a cost center into a strategic advantage. Budget for growth, not repairs. We anticipate your business needs before they arise through strategic planning and deep expertise.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M280 152L360 152L360 200L280 200L280 152zM272 96C245.5 96 224 117.5 224 144L224 208C224 234.5 245.5 256 272 256L288 256L288 288L64 288C46.3 288 32 302.3 32 320C32 337.7 46.3 352 64 352L160 352L160 384L144 384C117.5 384 96 405.5 96 432L96 496C96 522.5 117.5 544 144 544L240 544C266.5 544 288 522.5 288 496L288 432C288 405.5 266.5 384 240 384L224 384L224 352L416 352L416 384L400 384C373.5 384 352 405.5 352 432L352 496C352 522.5 373.5 544 400 544L496 544C522.5 544 544 522.5 544 496L544 432C544 405.5 522.5 384 496 384L480 384L480 352L576 352C593.7 352 608 337.7 608 320C608 302.3 593.7 288 576 288L352 288L352 256L368 256C394.5 256 416 234.5 416 208L416 144C416 117.5 394.5 96 368 96L272 96zM480 440L488 440L488 488L408 488L408 440L480 440zM224 440L232 440L232 488L152 488L152 440L224 440z"/></svg>`,
+  },
+];
+
+const {
+  heading = 'Our Complete Managed IT & Cybersecurity Services',
+  lead = 'We simplify technology into clear systems designed to help you win.',
+  services = DEFAULT_SERVICES,
+} = Astro.props;
+---
+
+<section class="section rela bg-gradient">
+  <div class="container">
+    <div class="section-content">
+      <div class="content_grid">
+        <div class="title">
+          <h2 class="h3">{heading}</h2>
+        </div>
+        <p class="lead-text">{lead}</p>
+      </div>
+      <div class="card-grid thirds">
+        {services.map(svc => (
+          <div class="service-card centered bg-brand-2">
+            <div class="div-block-20">
+              <div class="boxed-icon">
+                <div class="widget__embed-icons color__white-shade1" set:html={svc.icon} />
+              </div>
+              <div class="div-block-22">
+                <div class="div-block-23">
+                  <h3 class="h4 color__white-shade1">{svc.heading}</h3>
+                  <h4 class="body-text color__white-shade1 italics">{svc.tagline}</h4>
+                </div>
+                <p class="lead-text color__white-shade1">{svc.body}</p>
+              </div>
+            </div>
+            <div class="button-flex">
+              <a href={svc.href} class="badge-text-white">{svc.label}</a>
+              <Icon name="arrow-right" class="small_icon color__lightblue" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+  <div class="line-wrapper"></div>
+</section>
+
+<style>
+  .italics { font-style: italic; }
+
+  .body-text.color__white-shade1.italics {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+</style>

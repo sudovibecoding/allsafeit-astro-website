@@ -1,0 +1,255 @@
+---
+interface Props {
+  heading: string;
+  lead: string;
+  image: string;
+  imageAlt: string;
+  portrait: string;
+  portraitAlt: string;
+  metricBadge: string;
+  metricNumber: string;
+  metricLabel: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const {
+  heading,
+  lead,
+  image,
+  imageAlt,
+  portrait,
+  portraitAlt,
+  metricBadge,
+  metricNumber,
+  metricLabel,
+  ctaText = 'Talk to an Expert',
+  ctaHref = '#form',
+} = Astro.props;
+---
+
+<div class="hgrid-wrap">
+  <div aria-hidden="true" style="height: var(--navbar-height)"></div>
+  <section class="section">
+    <div class="container">
+      <div class="section-content">
+
+        <!-- Heading row -->
+        <div class="content_grid">
+          <div class="title">
+            <h1 class="h3">{heading}</h1>
+          </div>
+          <div class="content hgrid-lead">
+            <p class="lead-text">{lead}</p>
+            <a href={ctaHref} class="button small hgrid-cta">
+              <div class="button-text-wrapper">
+                <span class="button-text">{ctaText}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Image + metric grid -->
+        <div class="hero-4-grid">
+          <img
+            src={image}
+            alt={imageAlt}
+            class="square-image"
+            width="800"
+            height="800"
+            loading="eager"
+            fetchpriority="high"
+          />
+
+          <div class="hero-metric-box">
+            <div class="hgrid-noise"></div>
+            <div class="line-wrapper bottom-lines">
+              <div class="lines short"></div>
+              <div class="lines narrow"></div>
+            </div>
+            <div class="line-wrapper top-lines">
+              <div class="lines short"></div>
+              <div class="lines narrow"></div>
+            </div>
+            <p class="hgrid-badge-text">{metricBadge}</p>
+            <p class="hgrid-metric">{metricNumber}</p>
+            <p class="lead-text color__white-shade1">{metricLabel}</p>
+          </div>
+
+          <img
+            src={portrait}
+            alt={portraitAlt}
+            class="portrait-image"
+            width="600"
+            height="800"
+            loading="eager"
+          />
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .hgrid-wrap {
+    background-color: var(--color-bg, #fff);
+  }
+
+  .hgrid-lead {
+    max-width: var(--container-4col);
+  }
+
+  .hgrid-cta {
+    align-self: flex-start;
+  }
+
+  /* ── Image/metric grid ── */
+  .hero-4-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 12px;
+    margin-top: var(--spacing-section-sm);
+  }
+
+  .square-image {
+    aspect-ratio: 1;
+    border-radius: var(--radius-default);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .portrait-image {
+    border-radius: var(--radius-default);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Metric box ── */
+  .hero-metric-box {
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hgrid-noise {
+    z-index: 1;
+    pointer-events: none;
+    background-image: url('/images/Noise.avif');
+    background-size: 150px 150px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .hgrid-badge-text {
+    font-size: var(--text-badge, 0.75rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-light);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hgrid-metric {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    font-size: 81px;
+    font-weight: 400;
+    line-height: 0.9em;
+    color: var(--color-text-light);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-metric-box .lead-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── Decorative lines ── */
+  .line-wrapper {
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    max-width: 571px;
+  }
+
+  .line-wrapper.bottom-lines {
+    bottom: 0;
+    left: 0;
+    transform: rotateX(180deg) rotateY(180deg);
+  }
+
+  .line-wrapper.top-lines {
+    top: 0;
+    left: 0;
+    filter: grayscale(1);
+  }
+
+  .lines {
+    background-image: linear-gradient(135deg, var(--color-accent), var(--color-brand-dark));
+    width: 100%;
+    height: 72px;
+    mask-image: repeating-linear-gradient(to right, #000 0 1px, #0000 1px 7px);
+    -webkit-mask-image: repeating-linear-gradient(to right, #000 0 1px, #0000 1px 7px);
+  }
+
+  .lines.short {
+    background-image: linear-gradient(135deg, var(--color-accent), var(--color-brand-dark));
+    height: 24px;
+  }
+
+  .lines.narrow {
+    max-width: var(--container-2col, 320px);
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.3), var(--color-brand-dark));
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 991px) {
+    .hero-4-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .portrait-image {
+      display: none;
+    }
+
+    .hero-metric-box {
+      padding-top: 120px;
+      padding-bottom: 120px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-4-grid {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .portrait-image {
+      display: block;
+    }
+
+    .hero-metric-box {
+      order: -1;
+      padding-top: 96px;
+      padding-bottom: 96px;
+    }
+  }
+</style>

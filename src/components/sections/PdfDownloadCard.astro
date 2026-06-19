@@ -1,0 +1,153 @@
+---
+/**
+ * PdfDownloadCard — file-download CTA card.
+ *
+ * Used on /lead-magnet-download and the per-ebook download pages.
+ *
+ * Renders an accessible "Download PDF" button using the native <a download>
+ * attribute so the file saves to disk instead of opening in-tab. Includes
+ * an optional cover-image thumbnail for visual context.
+ *
+ * Design system fit:
+ *   - Reuses the .quote-box / .large-quote-box family for the card frame
+ *   - Reuses Button primitive's `.button` class for the download action
+ *   - Reuses .h4 + .lead-text typography
+ */
+interface Props {
+  /** Title shown above the card body. */
+  title: string;
+  /** Optional sub-line under the title. Plain text. */
+  body?: string;
+  /** Absolute path or external URL to the PDF. */
+  pdfUrl: string;
+  /** Filename the browser will save as. Defaults to the URL basename. */
+  downloadAs?: string;
+  /** Optional preview image (e.g. book cover) shown on the right side. */
+  previewImage?: string;
+  previewImageAlt?: string;
+  /** Human-readable size string, e.g. "PDF · 2.4 MB". */
+  fileSizeText?: string;
+  /** Button label override. */
+  ctaText?: string;
+}
+
+const {
+  title,
+  body,
+  pdfUrl,
+  downloadAs,
+  previewImage,
+  previewImageAlt = 'E-book cover',
+  fileSizeText,
+  ctaText = 'Download PDF',
+} = Astro.props;
+---
+
+<section class="section padding-small">
+  <div class="container">
+    <div class="pdf-card">
+      <div class="pdf-card-content">
+        <h2 class="h3">{title}</h2>
+        {body && <p class="lead-text">{body}</p>}
+        {fileSizeText && (
+          <p class="file-size badge-text">{fileSizeText}</p>
+        )}
+        <a
+          href={pdfUrl}
+          download={downloadAs}
+          class="button download-button"
+        >
+          <span class="download-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 13L5 8h3V2h4v6h3l-5 5zM3 16v2h14v-2H3z" fill="currentColor"/>
+            </svg>
+          </span>
+          {ctaText}
+        </a>
+      </div>
+
+      {previewImage && (
+        <div class="pdf-card-preview">
+          <img
+            src={previewImage}
+            alt={previewImageAlt}
+            width="240"
+            height="312"
+            loading="lazy"
+          />
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pdf-card {
+    display: flex;
+    gap: 48px;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--container-8col);
+    border-radius: var(--radius-large);
+    background-color: var(--color-light-1);
+    padding: 48px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pdf-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .file-size {
+    color: var(--color-text-base);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    margin: 0;
+  }
+
+  .download-button {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    margin-top: 8px;
+  }
+
+  .download-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+  }
+
+  .pdf-card-preview {
+    flex: 0 0 auto;
+  }
+  .pdf-card-preview img {
+    border-radius: var(--radius-default);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+    display: block;
+  }
+
+  @media (max-width: 767px) {
+    .pdf-card {
+      flex-direction: column;
+      gap: 24px;
+      padding: 24px;
+      text-align: left;
+    }
+    .download-button {
+      align-self: center;
+    }
+    .pdf-card-preview {
+      order: -1; /* show cover above text on mobile */
+    }
+  }
+</style>

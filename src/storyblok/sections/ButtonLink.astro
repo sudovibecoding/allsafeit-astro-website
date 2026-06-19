@@ -1,0 +1,11 @@
+---
+interface Props {
+  blok: {
+    label?: string;
+    href?: string;
+    style?: 'button' | 'link';
+  };
+}
+---
+
+<div hidden data-button={Astro.props.blok.label} />

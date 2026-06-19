@@ -1,0 +1,72 @@
+---
+// Plain <img> (not astro:assets <Image>) — serve the pre-optimized Webflow
+// .avif as-is, no re-encode. See StrategicSupport for rationale.
+import photoCeo from '../../assets/images/DSC_1897DSC_1896.avif';
+
+interface Props {
+  heading?: string;
+  bodyHtml?: string;
+  metric1Text?: string;
+  metric1Value?: string;
+  metric2Text?: string;
+  metric2Value?: string;
+  metric3Text?: string;
+  metric3Value?: string;
+  imagePath?: string;
+  imageAlt?: string;
+}
+
+const {
+  heading = 'We offer IT Services California businesses need',
+  bodyHtml = 'We understand the critical nature of timely support, which is why our team is committed to providing rapid, efficient managed IT solutions California companies rely on. Imagine having enterprise-level support that is there exactly when you need it, minimizing disruption and keeping your operations moving forward.<br /><br />We also provide the IT outsourcing California businesses deserve. With our IT support services, you gain access to strategic guidance and oversight that ensures your technology decisions are always aligned with where you want your business to go.',
+  metric1Text = 'Round-the-clock remote IT support for all our clients.',
+  metric1Value = '24/7',
+  metric2Text = 'Uptime for all network infrastructure',
+  metric2Value = '99.999%',
+  metric3Text = 'Our Average CSAT',
+  metric3Value = '99.999%',
+  imagePath,
+  imageAlt = "CEO of AllSafe IT, California's Managed Services Provider",
+} = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-content">
+      <div class="grid">
+        <div class="square-image-wrap sticky">
+          <img
+            class="square-parallax-image"
+            src={imagePath ?? photoCeo.src}
+            alt={imageAlt}
+            loading="lazy"
+          />
+        </div>
+        <div class="content">
+          <h2 class="h3">{heading}</h2>
+          <p class="body-text" set:html={bodyHtml}></p>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-box color__lightblue">
+          <div class="metric-box-top">
+            <p class="body-text metric-explainer">{metric1Text}</p>
+          </div>
+          <div class="metric-text color__darkblue"><strong>{metric1Value}</strong></div>
+        </div>
+        <div class="metric-box color__lightblue">
+          <div class="metric-box-top">
+            <p class="body-text metric-explainer">{metric2Text}</p>
+          </div>
+          <div class="metric-text color__darkblue"><strong>{metric2Value}</strong></div>
+        </div>
+        <div class="metric-box color__lightblue">
+          <div class="metric-box-top">
+            <p class="body-text metric-explainer">{metric3Text}</p>
+          </div>
+          <div class="metric-text color__darkblue"><strong>{metric3Value}</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

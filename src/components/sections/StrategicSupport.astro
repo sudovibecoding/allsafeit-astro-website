@@ -1,0 +1,109 @@
+---
+// Section image uses a plain <img> (not astro:assets <Image>) so the
+// already-optimized Webflow .avif is served as-is — no Astro re-encode,
+// no quality loss. `.src` is the fingerprinted asset URL from the import.
+import photoEmployee from '../../assets/images/allsafe-employee-1.avif';
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  lead?: string;
+  bullet1Title?: string;
+  bullet1Body?: string;
+  bullet2Title?: string;
+  bullet2Body?: string;
+  bullet3Title?: string;
+  bullet3Body?: string;
+  imagePath?: string;
+  imageAlt?: string;
+}
+
+const {
+  heading = 'Strategic Managed IT Support for California Enterprises',
+  subheading = 'Not Just Support. Strategic Growth.<br />Managed IT services in California have evolved. So have we.',
+  lead = "For 20+ years, we've kept IT systems running smoothly across Southern California. But modern business demands more. We've seen companies try to bolt new tools onto broken processes. It fails. That is why every solution we design is backed by 24/7 helpdesk access and remote IT support, giving businesses reliable IT Support California teams can depend on when it matters most.",
+  bullet1Title = 'Cloud that works:',
+  bullet1Body = "Tailored Microsoft 365 and Microsoft Azure solutions. No paying for what you don't need. Technology solutions designed for mid sized businesses and growing enterprises.",
+  bullet2Title = 'Security built in:',
+  bullet2Body = 'Zero trust and layered protection with Dark Web Monitoring, Vulnerability Scanning, and Penetration Testing. Security is how IT should work. Cybersecurity services that protect sensitive data.',
+  bullet3Title = 'AI-powered operations:',
+  bullet3Body = 'AllSafe Intelligence automates your busywork so your team focuses on high-value tasks. Best IT solutions backed by the EOS (Entrepreneurial Operating System) process delivering clear accountability and consistent results.',
+  imagePath,
+  imageAlt = 'Team lead for Managed Services in California office',
+} = Astro.props;
+---
+
+<section class="section bg-gradient">
+  <div class="container">
+    <div class="section-content">
+      <div class="grid">
+        <div class="content">
+          <h2 class="h3">{heading}</h2>
+          <p class="heading-20" set:html={subheading}></p>
+          <div class="list">
+            <p class="lead-text">{lead}</p>
+            <p class="richtext__paragraphs">We build differently:</p>
+            <ul class="body-text">
+              <li><strong class="block-text">{bullet1Title}</strong> {bullet1Body}</li>
+              <li><strong class="block-text">{bullet2Title}</strong> {bullet2Body}</li>
+              <li><strong class="block-text">{bullet3Title}</strong> {bullet3Body}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="square-image-wrap sticky">
+          <img
+            class="square-parallax-image reversed"
+            src={imagePath ?? photoEmployee.src}
+            alt={imageAlt}
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .richtext__paragraphs {
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+  }
+
+  .block-text {
+    color: var(--color-accent);
+    font-size: var(--text-h6);
+    display: block;
+  }
+
+  .heading-20 {
+    font-size: 1.125rem;
+    line-height: 1.6em;
+    color: var(--color-brand-dark);
+  }
+
+  /* Webflow .list — flex column with 1rem gap between paragraphs/list. */
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* #4: restore Webflow rich-text bullets (Tailwind preflight strips them). */
+  .list ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+  }
+  .list li {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  /* #5: image stacks above the text when the grid collapses on mobile. */
+  @media (max-width: 991px) {
+    .square-image-wrap { order: -1; }
+  }
+</style>

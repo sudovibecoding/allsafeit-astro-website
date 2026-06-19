@@ -1,0 +1,46 @@
+---
+/**
+ * Ebook download page — Co-Managed IT for Manufacturing Industry.
+ *
+ * Same template as /co-managed-it-for-small-businesses-ebook-download,
+ * different content + PDF. Pure composition of reusable components.
+ *
+ * Indexing: noindex.
+ */
+
+import Base from '../layouts/Base.astro';
+import PdfDownloadCard from '../components/sections/PdfDownloadCard.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+
+const COVER_IMAGE = '/images/co-managed-it-manufacturing-cover.avif';
+---
+
+<Base
+  title="Co-Managed IT for Manufacturing Industry Ebook download | AllSafe IT"
+  description="Download our free eBook to learn how co-managed IT services can support the manufacturing industry. Improve efficiency, security, and scalability with expert IT solutions."
+  noindex={true}
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h2">Your FREE e-book is ready for download</h1>
+        <p class="lead-text">
+          Get next-level technologies and their integration into a co-managed IT
+          relationship — written specifically for manufacturing leaders.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <PdfDownloadCard
+    title="Co-Managed IT for Manufacturing Industry"
+    body="Strategies for resilient operations, supply-chain security, and modernizing factory-floor technology with a co-managed IT partner."
+    pdfUrl="/files/co-managed-it-manufacturing.pdf"
+    downloadAs="AllSafe-IT-Co-Managed-IT-Manufacturing.pdf"
+    previewImage={COVER_IMAGE}
+    previewImageAlt="Co-Managed IT for Manufacturing ebook cover"
+    fileSizeText="PDF · 2.0 MB · 18 pages"
+  />
+
+  <TalkToExpertCta />
+</Base>

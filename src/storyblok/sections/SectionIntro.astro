@@ -1,0 +1,21 @@
+---
+import SectionIntro from '../../components/sections/SectionIntro.astro';
+import { renderHeading } from '../../lib/storyblok-heading';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading: unknown;
+    body?: unknown;
+    body_html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const bodyHtml = resolveRichOrHtml(blok.body_html, blok.body);
+const headingHtml = renderHeading(blok.heading, 'h3 long-text');
+---
+
+<SectionIntro headingHtml={headingHtml}>
+  {bodyHtml ? <Fragment set:html={bodyHtml} /> : null}
+</SectionIntro>

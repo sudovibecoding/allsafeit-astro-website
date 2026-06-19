@@ -1,0 +1,34 @@
+---
+import TrustChecklist from '../../../components/sections/TrustChecklist.astro';
+
+interface Props {
+  blok: {
+    heading?: string;
+    image_path?: string;
+    image_alt?: string;
+    item_1_label?: string;
+    item_1_body?: string;
+    item_2_label?: string;
+    item_2_body?: string;
+    item_3_label?: string;
+    item_3_body?: string;
+    item_4_label?: string;
+    item_4_body?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+<TrustChecklist
+  heading={blok.heading}
+  imagePath={blok.image_path}
+  imageAlt={blok.image_alt}
+  item_1_label={blok.item_1_label}
+  item_1_body={blok.item_1_body}
+  item_2_label={blok.item_2_label}
+  item_2_body={blok.item_2_body}
+  item_3_label={blok.item_3_label}
+  item_3_body={blok.item_3_body}
+  item_4_label={blok.item_4_label}
+  item_4_body={blok.item_4_body}
+/>

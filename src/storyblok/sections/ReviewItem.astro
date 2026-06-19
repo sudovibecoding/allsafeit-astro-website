@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { author?: string; quote?: unknown; photo?: unknown };
+}
+---
+
+<div hidden data-review={Astro.props.blok.author} />

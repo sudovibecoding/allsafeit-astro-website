@@ -1,0 +1,11 @@
+---
+import ContentImageSplit from './ContentImageSplit.astro';
+
+interface Props {
+  blok: Parameters<typeof ContentImageSplit>[0]['props']['blok'] & Record<string, unknown>;
+}
+
+const { blok } = Astro.props;
+---
+
+<ContentImageSplit blok={blok} imageRight={false} />

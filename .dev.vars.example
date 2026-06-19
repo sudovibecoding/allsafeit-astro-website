@@ -1,0 +1,13 @@
+# ─────────────────────────────────────────────────────────────────────
+# Wrangler dev secrets — used by `wrangler dev` / `npm run preview`.
+# Same shape as Cloudflare Worker secrets (set via `wrangler secret put`
+# in production). Copy this to `.dev.vars` (gitignored) and fill values.
+#
+# Non-secret config (EMAIL_FROM, APP_ENV, STAGING_EMAIL_OVERRIDE) lives
+# in wrangler.jsonc `vars` so it's committed and visible. Only the API
+# key and captcha secrets belong here.
+# ─────────────────────────────────────────────────────────────────────
+
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TURNSTILE_SECRET=
+RECAPTCHA_SECRET=

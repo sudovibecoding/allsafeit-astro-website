@@ -1,0 +1,108 @@
+---
+interface Phase {
+  number: number;
+  title: string;
+  body: string;
+}
+
+interface Props {
+  heading: string;
+  phases: Phase[];
+  image: string;
+  imageAlt: string;
+  /**
+   * Label rendered before the step number — defaults to "Phase" (the
+   * original onboarding-flow copy). Pass "Step" for generic step-based
+   * processes (e.g. referral programs), or "" to render the number alone.
+   */
+  stepLabel?: string;
+}
+
+const { heading, phases, image, imageAlt, stepLabel = 'Phase' } = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-content">
+      <div class="grid">
+        <div class="justify-vertical">
+          <div class="content">
+            <h2 class="h3" set:html={heading}></h2>
+          </div>
+          <div class="phase-wrapper">
+            {phases.map((phase, i) => (
+              <article
+                class="phase-card"
+                style={`--phase-offset: ${i * 12}px;`}
+              >
+                <p class="h5 phase-title">
+                  <span class="phase-number">
+                    {stepLabel ? `${stepLabel} ${phase.number}:` : `${phase.number}.`}
+                  </span> {phase.title}
+                </p>
+                <p class="body-text">{phase.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+        <div class="square-image-wrap sticky">
+          <img
+            src={image}
+            alt={imageAlt}
+            class="square-parallax-image"
+            width="600"
+            height="600"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Sticky phase cards: each card pins at the top as the user scrolls and
+     the next card slides up over it (Webflow's stacked-step effect). The
+     `--phase-offset` inline custom property (set per card index in markup)
+     gives each card a slightly larger sticky top so they fan out a few
+     pixels of the prior card's title — visually communicates the stack.
+     The parent .phase-wrapper provides the scroll container; no JS needed. */
+  .phase-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  /* Webflow `.phase-card` style: no left accent border (matches live site),
+     subtle drop shadow only — just enough lift to keep the stacked cards
+     visually distinct as they pin into place. */
+  .phase-card {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: sticky;
+    top: calc(var(--navbar-height) + 1.5rem + var(--phase-offset, 0px));
+    box-shadow: 0 2px 8px #00000008;
+  }
+
+  .phase-title {
+    margin: 0;
+    color: var(--color-brand-dark);
+    font-weight: 600;
+  }
+
+  .phase-number {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /* Disable sticky stacking on mobile — the section is tall enough on
+     phones that pinned cards would dominate the viewport. */
+  @media (max-width: 991px) {
+    .phase-card { position: static; box-shadow: none; }
+  }
+</style>

@@ -1,0 +1,34 @@
+---
+import HeroBlogPost from '../../components/sections/HeroBlogPost.astro';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    title?: string;
+    lead?: string;
+    image_path?: string;
+    image_alt?: string;
+    category?: string;
+    publish_date?: string;
+    body?: unknown;
+    body_html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const publishDate = blok.publish_date ? new Date(blok.publish_date) : new Date();
+const categoryHref = blok.category ? `/blog-categories/${blok.category}` : undefined;
+const bodyHtml = resolveRichOrHtml(blok.body_html, blok.body);
+---
+
+<HeroBlogPost
+  title={blok.title ?? ''}
+  lead={blok.lead ?? ''}
+  featuredImage={blok.image_path ?? ''}
+  featuredImageAlt={blok.image_alt ?? ''}
+  category={blok.category ?? ''}
+  categoryHref={categoryHref}
+  publishDate={publishDate}
+>
+  {bodyHtml && <div class="article-richtext body-text" set:html={bodyHtml} />}
+</HeroBlogPost>

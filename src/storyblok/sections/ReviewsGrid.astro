@@ -1,0 +1,34 @@
+---
+import ReviewsGrid from '../../components/sections/ReviewsGrid.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface ReviewBlok {
+  author?: string;
+  quote?: unknown;
+  photo?: { filename?: string; id?: number } | string;
+  image_path?: string;
+}
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    reviews?: ReviewBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+
+const reviews = (blok.reviews ?? [])
+  .map((r) => ({
+    author: r.author ?? '',
+    quote:
+      stripHtmlTags(renderBodyContentInner(r.quote)) ||
+      (typeof r.quote === 'string' ? r.quote : ''),
+    photo: resolveImage(r.photo, r.image_path),
+  }))
+  .filter((r) => r.author && r.quote);
+---
+
+<ReviewsGrid heading={headingPlainText(blok.heading) || undefined} reviews={reviews} />

@@ -1,0 +1,57 @@
+---
+/**
+ * HeroCentered — the dark, centered page hero used on About (and any other
+ * page that needs the same style): a `bg-brand-2` band, full-bleed under the
+ * navbar, with a centered badge + title vertically centered at 80vh.
+ *
+ * Props:
+ *   badge  — optional monospace eyebrow, e.g. "[About us]"
+ *   title  — the heading (HTML allowed, so `<br>` works for multi-line)
+ *
+ * The title wrapper uses the shared `.centered-title` (80% / max 928px /
+ * 100% on ≤991px) so sizing stays consistent across pages.
+ */
+interface Props {
+  badge?: string;
+  title: string;
+}
+
+const { badge, title } = Astro.props;
+---
+
+<div class="hero-centered-wrap">
+  <div aria-hidden="true" style="height: var(--navbar-height)"></div>
+  <section class="section bg-brand-2 hero-centered-section">
+    <div class="container">
+      <div class="centered-title">
+        {badge && <div class="badge-text color__white-shade1">{badge}</div>}
+        <h1 class="h2 text_center color__white-shade1" set:html={title}></h1>
+        <slot />
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  /* Full-bleed hero pulled up under the (translucent) navbar, 80vh tall,
+     with the title block vertically centered. */
+  .hero-centered-wrap {
+    margin-top: var(--navbar-negative-height);
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-centered-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Don't force a tall hero on smaller screens. */
+  @media (max-width: 991px) {
+    .hero-centered-wrap {
+      min-height: auto;
+    }
+  }
+</style>

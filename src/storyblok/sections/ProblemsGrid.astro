@@ -1,0 +1,33 @@
+---
+import ProblemsGrid from '../../components/sections/ProblemsGrid.astro';
+import { renderBodyContentInner, resolveRichOrHtml, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface ProblemBlok {
+  title?: string;
+  body?: unknown;
+  body_html?: string;
+  icon_html?: string;
+}
+
+interface Props {
+  blok: {
+    heading: string;
+    intro: unknown;
+    problems?: ProblemBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+const intro =
+  stripHtmlTags(renderBodyContentInner(blok.intro)) ||
+  (typeof blok.intro === 'string' ? blok.intro : '');
+const problems = (blok.problems ?? []).map((p) => ({
+  title: p.title ?? '',
+  body: resolveRichOrHtml(p.body_html, p.body),
+  icon: p.icon_html,
+}));
+---
+
+{problems.length > 0 && (
+  <ProblemsGrid heading={blok.heading} intro={intro} problems={problems} />
+)}

@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { city?: string; address?: string; city_line?: string };
+}
+---
+
+<div hidden data-contact-location={Astro.props.blok.city} />

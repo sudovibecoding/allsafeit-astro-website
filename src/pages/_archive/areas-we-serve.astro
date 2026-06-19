@@ -1,0 +1,260 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroService from '../components/sections/HeroService.astro';
+import Icon from '../components/primitives/Icon.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+
+const californiaLocations = [
+  { name: 'Pasadena', href: '/locations/managed-it-services-pasadena' },
+  { name: 'Los Angeles', href: '/locations/managed-it-services-los-angeles' },
+  { name: 'Glendale', href: '/it-services-glendale' },
+  { name: 'Burbank', href: '/it-services-burbank' },
+  { name: 'Santa Monica', href: '/it-services-santa-monica' },
+  { name: 'Long Beach', href: '/it-services-long-beach' },
+  { name: 'Culver City', href: '/it-support-culver-city' },
+  { name: 'Torrance', href: '/it-services-torrance' },
+  { name: 'Inglewood', href: '/it-support-inglewood' },
+  { name: 'Anaheim', href: '/it-support-anaheim' },
+  { name: 'Fullerton', href: '/it-services-fullerton' },
+  { name: 'Northridge', href: '/it-services-northridge' },
+  { name: 'San Fernando', href: '/it-support-san-fernando' },
+  { name: 'Pomona', href: '/it-support-pomona' },
+  { name: 'Montebello', href: '/it-support-montebello' },
+  { name: 'Hollywood', href: '/hollywood-it-support' },
+  { name: 'Beverly Hills', href: '/beverly-hills-it-support' },
+  { name: 'Westlake Village', href: '/business-it-support-westlake' },
+  { name: 'Santa Clarita', href: '/it-support-santa-clarita' },
+  { name: 'Newport Beach', href: '/managed-it-services-newport' },
+  { name: 'Irvine', href: '/it-support-irvine' },
+  { name: 'Costa Mesa', href: '/managed-it-services-costa-mesa' },
+  { name: 'Lake Forest', href: '/it-support-lake-forest' },
+  { name: 'Orange County', href: '/locations/managed-it-services-orange-county' },
+  { name: 'North Hollywood', href: null },
+  { name: 'Chatsworth', href: null },
+  { name: 'Whittier', href: null },
+  { name: 'Monterey Park', href: null },
+  { name: 'City of Industry', href: null },
+  { name: 'La Verne', href: null },
+  { name: 'Santa Ana', href: null },
+  { name: 'Monrovia', href: null },
+];
+
+const arizonaLocations = [
+  'Phoenix',
+  'Chandler',
+  'Scottsdale',
+  'Tempe',
+  'Mesa',
+  'Glendale',
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+      { '@type': 'ListItem', position: 2, name: 'Areas We Serve', item: 'https://www.allsafeit.com/areas-we-serve' },
+    ],
+  },
+];
+---
+
+<Base
+  title="Areas We Serve | Managed IT Services Across Southern California & Arizona"
+  description="AllSafe IT provides managed IT services and IT support across Southern California and Arizona, including Los Angeles, Orange County, Pasadena, and Phoenix."
+  canonical="https://www.allsafeit.com/areas-we-serve"
+  schema={schema}
+>
+  <HeroService
+    heading="Areas we serve"
+    lead="AllSafe IT delivers managed IT services, cybersecurity, and strategic IT consulting across Southern California and Arizona. With offices in Pasadena, Los Angeles, and Newport Beach, we're close to the businesses we support."
+  />
+
+  <!-- Location lists -->
+  <section class="section">
+    <div class="container">
+      <div class="section-content">
+        <div class="regions-grid">
+
+          <div class="region">
+            <h2 class="h4 region-heading">California</h2>
+            <ul class="location-list">
+              {californiaLocations.map(loc => (
+                <li class="location-item">
+                  <Icon name="check-circle" class="widget__embed-icons green-icon" />
+                  {loc.href
+                    ? <a href={loc.href} class="location-link">{loc.name}</a>
+                    : <span class="location-text">{loc.name}</span>
+                  }
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="region">
+            <h2 class="h4 region-heading">Arizona</h2>
+            <ul class="location-list">
+              {arizonaLocations.map(city => (
+                <li class="location-item">
+                  <Icon name="check-circle" class="widget__embed-icons green-icon" />
+                  <span class="location-text">{city}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Office maps -->
+  <section class="section bg-gradient">
+    <div class="container">
+      <div class="section-content">
+        <div class="content_grid">
+          <div class="title">
+            <h2 class="h3">Our offices</h2>
+          </div>
+          <div class="content">
+            <p class="lead-text">Three Southern California offices means we're always close to the businesses we serve. Response times stay fast and onsite visits stay practical.</p>
+          </div>
+        </div>
+        <div class="map-grid">
+          <div class="map-card">
+            <div class="map-frame">
+              <iframe
+                src="https://maps.google.com/maps?q=70+S+Lake+Ave+Suite+690+Pasadena+CA+91101&output=embed"
+                width="100%"
+                height="280"
+                style="border:0;"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="AllSafe IT Pasadena office — 70 South Lake Ave"
+              ></iframe>
+            </div>
+            <p class="map-label">Pasadena, California</p>
+            <p class="map-address body-text">70 South Lake Ave, Suite 690, Pasadena CA 91101</p>
+          </div>
+          <div class="map-card">
+            <div class="map-frame">
+              <iframe
+                src="https://maps.google.com/maps?q=AllSafe+IT+Los+Angeles+CA&output=embed"
+                width="100%"
+                height="280"
+                style="border:0;"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="AllSafe IT Los Angeles office"
+              ></iframe>
+            </div>
+            <p class="map-label">Los Angeles, California</p>
+          </div>
+          <div class="map-card">
+            <div class="map-frame">
+              <iframe
+                src="https://maps.google.com/maps?q=AllSafe+IT+Newport+Beach+CA&output=embed"
+                width="100%"
+                height="280"
+                style="border:0;"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="AllSafe IT Newport Beach office"
+              ></iframe>
+            </div>
+            <p class="map-label">Newport Beach, California</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection />
+</Base>
+
+<style>
+  .regions-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .region-heading {
+    margin-bottom: 1.5rem;
+    color: var(--color-brand-dark);
+  }
+
+  .location-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem 2rem;
+  }
+
+  .location-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .location-link {
+    color: var(--color-brand-dark);
+    text-decoration: none;
+    font-size: var(--text-lead);
+    transition: color 0.15s ease;
+  }
+
+  .location-link:hover {
+    color: var(--color-accent);
+  }
+
+  .location-text {
+    color: var(--color-brand-dark);
+    font-size: var(--text-lead);
+  }
+
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: var(--spacing-section-sm);
+  }
+
+  .map-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .map-frame {
+    border-radius: var(--radius-default);
+    overflow: hidden;
+  }
+
+  .map-frame iframe {
+    display: block;
+    width: 100%;
+  }
+
+  .map-label {
+    font-size: var(--text-lead);
+    font-weight: 600;
+    color: var(--color-text-light);
+    margin-top: 0.25rem;
+  }
+
+  .map-address {
+    color: var(--color-text-light);
+    opacity: 0.8;
+  }
+
+  @media (max-width: 991px) {
+    .regions-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .map-grid { grid-template-columns: 1fr; }
+    .location-list { grid-template-columns: 1fr; }
+  }
+</style>

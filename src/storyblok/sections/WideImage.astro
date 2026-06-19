@@ -1,0 +1,24 @@
+---
+import WideImage from '../../components/sections/WideImage.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+
+interface Props {
+  blok: {
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt?: string;
+    background?: 'white' | 'gradient';
+  };
+}
+
+const { blok } = Astro.props;
+const image = resolveImage(blok.image, blok.image_path);
+---
+
+{image && (
+  <WideImage
+    image={image}
+    imageAlt={blok.image_alt ?? ''}
+    background={blok.background ?? 'white'}
+  />
+)}

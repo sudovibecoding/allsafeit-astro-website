@@ -1,0 +1,31 @@
+---
+import BlogGrid from '../../../components/sections/BlogGrid.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+import { fetchBlogPosts } from '../../../lib/storyblok-blog';
+import { storyblokVersion } from '../../../lib/storyblok-fetch';
+
+interface Props {
+  blok: {
+    badge?: string;
+    heading?: string;
+    max_items?: number;
+  };
+}
+
+const { blok } = Astro.props;
+const version = storyblokVersion(Astro.url, import.meta.env.DEV);
+
+let posts: Awaited<ReturnType<typeof fetchBlogPosts>> = [];
+try {
+  const sbApi = useStoryblokApi();
+  posts = await fetchBlogPosts(sbApi, version);
+} catch {
+  /* empty */
+}
+---
+<BlogGrid
+  badge={blok.badge}
+  heading={blok.heading}
+  maxItems={Number(blok.max_items) || 3}
+  posts={posts}
+/>

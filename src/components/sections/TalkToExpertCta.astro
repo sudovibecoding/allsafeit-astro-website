@@ -1,0 +1,129 @@
+---
+/**
+ * TalkToExpertCta — branded "talk to an expert" callout banner.
+ *
+ * Used on ebook-download pages, marketing-CTA pages, and at the end of
+ * long-form landing pages where we don't want to capture an email but
+ * still want a clear path to contact sales.
+ *
+ * Design system fit:
+ *   - Reuses .large-quote-box styling from global.css (blue solid bg)
+ *   - Reuses .h4 / .lead-text typography utilities
+ *   - Reuses the Button primitive (variant: primary on dark bg)
+ *
+ * Mirrors the live Webflow rendering exactly: white AllSafe logo, tagline,
+ * single CTA pointing to /contact-us by default.
+ */
+import logoWhite from '../../assets/logos/allsafeit-white.svg?url';
+
+interface Props {
+  heading?: string;
+  /** Body copy. Plain text. */
+  body?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const {
+  heading = 'Talk to an expert',
+  body =
+    "We're an IT company serving Los Angeles and Orange County. " +
+    'Small enough to know your name. Big enough to have your back.',
+  ctaText = 'Talk to an Expert',
+  ctaHref = '/contact-us',
+} = Astro.props;
+---
+
+<section class="section padding-small">
+  <div class="container">
+    <div class="large-quote-box book">
+      <div class="logo-col">
+        <img
+          src={logoWhite}
+          alt="AllSafe IT"
+          width="160"
+          height="40"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="large-quote-box-text">
+        <div class="content">
+          <h2 class="h4 color__white-shade1">{heading}</h2>
+          <p class="lead-text color__white-shade1">{body}</p>
+        </div>
+        <a href={ctaHref} class="button cta-button">{ctaText}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Column layout: logo on left, content + CTA stacked on right. */
+  .large-quote-box.book {
+    align-items: center;
+    gap: 48px;
+  }
+
+  .logo-col {
+    flex: 0 0 auto;
+    padding-right: 48px;
+    border-right: 1px dotted rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-col img {
+    width: 160px;
+    height: auto;
+  }
+
+  /* The right-hand content + CTA. */
+  .large-quote-box-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Button on dark bg: white-ish surface, brand-blue text. */
+  .cta-button {
+    background-color: var(--color-light-1);
+    color: var(--color-brand-dark);
+    align-self: flex-start;
+  }
+  .cta-button:hover {
+    opacity: 0.9;
+  }
+
+  /* Tablet/mobile: stack vertically, drop the divider. */
+  @media (max-width: 991px) {
+    .large-quote-box.book {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      align-items: center;
+    }
+    .logo-col {
+      padding-right: 0;
+      border-right: none;
+      padding-bottom: 24px;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+      width: 100%;
+    }
+    .large-quote-box-text {
+      align-items: center;
+    }
+    .cta-button {
+      align-self: center;
+    }
+  }
+</style>

@@ -1,0 +1,27 @@
+{
+  "items": [
+    { "type": "auto-services", "label": "IT Services" },
+    { "type": "auto-industries", "label": "Industries" },
+    {
+      "type": "group",
+      "label": "Our Story",
+      "links": [
+        { "label": "About Us", "href": "/about-us" },
+        { "label": "Why Us", "href": "/why-choose-us" },
+        { "label": "Testimonials", "href": "/testimonials" },
+        { "label": "Careers", "href": "/careers" }
+      ]
+    },
+    {
+      "type": "group",
+      "label": "Locations",
+      "links": [
+        { "label": "Pasadena", "href": "/locations/managed-it-services-pasadena" },
+        { "label": "Los Angeles", "href": "/locations/managed-it-services-los-angeles" },
+        { "label": "Orange County", "href": "/locations/managed-it-services-orange-county" }
+      ]
+    },
+    { "type": "link", "label": "Blog", "href": "/blog" }
+  ],
+  "cta": { "label": "Contact Us", "href": "/contact-us" }
+}

@@ -1,0 +1,11 @@
+---
+/**
+ * Homepage — content from Storyblok story slug `home`.
+ * Edit sections in Storyblok → Home → body (drag & drop).
+ */
+export const prerender = false;
+
+import StoryblokStoryPage from '../components/storyblok/StoryblokStoryPage.astro';
+---
+
+<StoryblokStoryPage storySlug="home" includeHomeSchema ebookScript />

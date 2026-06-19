@@ -1,0 +1,128 @@
+---
+/**
+ * TutorialStep — a single step in a how-to / support document.
+ *
+ * Renders as a numbered card with optional screenshot. Used inside
+ * support pages (/how-to-submit-..., /allsafe-app-clear-..., etc.).
+ *
+ * Design system fit:
+ *   - Reuses .body-text / .h5 / .h4 typography tokens
+ *   - Reuses --color-accent for the step number badge
+ *   - Reuses --radius-default for the screenshot frame
+ *
+ * Step content goes via the default <slot> so callers can include
+ * inline links, bold spans, secondary lists, etc. The screenshot is
+ * positional — below the body, full-width inside the step.
+ */
+
+interface Props {
+  stepNumber: number | string;
+  title: string;
+  screenshot?: string;
+  screenshotAlt?: string;
+  /** Optional anchor id so the step can be linked from a TocSidebar. */
+  id?: string;
+}
+
+const { stepNumber, title, screenshot, screenshotAlt = '', id } = Astro.props;
+---
+
+<article class="tutorial-step" id={id}>
+  <header class="tutorial-step-header">
+    <span class="step-number" aria-hidden="true">{stepNumber}</span>
+    <h3 class="h5 bold step-title">{title}</h3>
+  </header>
+
+  <div class="tutorial-step-body body-text">
+    <slot />
+  </div>
+
+  {screenshot && (
+    <figure class="tutorial-step-screenshot">
+      <img
+        src={screenshot}
+        alt={screenshotAlt}
+        loading="lazy"
+      />
+    </figure>
+  )}
+</article>
+
+<style>
+  .tutorial-step {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    scroll-margin-top: calc(var(--navbar-height) + 24px);
+  }
+
+  .tutorial-step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    background-color: var(--color-accent);
+    color: var(--color-light-1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-badges);
+    font-size: var(--text-h6);
+    font-weight: 500;
+  }
+
+  .step-title {
+    margin: 0;
+    color: var(--color-brand-dark);
+  }
+
+  .tutorial-step-body {
+    color: var(--color-text-dark-body);
+  }
+
+  /* Spacing inside slotted content. */
+  .tutorial-step-body :global(p) {
+    margin: 0 0 8px 0;
+  }
+  .tutorial-step-body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .tutorial-step-body :global(ul),
+  .tutorial-step-body :global(ol) {
+    margin: 0;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .tutorial-step-body :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .tutorial-step-body :global(strong) {
+    color: var(--color-brand-dark);
+    font-weight: 600;
+  }
+
+  .tutorial-step-screenshot {
+    margin: 8px 0 0 0;
+    border-radius: var(--radius-default);
+    overflow: hidden;
+    border: 1px solid var(--color-dark-border);
+  }
+  .tutorial-step-screenshot img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

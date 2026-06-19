@@ -1,0 +1,53 @@
+---
+/**
+ * Ebook download page — Co-Managed IT for Small Businesses.
+ *
+ * Shown after a user submits the email-capture form on
+ * /co-managed-it-for-small-businesses-ebook. Surfaces the PDF for download.
+ *
+ * Composed entirely from existing/new design-system components:
+ *   - Base layout for SEO/head/navbar/footer
+ *   - inline compact hero (centered-title utility)
+ *   - PdfDownloadCard for the download CTA
+ *   - TalkToExpertCta for the closing brand banner
+ *
+ * Indexing: noindex — landing page, not for search.
+ */
+
+import Base from '../layouts/Base.astro';
+import PdfDownloadCard from '../components/sections/PdfDownloadCard.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+
+// Webflow's original cover image (filename includes spaces — URL-encode when referencing)
+const COVER_IMAGE = '/images/co-managed-it-small-businesses-cover.avif';
+---
+
+<Base
+  title="Co-Managed IT for Small Businesses ebook download | AllSafe IT"
+  description="Discover how co-managed IT services can help small businesses thrive. Get your free eBook and explore solutions for better security, productivity, and IT support."
+  noindex={true}
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h2">Your FREE e-book is ready for download</h1>
+        <p class="lead-text">
+          Discover how AI and automation are revolutionizing IT management
+          for small businesses — and what that means for your bottom line.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <PdfDownloadCard
+    title="Co-Managed IT for Small Businesses"
+    body="A practical guide covering co-managed services, AI &amp; automation, provider selection, and aligning IT strategy with business goals."
+    pdfUrl="/files/co-managed-it-small-businesses.pdf"
+    downloadAs="AllSafe-IT-Co-Managed-IT-Small-Businesses.pdf"
+    previewImage={COVER_IMAGE}
+    previewImageAlt="Co-Managed IT for Small Businesses ebook cover"
+    fileSizeText="PDF · 2.9 MB · 24 pages"
+  />
+
+  <TalkToExpertCta />
+</Base>

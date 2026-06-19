@@ -1,0 +1,233 @@
+---
+import Base from '../../layouts/Base.astro';
+import HeroService from '../../components/sections/HeroService.astro';
+import IntroSplit from '../../components/sections/IntroSplit.astro';
+import ProblemsGrid from '../../components/sections/ProblemsGrid.astro';
+import NumberedListSplit from '../../components/sections/NumberedListSplit.astro';
+import ServiceCardGrid from '../../components/sections/ServiceCardGrid.astro';
+import Tabs from '../../components/sections/Tabs.astro';
+import IndustriesGrid from '../../components/sections/IndustriesGrid.astro';
+import WhyChooseAccordion from '../../components/sections/WhyChooseAccordion.astro';
+import OnboardingProcess from '../../components/sections/OnboardingProcess.astro';
+import ServiceAreas from '../../components/sections/ServiceAreas.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
+import ContactSection from '../../components/sections/ContactSection.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { ONBOARDING_PHASES, MAP_EMBEDS, PROBLEM_ICONS as ICONS } from '../../data/locations-shared';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+    { '@type': 'ListItem', position: 2, name: 'Managed IT Services Los Angeles', item: 'https://www.allsafeit.com/locations/managed-it-services-los-angeles' },
+  ],
+};
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'AllSafe IT — Los Angeles',
+  url: 'https://www.allsafeit.com/locations/managed-it-services-los-angeles',
+  telephone: '+1-888-400-2748',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '1800 Vine St',
+    addressLocality: 'Los Angeles',
+    addressRegion: 'CA',
+    postalCode: '90028',
+    addressCountry: 'US',
+  },
+};
+
+const problems = [
+  { title: 'System Failures Stopping Production', body: 'Proactive monitoring and redundant infrastructure catch failures before they trigger outages. Core systems crash, medical facilities lose patient access, billing platforms freeze. LA businesses lose revenue by the minute when monitoring isn\'t catching early warnings. We prevent downtime before it costs you thousands.', icon: ICONS.wifi },
+  { title: 'Cyber Threats Targeting Business Data', body: 'Real managed cybersecurity services Los Angeles organizations need demand 24/7 threat detection and active response, not basic antivirus sitting idle. Phishing campaigns fool careful employees. Ransomware encrypts data within minutes. For Los Angeles businesses under HIPAA or CCPA mandates, we implement audited security controls delivering compliance support and proving data stays protected.', icon: ICONS.shield },
+  { title: 'Unpredictable IT costs', body: 'Flat-rate IT managed services Los Angeles companies trust eliminate surprise costs and deliver predictable monthly planning. We\'ve seen Los Angeles County organizations paying for unused licenses and redundant platforms burning budget. We optimize what you have, eliminate waste, align spending with actual business value, and help reduce costs significantly.', icon: ICONS.dollar },
+  { title: 'Regulatory Compliance Requirements', body: 'SOC 2 certification proves we understand rigorous compliance frameworks firsthand. Healthcare organizations need HIPAA. California businesses face CCPA requirements. Retail handles PCI DSS. Defense contractors navigate CMMC. We document controls and provide audit-ready evidence when regulators arrive.', icon: ICONS.doc },
+  { title: 'Emergency Response Taking Too Long', body: 'Hollywood headquarters means onsite support reaches Downtown Los Angeles, Santa Monica, Beverly Hills within minutes. For remote work, we respond quickly with actual technical expertise understanding your IT environment completely. Zero automated systems. Zero delays fighting LA traffic.', icon: ICONS.bolt },
+  { title: 'Internal IT Team Running Out of Capacity', body: 'Co managed IT services los angeles teams value delivers both advantages. Your internal team retains control over strategy while we provide round-the-clock network support, specialized skills, and enterprise security services. Greater Los Angeles organizations have scaled from 50 to 200-plus staff without expanding IT headcount using this model.', icon: ICONS.people },
+  { title: 'Infrastructure Blocking Business Growth', body: 'We assess current configurations, identify capacity bottlenecks, build IT infrastructure scaling efficiently as your business grows. When LA companies expand rapidly, cloud environments fail and security gaps emerge. We execute migrations supporting growth without disrupting smooth operations or forcing zero downtime objectives to slip.', icon: ICONS.growth },
+];
+
+const lookForItems = [
+  { term: 'Track record and stability.', body: 'Client retention reveals truth. Examine how long customers stay, actual service levels achieved, operational stability demonstrated over years.' },
+  { term: 'SOC 2 compliance.', body: 'Independent third-party audits validate security controls continuously. This certification represents meaningful differentiation in the Los Angeles area market.' },
+  { term: 'Security operations, not just software.', body: 'Cyber threats targeting your organization come from human attackers. Your services provider needs managed detection with active threat hunting, not merely monitoring tools generating alerts.' },
+  { term: 'Growth expertise.', body: 'Can they handle expansion plans? Multiple locations, rapid scaling, cloud migrations. They should have guided similar companies through comparable transitions toward business goals.' },
+  { term: 'Local presence.', body: 'Response time to your Los Angeles office measured in minutes matters. Physical proximity delivers timely support and onsite assistance when remote fixes won\'t work.' },
+  { term: 'Compliance experience.', body: 'If HIPAA, PCI DSS, or CMMC govern your work, your managed service provider needs proven experience navigating those frameworks successfully.' },
+  { term: 'Transparent pricing.', body: 'Understand costs, what\'s included, what triggers additional charges before signing agreements. Quality partners explain this upfront.' },
+];
+
+const coveragePanels = [
+  {
+    heading: 'Modern Security for Modern Threats',
+    intro: 'Today\'s cybersecurity challenges require more than traditional defenses. We provide layered protection for Los Angeles organizations.',
+    table: [
+      { label: 'Safe Cloud', body: 'Microsoft 365 monitoring catching suspicious logins, business email compromise, AI-powered attacks that bypass standard security models' },
+      { label: 'Safe Endpoint', body: 'Endpoint security for every device. Essential for hybrid teams across Hollywood, Downtown LA, and remote locations throughout Los Angeles County' },
+      { label: 'Managed Detection & Response', body: 'Real humans watching your network 24/7. When threats emerge, we respond immediately' },
+    ],
+    paragraphs: ['Proactive security maintains operations running smoothly. Your sensitive data stays yours. You focus on winning.'],
+  },
+  {
+    heading: 'Technology as a Growth Engine (AllSafe Intelligence)',
+    intro: 'Right technology multiplies what teams accomplish. That\'s AllSafe Intelligence.',
+    paragraphs: [
+      'We\'ve observed LA production companies where editorial teams spend hours managing file transfers instead of cutting footage. Legal firms where attorneys handle document formatting. Manufacturing operations where engineers manage data entry.',
+      'We find opportunities. Audit workflows identifying high-impact automation targets. Build tailored solutions. Real AI agents integrating with your existing systems delivering measurable results. Implement seamlessly. We understand your IT environment, meaning smoother deployments and faster value delivery.',
+    ],
+  },
+  {
+    heading: 'Co-Managed IT Services in Los Angeles',
+    intro: 'Your team. Our support. Complete coverage.',
+    paragraphs: [
+      'You\'ve built internal IT capability functioning well. Scaling introduces challenges. Coverage gaps emerge. Specialized projects arise. Security demands exceed capacity.',
+      'Co managed IT services in Los Angeles means partnership, not replacement. Your internal team retains control while we provide 24/7 monitoring, specialized expertise, project support through standardized processes. This model delivers enterprise capabilities without enterprise overhead.',
+    ],
+  },
+  {
+    heading: 'Outsourced IT Support (Help Desk)',
+    intro: 'IT support that actually answers. Fast.',
+    paragraphs: [
+      'Teams shouldn\'t wait when technology stops functioning. Our helpdesk support responds with real people delivering solutions. Not recordings. Not ticket systems generating delays. Your team shouldn\'t wait on hold when technology stops working. Our helpdesk support responds with real people who can help. Not a recording, not a ticket system. We handle everything from basic troubleshooting to complex issues with rapid response for critical problems.',
+      'We handle everything from basic troubleshooting to complex issues requiring rapid response. Fully managed IT support executed properly means proactive approach catches problems before teams notice them and helps improve uptime while operational efficiency increases.',
+    ],
+  },
+];
+
+// Build tab items from panels: intro paragraph + optional table + remaining
+// paragraphs joined as HTML for the Tabs component's set:html slot.
+const coverageTabs = coveragePanels.map((p) => {
+  const intro = `<p class="panel-intro">${p.intro}</p>`;
+  const table = p.table
+    ? `<div class="coverage-table">
+         <div class="coverage-row coverage-row__head">
+           <div>Solution</div><div>What it does</div>
+         </div>
+         ${p.table
+           .map(
+             (r) =>
+               `<div class="coverage-row"><div class="coverage-label">${r.label}</div><div>${r.body}</div></div>`,
+           )
+           .join('')}
+       </div>`
+    : '';
+  const paragraphs = (p.paragraphs ?? []).map((s) => `<p>${s}</p>`).join('');
+  return { label: p.heading, content: `${intro}${table}${paragraphs}` };
+});
+
+const whyChooseItems = [
+  { label: 'SOC 2 compliant', body: 'We prove security standards through independent third-party audits annually. This certification demonstrates commitment to protecting your organization.' },
+  { label: 'Rapid onsite support', body: 'Downtown LA, West Hollywood, Santa Monica, Beverly Hills, Culver City. At your location in minutes when you need personalized support addressing specific tasks.' },
+  { label: 'AI consulting built in', body: 'AllSafe Intelligence helps you leverage technology for growth, not just operations. Value beyond traditional IT managed service providers los angeles offers.' },
+  { label: 'Recognized by industry leaders', body: 'Channel Futures MSP 501 and CRN MSP 500 recognize our excellence. BBB A+ accreditation reflects customer satisfaction standards.' },
+  { label: 'Co-managed options', body: 'Have an IT manager? We provide the team and resources they need to focus on strategy while we handle specific tasks requiring specialized expertise.' },
+];
+
+const faqs = [
+  { q: 'How much do managed IT services cost in Los Angeles?', a: 'Managed IT services in Los Angeles typically use flat-rate monthly pricing based on user count and service level required. You get a full expert team for less than hiring one internal IT manager. Predictable costs simplify budgeting and help reduce costs while maintaining quality. Pricing depends on company size, complexity of IT systems, and specific managed services needed.' },
+  { q: 'What are the benefits of managed IT services for small business owners in Los Angeles?', a: 'Small business managed IT services provide continuous monitoring, proactive maintenance, rapid helpdesk response, enterprise-grade security, and strategic planning without hiring full-time staff. Your team gets specialized expertise the moment they need it with predictable monthly costs. Benefits include improved uptime, disaster recovery protection, and zero downtime objectives that keep operations running smoothly.' },
+  { q: 'How does co-managed IT in Los Angeles differ from fully managed IT?', a: 'Co managed it services los angeles means we work alongside your existing internal team through standardized processes. We provide backup coverage, specialized expertise, 24/7 network support while your team retains control and handles strategic decisions. Fully managed means we handle your complete IT environment as your dedicated services provider. Both deliver enterprise capabilities without enterprise overhead.' },
+  { q: 'Do you understand the compliance needs of Los Angeles businesses?', a: 'Yes. We\'re SOC2 certified, demonstrating we understand rigorous compliance frameworks through independent audits. We work with HIPAA for healthcare, CCPA for California organizations, PCI DSS for retail, and industry-specific mandates. Our security practices undergo independent verification annually to ensure compliance support meets current standards.' },
+  { q: 'How quickly can managed IT services near me in Los Angeles respond?', a: 'We\'re headquartered in Hollywood. Onsite response to greater los angeles locations is measured in minutes, not hours. For remote support, we respond immediately day or night. Our local presence helps prevent downtime and minimize downtime before it impacts business operations or affects operational efficiency.' },
+  { q: 'Can you work with our existing internal IT team?', a: 'Absolutely. Co-managed IT models let your internal team retain control over strategy and decision-making while we provide 24/7 monitoring, specialized security expertise, and support for specific tasks. This partnership approach gives your team the resources they need without replacing the institutional knowledge they\'ve built.' },
+];
+---
+
+<Base
+  title="Managed IT Services Los Angeles | AllSafe IT"
+  description="Expert managed IT services in Los Angeles. 7x CRN MSP 500 winner, 24/7 cybersecurity, cloud and proactive support. SOC 2 certified. Free IT assessment."
+  canonical="https://www.allsafeit.com/locations/managed-it-services-los-angeles"
+  schema={[breadcrumbSchema, localBusinessSchema]}
+>
+  <HeroService
+    heading="Managed IT Services Los Angeles"
+    lead={[
+      "You're tired of talking about tech support. We hear that. It's time for tech to support you.",
+      "AllSafe IT operates from 1800 North Vine Street in Hollywood. We deliver SOC 2-compliant managed IT services Los Angeles companies depend on, enterprise-grade cyber security, and AllSafe Intelligence. Complete technology coverage from a single trusted partner.",
+    ]}
+    image="/images/losangeles.webp"
+    imageAlt="AllSafe IT Los Angeles Hollywood office — managed IT services"
+  />
+
+  <div class="container">
+    <Breadcrumb crumbs={[{ label: 'Home', href: '/' }, { label: 'Managed IT Services Los Angeles' }]} />
+  </div>
+
+  <IntroSplit
+    heading="Top-Rated Managed Services Provider in Los Angeles"
+    body="AllSafe IT has powered Los Angeles businesses for over two decades from our Hollywood headquarters. We manage IT infrastructure, eliminate cyber threats, and build AI solutions turning technology into competitive advantage. SOC2 certified, meaning independent auditors verify our security practices annually. This certification separates us in the Los Angeles market. Your technology should drive your mission forward. We make certain it does."
+    image="/images/allsafeitdreamteam.jpg"
+    imageAlt="our team of it professionals providing managed IT services Los Angeles near Hollywood Vine Street."
+  />
+
+  <ProblemsGrid
+    heading="Problems We Solve for Businesses in Los Angeles"
+    intro="We've partnered with Los Angeles businesses across every sector. These challenges we address."
+    problems={problems}
+  />
+
+  <NumberedListSplit
+    heading="What to look for in a Los Angeles Managed IT Services Provider"
+    intro="Seven things that matter when choosing Los Angeles managed IT services."
+    items={lookForItems}
+    outro="The right managed IT services in Los Angeles doesn't just keep operations running smoothly. They invest in your success and align with growth trajectories."
+    image="/images/managedIThollywood.avif"
+    imageAlt="Top managed IT services provider in Los Angeles County"
+  />
+
+  <ServiceCardGrid
+    heading="Complete Los Angeles Managed IT, Security, and AI Solutions"
+    lead="Five service pillars, one trusted partner."
+  />
+
+  {/* Webflow `.tabs-2` — slim no-framework tabbed coverage panel, lazy-loaded. */}
+  <section class="section bg-gradient">
+    <div class="container">
+      <div class="section-content">
+        <div class="centered-title">
+          <h2 class="h3 text_center">Complete IT Coverage, One Trusted Partner</h2>
+          <p class="lead-text text_center">Technology performs best as integrated systems. Managed IT keeps you operational. Cybersecurity keeps you protected. AI multiplies what teams achieve daily.</p>
+        </div>
+        <Tabs tabs={coverageTabs} initial={0} />
+      </div>
+    </div>
+  </section>
+
+  <IndustriesGrid />
+
+  <WhyChooseAccordion
+    heading="Why choose Us for Managed IT Services in Los Angeles"
+    intro="<strong>Headquartered in Hollywood.</strong> Local engineers and faster response create stronger partnerships. We're your neighbors at 1800 North Vine Street, Los Angeles, CA 90028."
+    items={whyChooseItems}
+    image="/images/ITsupportconsultation.avif"
+    imageAlt="IT professional offering expert IT support los angeles"
+    imageLeft
+  />
+
+  <OnboardingProcess
+    heading={`AllSafe IT Client <br>Onboarding Process`}
+    phases={ONBOARDING_PHASES}
+    image="/images/DSC_1927DSC_1926.avif"
+    imageAlt="reliable Co managed IT services in los angeles"
+  />
+
+  <ServiceAreas
+    heading="Serving Los Angeles and Beyond"
+    mapEmbedUrl={MAP_EMBEDS.losAngeles}
+    addressLine={`AllSafe IT serves Los Angeles from our office at <a href="https://www.google.com/maps?cid=799320151804313567" target="_blank" rel="noopener">1800 North Vine Street, Los Angeles</a>, CA 90028, in Hollywood. We're located directly across from the <a href="https://maps.app.goo.gl/rcLcHwkm7n9tM4XR9" target="_blank" rel="noopener">Capitol Records Building</a> and within walking distance of the <a href="https://walkoffame.com/" target="_blank" rel="noopener">Hollywood Walk of Fame</a> and <a href="https://www.broadwayinhollywood.com/venues/detail/pantagestheatre" target="_blank" rel="noopener">Pantages Theatre</a>.`}
+    pinLabel="Los Angeles, California"
+    bg="gradient"
+  >
+    <p>Our dedicated teams provide managed IT and IT support services throughout Los Angeles and surrounding business hubs. We deliver rapid onsite response to Downtown Los Angeles (90012, 90013, 90014, 90015), <a href="/hollywood-it-support">Hollywood</a> (90028, 90038), West Hollywood (90069), <a href="/it-services-santa-monica">Santa Monica</a> (90401, 90402, 90403), <a href="/beverly-hills-it-support">Beverly Hills</a> (90210, 90211, 90212), <a href="/it-support-culver-city">Culver City</a> (90230, 90232), <a href="/it-services-burbank">Burbank</a> (91501, 91502, 91504, 91505, 91506), and the <a href="/it-support-san-fernando">San Fernando Valley</a>.<br />We also extend our service coverage to <a href="/locations/managed-it-services-pasadena">Pasadena</a>, <a href="/it-services-glendale">Glendale</a>, <a href="/it-services-torrance">Torrance</a>, <a href="/it-services-long-beach">Long Beach</a>, and throughout Los Angeles County.</p>
+    <p>This local coverage delivers fast response when issues cannot wait. LA traffic is real. Being headquartered here matters for timely support.</p>
+    <p>With a nearby team that understands the area and your business environment, you get timely support that keeps core systems running and staff productive. Choose a managed service provider in Los Angeles that is close by, responsive, and ready to support you.</p>
+  </ServiceAreas>
+
+  <FaqSection faqs={faqs} heading="Common Questions About Managed IT Services in Los Angeles" />
+  <ContactSection />
+</Base>
+{/* `.coverage-table` styles for the Tabs section live in `src/styles/global.css`
+    — shared across all three location pages. */}

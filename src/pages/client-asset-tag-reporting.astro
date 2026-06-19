@@ -1,0 +1,204 @@
+---
+/**
+ * Client Asset Tag Reporting — internal/ops support doc.
+ *
+ * Mixed layout:
+ *   - Hero with asset-tag closeup image
+ *   - 3-column placement-diagram grid (laptop, desktop, all-in-one)
+ *   - 4-step application tutorial (TutorialStep)
+ *   - Reporting form (DEDICATED AssetTagReportingForm — replaces the generic
+ *     ContactSection. Webflow uses a Basin iframe here; we replicate with a
+ *     native form that matches the page's reporting workflow.)
+ *   - Accreditations row at bottom
+ */
+
+import Base from '../layouts/Base.astro';
+import TutorialStep from '../components/sections/TutorialStep.astro';
+import AssetTagReportingForm from '../components/forms/AssetTagReportingForm.astro';
+import Accreditations from '../components/sections/Accreditations.astro';
+
+const SUPPORT_PHONE = 'tel:+12137841959';
+const SUPPORT_EMAIL = 'mailto:info@allsafeit.com';
+
+const placements = [
+  {
+    label: 'Laptop',
+    description: 'Below the keyboard, just to the left of the trackpad.',
+    image: '/images/asset-tag-placement-laptop1-768x585_1asset-tag-placement-laptop1-768x585.avif',
+    alt: 'Asset tag placement on a laptop',
+  },
+  {
+    label: 'Desktop',
+    description: 'Front left corner of the top surface, where it\'s clearly visible.',
+    image: '/images/asset-tag-placement-desktop1-768x585_1asset-tag-placement-desktop1-768x585.avif',
+    alt: 'Asset tag placement on a desktop tower',
+  },
+  {
+    label: 'All-in-One',
+    description: 'Bottom left corner of the monitor front, just below the screen.',
+    image: '/images/asset-tag-placement-allinone1-768x585_1asset-tag-placement-allinone1-768x585.avif',
+    alt: 'Asset tag placement on an all-in-one computer',
+  },
+];
+---
+
+<Base
+  title="Client Asset Tag Reporting – AllSafe IT Forms"
+  description="Discover AllSafe IT's efficient asset tag reporting system. Barcode-enabled for seamless identification."
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1 class="h2">Client asset tag reporting</h1>
+          <p class="lead-text">
+            Asset tags are <strong>blue rectangular stickers</strong> with a
+            barcode and a 6-digit identifier. They live on each computer we
+            manage so we can track hardware accurately.
+          </p>
+        </div>
+        <div class="hero-image">
+          <img
+            src="/images/AssetTagCloseup_1AssetTagCloseup.avif"
+            alt="Close-up photograph of an AllSafe IT asset tag"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h2 class="h3">Asset tag placement</h2>
+        <p class="lead-text">Use these placement rules so anyone on your team can find the tag at a glance.</p>
+      </div>
+      <div class="placement-grid">
+        {placements.map((p) => (
+          <article class="placement-card">
+            <img src={p.image} alt={p.alt} loading="lazy" />
+            <h3 class="h5 bold">{p.label}</h3>
+            <p class="body-text">{p.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h2 class="h3">Asset tag application</h2>
+      </div>
+      <div class="tutorial-steps">
+        <TutorialStep stepNumber={1} title="Clean and dry the application area">
+          <p>Wipe the surface so the adhesive bonds cleanly. Skip any cloth that leaves residue.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={2} title="Apply the tag — keep clear of air vents">
+          <p>Don't cover ventilation grills or labels you may need later. Use the recommended placement zones above.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={3} title="Photograph the tagged device">
+          <p>One clear photo showing the tag in place — we'll match it to your reporting submission.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={4} title="Complete the reporting form below">
+          <p>Fill in the device details and attach the photo via the form. We'll log it against your inventory.</p>
+        </TutorialStep>
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title" style="margin-bottom: 32px;">
+        <h2 class="h3">Submit your asset tag report</h2>
+        <p class="lead-text">
+          Tell us about the device and we'll log it against your inventory.
+        </p>
+      </div>
+      <AssetTagReportingForm />
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h2 class="h4">Have additional questions?</h2>
+        <p class="body-text">
+          Call <a href={SUPPORT_PHONE}>+1 (213) 784-1959</a> or email
+          <a href={SUPPORT_EMAIL}>info@allsafeit.com</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Accreditations
+    heading="Recognized industry-wide"
+    body="AllSafe IT is trusted by industry leaders and recognized by award organizations across the IT services landscape."
+  />
+</Base>
+
+<style>
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-default);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  }
+  .placement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  .placement-card {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .placement-card img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-default);
+  }
+  .placement-card h3 {
+    margin: 0;
+    color: var(--color-brand-dark);
+  }
+  .tutorial-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: var(--container-8col);
+    margin: 32px auto 0;
+  }
+  .centered-title a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+  @media (max-width: 991px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .placement-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

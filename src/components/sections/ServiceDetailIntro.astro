@@ -1,0 +1,63 @@
+---
+/**
+ * Section under the hero on a service-detail page — renders the
+ * Webflow CMS "Overview of content" field.
+ *
+ * Layout per Webflow source:
+ *   - Breadcrumb is rendered INSIDE the section but OUTSIDE the container.
+ *   - Container then holds `.section-content.horizontal` with:
+ *       - `.title` block: `[summary]` badge + H2 templated from category/title
+ *       - `.article.topintro` richtext (HTML allowed via set:html)
+ *
+ * Per the recent CMS consolidation, the prop is named `overview` (was
+ * `topIntro` — a duplicate). Existing MDX files that still hold a
+ * `topIntro:` key in frontmatter remain readable; the page template
+ * falls back to it if `overview` is empty.
+ */
+import Breadcrumb from '../Breadcrumb.astro';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  'managed-it': 'Managed IT',
+  cybersecurity: 'Cybersecurity',
+  'it-consulting': 'IT Consulting',
+  'it-infrastructure-and-cloud': 'IT Infrastructure & Cloud',
+};
+
+interface Props {
+  category: string;
+  title: string;
+  /** Webflow CMS "Overview of content". Plain text or inline HTML. */
+  overview: string;
+}
+
+const { category, title, overview } = Astro.props;
+
+const categoryLabel = CATEGORY_LABELS[category] ?? category;
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: categoryLabel, href: `/services/${category}` },
+  { label: title },
+];
+---
+
+<section class="section padding-top-small bg-gradient">
+  <div class="container detail-breadcrumb-container">
+    <Breadcrumb crumbs={crumbs} />
+  </div>
+
+  <div class="container">
+    <div class="section-content horizontal">
+      <div class="title">
+        <div class="badge-text">[summary]</div>
+        <h2 class="h3">Overview of AllSafe IT's {title} solutions</h2>
+      </div>
+      <div class="article topintro article-richtext" set:html={overview}></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .detail-breadcrumb-container {
+    margin-bottom: 0.5rem;
+  }
+</style>

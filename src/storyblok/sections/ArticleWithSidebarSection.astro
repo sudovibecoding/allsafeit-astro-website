@@ -1,0 +1,20 @@
+---
+import ArticleWithSidebar from '../../components/sections/ArticleWithSidebar.astro';
+import ContactSidebar from '../../components/sections/ContactSidebar.astro';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    body?: unknown;
+    body_html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const bodyHtml = resolveRichOrHtml(blok.body_html, blok.body);
+---
+
+<ArticleWithSidebar>
+  {bodyHtml && <div class="article-richtext body-text" set:html={bodyHtml} />}
+  <ContactSidebar slot="sidebar" />
+</ArticleWithSidebar>

@@ -1,0 +1,96 @@
+---
+import HeroCentered from '../../components/sections/HeroCentered.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ContactSection from '../../components/sections/ContactSection.astro';
+import BlogPostsGrid from '../../components/sections/BlogPostsGrid.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+import { fetchBlogPosts } from '../../lib/storyblok-blog';
+import { storyblokVersion } from '../../lib/storyblok-fetch';
+
+const version = storyblokVersion(Astro.url, import.meta.env.DEV);
+
+let sorted: Awaited<ReturnType<typeof fetchBlogPosts>> = [];
+try {
+  const sbApi = useStoryblokApi();
+  sorted = await fetchBlogPosts(sbApi, version);
+} catch {
+  /* empty */
+}
+
+const categories = [
+  ...new Set(
+    sorted
+      .map((p) => p.content.blog_category)
+      .filter((category): category is string => Boolean(category)),
+  ),
+].sort();
+const selectedCategory = (Astro.url.searchParams.get('category') ?? '').trim();
+const filtered = selectedCategory
+  ? sorted.filter((p) => p.content.blog_category === selectedCategory)
+  : sorted;
+
+function prettyCategory(slug: string) {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join(' ');
+}
+---
+
+<HeroCentered badge="[Here's what's new]" title="News & Industry Insight">
+  <p class="lead-text text_center color__white-shade1">
+    We help businesses scale sustainable operations through strategy, technology, and deep industry expertise.
+  </p>
+</HeroCentered>
+
+<section class="section padding-small">
+  <div class="container">
+    <Breadcrumb crumbs={[{ label: 'Home', href: '/' }, { label: 'Blogs' }]} />
+    <form class="blog-filter" method="get">
+      <label for="blog-category-filter" class="badge-text">Filter by category</label>
+      <select
+        id="blog-category-filter"
+        name="category"
+        onchange="this.form.submit()"
+      >
+        <option value="">All categories</option>
+        {categories.map((category) => (
+          <option value={category} selected={category === selectedCategory}>
+            {prettyCategory(category)}
+          </option>
+        ))}
+      </select>
+    </form>
+
+    {filtered.length > 0 ? (
+      <BlogPostsGrid posts={filtered} />
+    ) : (
+      <p class="body-text">No blog posts found.</p>
+    )}
+  </div>
+</section>
+
+<style is:global>
+  .blog-filter {
+    margin: 1.25rem 0 2rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .blog-filter select {
+    border: 1px solid var(--color-dark-border);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--text-body);
+    background: #fff;
+    min-width: 220px;
+  }
+  @media (max-width: 991px) {
+    .blog-filter {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+  }
+</style>

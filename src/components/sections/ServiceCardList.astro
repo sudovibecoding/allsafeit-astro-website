@@ -1,0 +1,160 @@
+---
+/**
+ * ServiceCardList — "Core Services" 3-up card grid used on the four service
+ * pillar pages. Matches Webflow `.light-card` inside `.services-list`:
+ *
+ *   ┌──────────────────────────────┐
+ *   │ Heading (.card-header, dark) │
+ *   │                              │
+ *   │ Paragraph (.card-paragraph)  │
+ *   │                              │
+ *   │ Learn more →   (link + arrow)│
+ *   └──────────────────────────────┘
+ *
+ * Each card always renders a "Learn more →" link. If the page doesn't supply
+ * a per-item href, the card falls back to `defaultHref` (typically the
+ * pillar's contact / overview URL) so the affordance is never broken.
+ */
+import Icon from '../primitives/Icon.astro';
+
+export interface ServiceItem {
+  title: string;
+  description: string;
+  /** Optional per-item URL. Falls back to `defaultHref` when omitted. */
+  href?: string;
+  /** Optional CTA label override (defaults to "Learn more"). */
+  cta?: string;
+}
+
+interface Props {
+  heading?: string;
+  lead?: string;
+  items: ServiceItem[];
+  /** Fallback URL for any item missing an href. */
+  defaultHref?: string;
+}
+
+const {
+  heading = 'Core Services',
+  lead = '',
+  items,
+  defaultHref = '/contact-us',
+} = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-content">
+      <div class="centered-title">
+        <h2 class="h3 text_center"><strong>{heading}</strong></h2>
+        {lead && <p class="lead-text text_center">{lead}</p>}
+      </div>
+      <div class="cards-grid">
+        {items.map(item => (
+          <a href={item.href ?? defaultHref} class="light-card">
+            <div class="card-inner">
+              <h3 class="card-header color__darkblue">{item.title}</h3>
+              <p class="card-paragraph">{item.description}</p>
+            </div>
+            <div class="button-flex">
+              <span class="badge-text hover-text-link-label color__lightblue">
+                {item.cta ?? 'Learn more'}
+              </span>
+              <Icon name="arrow-right" class="small_icon color__lightblue" />
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Don't re-define `.centered-title` here — the global rule
+     (src/styles/global.css line 546) already gives Webflow's exact spec:
+     `width: 80%; max-width: var(--container-8col)`, centered, 1rem gap.
+     Just spacing-below the title block before the cards. */
+  .centered-title {
+    margin-bottom: 3rem;
+  }
+
+  /* Webflow `.services-list` — `grid-column/row-gap: 16px`. Not 1.5rem. */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  /* Webflow `.light-card` — `padding: 1rem`, `gap: 1rem`, light-1 fill.
+     Click target is the whole card so visitors don't have to aim at a
+     tiny "Learn more" link. */
+  .light-card {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  .light-card:hover {
+    background-color: var(--color-light-1);
+    transform: translateY(-2px);
+  }
+
+  .card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Webflow `.card-header.color__darkblue` — uses the h4 type-scale (32px).
+     Our previous H6 (20px) was visibly smaller than the Webflow render. */
+  .card-header {
+    margin: 0;
+    font-family: var(--font-headings);
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4, 1.2);
+    font-weight: 600;
+    color: var(--color-brand-dark);
+  }
+
+  /* Webflow `.card-paragraph.color__darkblue` — body-lead size, dark text. */
+  .card-paragraph {
+    margin: 0;
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    color: var(--color-text-dark-body);
+  }
+
+  /* Webflow `.button-flex` — label + arrow row. The arrow nudges right on
+     hover to telegraph the link affordance (Webflow does this via a custom
+     interaction; we use CSS). */
+  .button-flex {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hover-text-link-label {
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .light-card:hover .hover-text-link-label { color: var(--color-brand-dark); }
+  .small_icon {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    transition: transform 0.2s ease;
+  }
+  .light-card:hover .small_icon { transform: translateX(4px); }
+
+  @media (max-width: 991px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 767px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>

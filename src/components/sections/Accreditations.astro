@@ -1,0 +1,115 @@
+---
+interface Badge {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  /** Per-city narrative paragraph. HTML allowed for inline anchors. */
+  body: string;
+  /** Optional section heading override. Defaults to "Accreditations". */
+  heading?: string;
+  /**
+   * Optional badge override array. When omitted, renders the default
+   * 4-badge accreditations set (Clutch, UpCity, HIPAA). T1 ebook
+   * landings pass a larger 8-badge awards set via this prop.
+   */
+  badges?: readonly Badge[];
+}
+
+const DEFAULT_BADGES: readonly Badge[] = [
+  {
+    src: '/images/top_clutch.co_it_services_company_retail_california.avif',
+    alt: 'AllSafe IT awarded the Top IT Services Company by Clutch',
+  },
+  {
+    src: '/images/top_it_provider.avif',
+    alt: 'Top IT Provider Award by UpCity for AllSafe IT',
+  },
+  {
+    src: '/images/top_clutch.co_help_desk_service_provider_los_angeles_2023.avif',
+    alt: 'Clutch Top Help Desk Service Provider Los Angeles Award for AllSafe IT',
+  },
+  {
+    src: '/images/Compliancy-Group---HIPAA.avif',
+    alt: 'AllSafe IT HIPAA Compliant Badge',
+  },
+];
+
+const {
+  body,
+  heading = 'Accreditations',
+  badges = DEFAULT_BADGES,
+} = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-content">
+      <div class="content_grid">
+        <div class="title">
+          <h2 class="h3">{heading}</h2>
+        </div>
+        <div class="content">
+          <p class="lead-text body-text" set:html={body}></p>
+        </div>
+      </div>
+      <div class="accred-flow">
+        {badges.map(b => (
+          <div class="accred-item">
+            <img src={b.src} alt={b.alt} width="180" height="180" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .accred-flow {
+    margin-top: var(--spacing-section-sm);
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .accred-item {
+    flex: 0 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .accred-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -0.75rem;
+    top: 50%;
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--color-light-2);
+    transform: translateY(-50%);
+  }
+
+  .accred-item img {
+    max-width: 180px;
+    max-height: 180px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 767px) {
+    .accred-flow { gap: 1rem; }
+
+    .accred-item img {
+      max-width: 130px;
+      max-height: 130px;
+    }
+
+    .accred-item:not(:last-child)::after { display: none; }
+  }
+</style>

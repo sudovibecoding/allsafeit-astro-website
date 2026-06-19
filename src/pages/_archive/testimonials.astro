@@ -1,0 +1,175 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import HeroCentered from '../components/sections/HeroCentered.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+
+// All testimonials from TinaCMS, ordered. First one is the featured quote;
+// the rest fill the "Reviews from Our Customers" grid.
+const entries = await getCollection(
+  'testimonial',
+  (e) =>
+    e.data.status !== 'archived' &&
+    e.data.status !== 'draft' &&
+    !e.data.hide,
+);
+const testimonials = entries
+  .map((e) => ({
+    quote: (e.body ?? '').trim(),
+    author: e.data.name,
+    photo: e.data.photo,
+    order: e.data.numberOrder ?? 999,
+  }))
+  .filter((t) => t.quote.length > 0)
+  .sort((a, b) => a.order - b.order);
+
+const [featured, ...rest] = testimonials;
+---
+
+<Base
+  title="Hear from Our Clients | AllSafe IT Positive Testimonials"
+  description="Discover what clients are saying about AllSafe IT. Read our positive testimonials highlighting our commitment to delivering exceptional IT services."
+  canonical="https://www.allsafeit.com/testimonials"
+>
+  <HeroCentered badge="[Testimonials]" title="Don’t take our word for it. See what our clients say.">
+    <div class="rating-testimonial-wrppaer">
+      <img src="/images/Google__G__Logo.svg_1Google__G__Logo.svg.avif" alt="" class="google-logo" width="30" height="30" loading="lazy" />
+      <img src="/images/stars-ratings-saas-x-template.svg" alt="5 star rating" class="rating-stars" width="120" height="24" loading="lazy" />
+      <h4 class="lead-text color__white-shade1">4.8 ({testimonials.length} reviews)</h4>
+    </div>
+  </HeroCentered>
+
+  {featured && (
+    <section class="quote-below-title">
+      <div class="container">
+        <div class="large-quote-box">
+          <div class="large-quote-box-text">
+            <p class="h4 color__white-shade1">{featured.quote}</p>
+          </div>
+          <div class="featured-author">
+            {featured.photo ? (
+              <img src={featured.photo} alt={featured.author} class="avatar avatar-large" loading="lazy" />
+            ) : (
+              <div class="avatar-initial avatar-large" aria-hidden="true">{featured.author.charAt(0)}</div>
+            )}
+            <div class="badge-text color__white-shade1">{featured.author}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <div class="container">
+    <Breadcrumb crumbs={[{ label: 'Home', href: '/' }, { label: 'Testimonials' }]} />
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-content">
+        <div class="title">
+          <h2 class="h3">Reviews from Our Customers</h2>
+        </div>
+        <div class="reviews-grid">
+          {rest.map((t) => (
+            <div class="review-card">
+              <div class="review-author">
+                {t.photo ? (
+                  <img src={t.photo} alt={t.author} class="avatar" width="54" height="54" loading="lazy" />
+                ) : (
+                  <div class="avatar-initial" aria-hidden="true">{t.author.charAt(0)}</div>
+                )}
+                <p class="badge-text">{t.author}</p>
+              </div>
+              <p class="h5 review-quote">{t.quote}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection />
+</Base>
+
+<style>
+  /* Rating row inside the dark hero (Webflow .rating-testimonial-wrppaer). */
+  .rating-testimonial-wrppaer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+  .google-logo { width: 30px; height: 30px; }
+  .rating-stars { width: 120px; height: auto; }
+  .rating-testimonial-wrppaer h4 { margin: 0; }
+
+  /* Featured quote — uses global .large-quote-box + .quote-below-title to
+     overlap the bottom of the dark hero. */
+  .large-quote-box-text .h4 { margin: 0; }
+  .featured-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .avatar-large {
+    width: 72px;
+    height: 72px;
+    font-size: 1.5rem;
+  }
+
+  /* Avatar (shared shape). */
+  .avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .avatar-initial {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: var(--color-brand-dark);
+    color: var(--color-light-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* Reviews grid (3-col → 2-col → 1-col). */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--color-light-2);
+    border-radius: var(--radius-default);
+  }
+  .review-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .review-author .badge-text { margin: 0; }
+  .review-quote {
+    margin: 0;
+    color: var(--color-brand-dark);
+  }
+
+  @media (max-width: 991px) {
+    .reviews-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 767px) {
+    .reviews-grid { grid-template-columns: 1fr; }
+  }
+</style>

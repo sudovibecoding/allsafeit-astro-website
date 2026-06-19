@@ -1,0 +1,13 @@
+---
+import LocationCards from '../../components/sections/LocationCards.astro';
+
+interface Props {
+  blok: {
+    heading?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<LocationCards heading={blok.heading} />

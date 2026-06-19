@@ -1,0 +1,12 @@
+---
+import AwardMarquee from '../../../components/sections/AwardMarquee.astro';
+
+interface Props {
+  blok: {
+    title?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+<AwardMarquee title={blok.title} />

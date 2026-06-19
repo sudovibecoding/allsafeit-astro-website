@@ -1,0 +1,41 @@
+---
+import OnboardingProcess from '../../components/sections/OnboardingProcess.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { renderHeadingInner } from '../../lib/storyblok-heading';
+import { stripHtmlTags, renderBodyContentInner } from '../../lib/storyblok-richtext';
+
+interface PhaseBlok {
+  number?: number;
+  title?: string;
+  body?: unknown;
+}
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    step_label?: string;
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt?: string;
+    phases?: PhaseBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+const image = resolveImage(blok.image, blok.image_path) ?? '';
+const phases = (blok.phases ?? []).map((p, i) => ({
+  number: p.number ?? i + 1,
+  title: p.title ?? '',
+  body: stripHtmlTags(renderBodyContentInner(p.body)),
+})).filter((p) => p.title);
+---
+
+{phases.length > 0 && image && (
+  <OnboardingProcess
+    heading={renderHeadingInner(blok.heading)}
+    phases={phases}
+    image={image}
+    imageAlt={blok.image_alt ?? ''}
+    stepLabel={blok.step_label ?? 'Phase'}
+  />
+)}

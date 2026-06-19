@@ -1,0 +1,214 @@
+---
+import Base from '../../layouts/Base.astro';
+import HeroService from '../../components/sections/HeroService.astro';
+import SectionIntro from '../../components/sections/SectionIntro.astro';
+import SplitContent from '../../components/sections/SplitContent.astro';
+import ServiceCardList from '../../components/sections/ServiceCardList.astro';
+import WhyChooseAccordion from '../../components/sections/WhyChooseAccordion.astro';
+import LocationCards from '../../components/sections/LocationCards.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
+import ContactSection from '../../components/sections/ContactSection.astro';
+import { IT_CONSULTING_FAQS } from '../../data/faqs/it-consulting';
+import type { ServiceItem } from '../../components/sections/ServiceCardList.astro';
+
+// Sub-service detail pages don't exist as Tina entries yet — link the
+// CTAs to the contact form anchor so the cards are still actionable.
+const CONSULT_HREF = '/contact-us#form';
+const coreServices: ServiceItem[] = [
+  {
+    title: 'vCIO Services',
+    description: 'Strategic technology leadership without the full-time cost. Quarterly roadmaps, vendor management, budget planning, and executive-level technology guidance.',
+    href: CONSULT_HREF,
+  },
+  {
+    title: 'Technology Roadmap Planning',
+    description: 'Align IT investments with business goals. Know exactly what to spend, when, and why — with no surprises and clear ROI at every stage.',
+    href: CONSULT_HREF,
+  },
+  {
+    title: 'Cloud Migration Consulting',
+    description: 'Plan and execute migrations to Microsoft Azure and Microsoft 365 with minimal disruption, optimized cost, and maximum operational benefit.',
+    href: CONSULT_HREF,
+  },
+  {
+    title: 'IT Assessment Services',
+    description: 'Comprehensive audit of your current environment. Identify gaps, risks, and opportunities before they become costly problems.',
+    href: CONSULT_HREF,
+  },
+  {
+    title: 'AI & Automation Consulting',
+    description: 'AllSafe Intelligence helps automate repetitive tasks, integrate AI tools, and free your team to focus on high-value strategic work.',
+    href: CONSULT_HREF,
+  },
+  {
+    title: 'Vendor Management',
+    description: "We manage your technology relationships so you don't have to. Better pricing, accountability, and results from every vendor you work with.",
+    href: CONSULT_HREF,
+  },
+];
+
+const SVG_640 = (path: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor"><path d="${path}"/></svg>`;
+
+// SVG icons for "How our IT Consulting process works" — extracted verbatim from
+// Webflow services/it-consulting.html.
+const processSteps = [
+  {
+    label: 'Discovery and assessment',
+    body: "Our consulting team spends time with your staff identifying pain points that might not show up in standard reports. Like the accounting software that freezes every Friday afternoon. Or the customer database that takes forever to search. We map how information technology currently impacts your daily operations, then document what's actually slowing you down.",
+    icon: SVG_640('M128 64C92.7 64 64 92.7 64 128L64 512C64 547.3 92.7 576 128 576L329.2 576C293 533.4 272 478.5 272 420.4L272 389.3C272 354.9 294 324.3 326.7 313.4L438.7 276.1C441.8 275.1 444.9 274.3 448 273.6L448 234.5C448 217.5 441.3 201.2 429.3 189.2L322.7 82.7C310.7 70.7 294.5 64 277.5 64L128 64zM389.5 240L296 240C282.7 240 272 229.3 272 216L272 122.5L389.5 240zM477.3 552.5L464 558.8L464 370.7L560 402.7L560 422.3C560 478.1 527.8 528.8 477.3 552.6zM453.9 323.5L341.9 360.8C328.8 365.2 320 377.4 320 391.2L320 422.3C320 496.7 363 564.4 430.2 596L448.7 604.7C453.5 606.9 458.7 608.1 463.9 608.1C469.1 608.1 474.4 606.9 479.1 604.7L497.6 596C565 564.3 608 496.6 608 422.2L608 391.1C608 377.3 599.2 365.1 586.1 360.7L474.1 323.4C467.5 321.2 460.4 321.2 453.9 323.4z'),
+  },
+  {
+    label: 'Strategic planning and roadmap development',
+    body: "Based on what we discover, we create a prioritized plan addressing your most critical business needs first. This isn't a generic template. It's a strategy consulting roadmap built around your specific business model, budget constraints, and growth timeline. We handle project management while aligning recommendations with ITIL best practices, considering whether your in house team needs support or if you need comprehensive ongoing support.",
+    icon: SVG_640('M232 120L232 160L153.9 160C139.6 160 128 171.6 128 185.9C128 189.9 128.9 193.9 130.7 197.5L164.1 264.3C152.7 266.1 143.9 276 143.9 288C143.9 301.3 154.6 312 167.9 312L173.5 312L159.9 448L103.7 518.3C98.7 524.6 95.9 532.4 95.9 540.5C95.9 560.1 111.8 576 131.4 576L380.3 576C399.9 576 415.8 560.1 415.8 540.5C415.8 532.4 413.1 524.6 408 518.3L352 448L338.4 312L344 312C357.3 312 368 301.3 368 288C368 276.1 359.3 266.1 347.8 264.3L381.2 197.5C383 193.9 383.9 189.9 383.9 185.9C383.9 171.6 372.3 160 358 160L279.9 160L279.9 120L295.9 120C309.2 120 319.9 109.3 319.9 96C319.9 82.7 309.3 72 296 72L280 72L280 56C280 42.7 269.3 32 256 32C242.7 32 232 42.7 232 56L232 72L216 72C202.7 72 192 82.7 192 96C192 109.3 202.7 120 216 120L232 120zM389.8 343.6L398.3 429.1L445.7 488.3L449.9 494C459.1 507.7 464 523.9 464 540.5C464 553.2 461.2 565.3 456.1 576L539.2 576C559.5 576 576 559.5 576 539.2C576 531.9 573.8 524.8 569.8 518.8L544 480.1L544 416.1L557.3 402.8C569.3 390.8 576 374.5 576 357.5L576 256C576 238.3 561.7 224 544 224C526.3 224 512 238.3 512 256L512 272L480 272L480 256C480 238.3 465.7 224 448 224C430.3 224 416 238.3 416 256L416 288C416 310.4 405.8 330.4 389.8 343.6z'),
+  },
+  {
+    label: 'Implementation and optimization',
+    body: 'Our IT consultants handle the technical work while keeping your business operations running smoothly. We implement changes during low-impact hours, configure Microsoft 365 and Azure cloud services for optimal performance, and test everything thoroughly before going live. Security gets embedded from the start, following NIST frameworks appropriate for your industry and ensuring business continuity.',
+    icon: SVG_640('M256.5 72C322.8 72 376.5 125.7 376.5 192C376.5 258.3 322.8 312 256.5 312C190.2 312 136.5 258.3 136.5 192C136.5 125.7 190.2 72 256.5 72zM226.7 368L286.1 368L287.6 368C274.7 394.8 279.8 426.2 299.1 447.5C278.9 469.8 274.3 503.3 289.7 530.9L312.2 571.3C313.1 572.9 314.1 574.5 315.1 576L78.1 576C61.7 576 48.4 562.7 48.4 546.3C48.4 447.8 128.2 368 226.7 368zM432.6 311.6C432.6 298.3 443.3 287.6 456.6 287.6L504.6 287.6C517.9 287.6 528.6 298.3 528.6 311.6L528.6 317.7C528.6 336.6 552.7 350.5 569.1 341.1L574.1 338.2C585.7 331.5 600.6 335.6 607.1 347.3L629.5 387.5C635.7 398.7 632.1 412.7 621.3 419.5L616.6 422.4C600.4 432.5 600.4 462.3 616.6 472.5L621.2 475.4C632 482.2 635.7 496.2 629.5 507.4L607 547.8C600.5 559.5 585.6 563.7 574 556.9L569.1 554C552.7 544.5 528.6 558.5 528.6 577.4L528.6 583.5C528.6 596.8 517.9 607.5 504.6 607.5L456.6 607.5C443.3 607.5 432.6 596.8 432.6 583.5L432.6 577.6C432.6 558.6 408.4 544.6 391.9 554.1L387.1 556.9C375.5 563.6 360.7 559.5 354.1 547.8L331.5 507.4C325.3 496.2 328.9 482.1 339.8 475.3L344.2 472.6C360.5 462.5 360.5 432.5 344.2 422.4L339.7 419.6C328.8 412.8 325.2 398.7 331.4 387.5L353.9 347.2C360.4 335.5 375.3 331.4 386.8 338.1L391.6 340.9C408.1 350.4 432.3 336.4 432.3 317.4L432.3 311.5zM532.5 447.8C532.5 419.1 509.2 395.8 480.5 395.8C451.8 395.8 428.5 419.1 428.5 447.8C428.5 476.5 451.8 499.8 480.5 499.8C509.2 499.8 532.5 476.5 532.5 447.8z'),
+  },
+  {
+    label: 'Ongoing support and continuous improvement',
+    body: 'Technology needs evolve as your business grows. We monitor system performance, track user feedback, and adjust configurations to maintain efficiency. Think of it as having dedicated tech consulting expertise without the overhead costs of full-time salaries and benefits.',
+    icon: SVG_640('M415.9 274.5C428.1 271.2 440.9 277 446.4 288.3L465 325.9C475.3 327.3 485.4 330.1 494.9 334L529.9 310.7C540.4 303.7 554.3 305.1 563.2 314L582.4 333.2C591.3 342.1 592.7 356.1 585.7 366.5L562.4 401.4C564.3 406.1 566 411 567.4 416.1C568.8 421.2 569.7 426.2 570.4 431.3L608.1 449.9C619.4 455.5 625.2 468.3 621.9 480.4L614.9 506.6C611.6 518.7 600.3 526.9 587.7 526.1L545.7 523.4C539.4 531.5 532.1 539 523.8 545.4L526.5 587.3C527.3 599.9 519.1 611.3 507 614.5L480.8 621.5C468.6 624.8 455.9 619 450.3 607.7L431.7 570.1C421.4 568.7 411.3 565.9 401.8 562L366.8 585.3C356.3 592.3 342.4 590.9 333.5 582L314.3 562.8C305.4 553.9 304 540 311 529.5L334.3 494.5C332.4 489.8 330.7 484.9 329.3 479.8C327.9 474.7 327 469.6 326.3 464.6L288.6 446C277.3 440.4 271.6 427.6 274.8 415.5L281.8 389.3C285.1 377.2 296.4 369 309 369.8L350.9 372.5C357.2 364.4 364.5 356.9 372.8 350.5L370.1 308.7C369.3 296.1 377.5 284.7 389.6 281.5L415.8 274.5zM448.4 404C424.1 404 404.4 423.7 404.5 448.1C404.5 472.4 424.2 492 448.5 492C472.8 492 492.5 472.3 492.5 448C492.4 423.6 472.7 404 448.4 404zM224.9 18.5L251.1 25.5C263.2 28.8 271.4 40.2 270.6 52.7L267.9 94.5C276.2 100.9 283.5 108.3 289.8 116.5L331.8 113.8C344.3 113 355.7 121.2 359 133.3L366 159.5C369.2 171.6 363.5 184.4 352.2 190L314.5 208.6C313.8 213.7 312.8 218.8 311.5 223.8C310.2 228.8 308.4 233.8 306.5 238.5L329.8 273.5C336.8 284 335.4 297.9 326.5 306.8L307.3 326C298.4 334.9 284.5 336.3 274 329.3L239 306C229.5 309.9 219.4 312.7 209.1 314.1L190.5 351.7C184.9 363 172.1 368.7 160 365.5L133.8 358.5C121.6 355.2 113.5 343.8 114.3 331.3L117 289.4C108.7 283 101.4 275.6 95.1 267.4L53.1 270.1C40.6 270.9 29.2 262.7 25.9 250.6L18.9 224.4C15.7 212.3 21.4 199.5 32.7 193.9L70.4 175.3C71.1 170.2 72.1 165.2 73.4 160.1C74.8 155 76.4 150.1 78.4 145.4L55.1 110.5C48.1 100 49.5 86.1 58.4 77.2L77.6 58C86.5 49.1 100.4 47.7 110.9 54.7L145.9 78C155.4 74.1 165.5 71.3 175.8 69.9L194.4 32.3C200 21 212.7 15.3 224.9 18.5zM192.4 148C168.1 148 148.4 167.7 148.4 192C148.4 216.3 168.1 236 192.4 236C216.7 236 236.4 216.3 236.4 192C236.4 167.7 216.7 148 192.4 148z'),
+  },
+];
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'IT Consulting Services',
+  url: 'https://www.allsafeit.com/services/it-consulting',
+  serviceType: 'IT Consulting',
+  description: 'AllSafe IT delivers strategic IT consulting services that align technology with business goals, improve operational efficiency, and drive growth.',
+  provider: { '@type': 'Organization', '@id': 'https://www.allsafeit.com#organization' },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+    { '@type': 'ListItem', position: 2, name: 'IT Consulting Services', item: 'https://www.allsafeit.com/services/it-consulting' },
+  ],
+};
+---
+
+<Base
+  title="IT Consulting Services for Small Businesses | AllSafe IT"
+  description="Expert IT consulting for small businesses. vCIO guidance, strategic technology roadmaps, and budget planning. 7x CRN MSP 500 winner. Get a free consultation."
+  canonical="https://www.allsafeit.com/services/it-consulting"
+  schema={[serviceSchema, breadcrumbSchema]}
+>
+  <HeroService
+    heading="IT Consulting for Small Businesses"
+    lead="Strategic IT consulting services for small businesses that align technology with your goals, improve efficiency, and drive growth without the overhead of a full-time IT team."
+    video={{
+      poster: '/videos/itconsulting2_poster.0000000.jpg',
+      mp4: '/videos/itconsulting2_mp4.mp4',
+      webm: '/videos/itconsulting2_webm.webm',
+    }}
+  />
+
+  <SectionIntro heading="What is IT Consulting for Small Businesses?">
+    <p class="lead-text">IT consulting helps you make better technology decisions.</p>
+    <p class="lead-text">Unlike break-fix support (where someone shows up after things break) or managed services (where a team handles your day-to-day IT operations), consulting focuses on strategy and planning. When should you upgrade your servers? Which cloud services make sense for your business model? How do you prepare your IT infrastructure for growth?</p>
+    <p class="lead-text">Those questions don't have generic answers. An external IT consultant analyzes your specific situation, your budget constraints, your growth timeline, and your business requirements. Then they build a roadmap with scalable solutions that actually work for your business.</p>
+    <p class="lead-text">Small businesses and medium sized businesses need consulting when technology decisions feel overwhelming, when current IT systems hold back growth, or when you're planning significant changes like implementing new systems or software development projects.</p>
+  </SectionIntro>
+
+  <SplitContent
+    heading="Why Small Business owners choose IT Consulting"
+    image="/images/ITconsultingservices.avif"
+    imageAlt="IT consultant advising a small business on technology solutions and infrastructure"
+    bg="gradient"
+  >
+    <p class="body-text">Technology shouldn't slow you down. But for most small businesses, it does.</p>
+    <p class="body-text">Your team waits twenty minutes for programs to load. Your sales staff can't access business data on the road. Your accounting software crashes every Friday afternoon. These aren't just annoyances. They're revenue leaks.</p>
+    <p class="body-text">Small business technology consulting fixes these problems by identifying where technology actually hurts your operations, then replacing those bottlenecks with IT systems that accelerate your work. Our services for small businesses address your unique challenges with tailored services designed around your business needs.</p>
+    <p class="body-text">Real examples matter more than promises. Take the production company we worked with. File transfer failures were costing them entire days of productivity. Within three months of implementing our recommendations, they reduced project delivery times by 40%.</p>
+    <p class="body-text">Or consider the medical practice facing HIPAA compliance issues. Our IT audit and technology alignment process helped them avoid a potential $50,000 violation during their regulatory review while keeping their business data secure.</p>
+    <p class="body-text">That's what happens when business IT consulting services focus on outcomes instead of just installing software.</p>
+  </SplitContent>
+
+  <ServiceCardList
+    heading="Core IT Consulting Services we offer"
+    lead="Your business needs more than generic advice. Our experienced professionals deliver various services that work together to create technology systems supporting actual growth. We provide advisory services and support services tailored to your specific business needs."
+    items={coreServices}
+  />
+
+  <SplitContent
+    heading="Why businesses choose AllSafe IT as their IT Consulting partner"
+    image="/images/ITconsultingpartner.jpg"
+    imageAlt="Professional IT consulting services supporting small business technology decisions"
+    imageRight
+    bg="gradient"
+  >
+    <p class="body-text bold"><strong>Real results matter more than buzzwords.</strong></p>
+    <p class="body-text">Take our client in Hollywood — a production company that was losing entire days to file transfer failures. Within three months of implementing our virtual CIO consulting service, they reduced project delivery times by 40%.</p>
+    <p class="body-text">Or consider the medical practice in Pasadena where our IT compliance for Los Angeles regulations helped them avoid a potential $50,000 HIPAA violation during their last audit.</p>
+  </SplitContent>
+
+  <WhyChooseAccordion
+    heading="How our IT Consulting process works"
+    intro="We don't start with solutions. We start by understanding your actual problems."
+    items={processSteps}
+    image="/images/managementservice.avif"
+    imageAlt="IT consulting for small businesses focused on efficiency, security, and growth"
+    imageLeft
+    bg="plain"
+  />
+
+  <SplitContent
+    heading="How to choose the right IT Consulting Firm"
+    image="/images/ITconsultingprovidersinLA.avif"
+    imageAlt="Small business owner discussing technology planning during an IT consulting session"
+    imageRight
+    bg="gradient"
+  >
+    <p class="lead-text">Not all consultants deliver the same value. Here's what to look for when selecting the right consulting firm for your business.</p>
+    <ul class="body-text consulting-criteria">
+      <li><strong>Business-focused outcomes.</strong> Your consultant should care about your business goals, not just keeping servers running. Ask how they measure success. If the answer focuses on technical specs instead of business results, keep looking.</li>
+      <li><strong>Transparent pricing.</strong> Get clear documentation on what's included, what costs extra, and how pricing scales. Hidden fees and vague contracts create problems later.</li>
+      <li><strong>Proven track record.</strong> Ask for specific examples of similar businesses they've helped. Generic case studies mean nothing. You want consultants with deep technical expertise in your industry's compliance requirements and operational challenges.</li>
+      <li><strong>Strategic thinking.</strong> Technology decisions ripple through every part of your business. Good consultants understand how email server choices affect sales calls, how security protocols impact employee productivity, and how cloud services influence business continuity planning.</li>
+      <li><strong>Strong communication skills.</strong> You need a consulting team that explains technical concepts in plain language and responds quickly when you have questions. Test their communication during the sales process. It won't improve after you sign.</li>
+    </ul>
+  </SplitContent>
+
+  <SplitContent
+    heading="Trusted IT Consulting across industries"
+    image="/images/office.avif"
+    imageAlt="IT consulting services helping small businesses plan and improve technology strategy"
+  >
+    <p class="lead-text">Our IT consulting experience spans diverse business challenges. We've guided construction firms through digital transformation, helped healthcare practices maintain HIPAA compliance, supported retail businesses with secure payment systems, and enabled manufacturing operations with automation. From entertainment companies to hospitality businesses and nonprofits, we understand the unique technology requirements and business objectives each sector faces.</p>
+  </SplitContent>
+
+  <LocationCards heading="IT Consulting Across Southern California" />
+
+  <FaqSection faqs={IT_CONSULTING_FAQS} heading="Frequently Asked Questions" />
+
+  <ContactSection
+    heading="Ready to align technology with your goals?"
+    body={`Stop letting technology slow your business down. Start using it as the force multiplier it should be.<br /><br />Talk to our consulting team about creating a technology roadmap built around your actual business needs.`}
+  />
+</Base>
+
+<style>
+  .consulting-criteria {
+    padding-left: 1.25rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .consulting-criteria li {
+    color: var(--color-brand-dark);
+  }
+
+  .consulting-criteria strong {
+    color: var(--color-brand-dark);
+  }
+</style>

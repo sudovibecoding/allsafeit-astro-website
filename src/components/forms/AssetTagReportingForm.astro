@@ -1,0 +1,441 @@
+---
+/**
+ * AssetTagReportingForm — replaces Webflow's Basin iframe with a native form.
+ *
+ * Webflow renders this form by embedding `usebasin.com/form/757e9afe5461/...`
+ * inside an iframe. Since we don't have access to that Basin form's field
+ * schema, this component reconstructs a reasonable equivalent from the
+ * surrounding page content (a client-side asset tag reporting workflow):
+ *
+ *   - Client name + company
+ *   - Asset tag number (the 6-digit identifier on the blue sticker)
+ *   - Device type (laptop / desktop / all-in-one — matches the 3 placement
+ *     diagrams on the page)
+ *   - Device make + model
+ *   - Serial number
+ *   - Photo upload (per Step 3 of the page tutorial)
+ *   - Notes (free text)
+ *
+ * Standalone component — does NOT extend or share with InquiryForm or
+ * EbookEmailForm. Each Webflow form is its own component.
+ *
+ * Submission flow:
+ *   1. Client script POSTs multipart/form-data to /api/asset-tag-report
+ *   2. Endpoint validates required fields, verifies Turnstile, attaches
+ *      the photo (if uploaded) and sends the notification email
+ *   3. On success: browser redirects to `redirectTo` (default /thank-you)
+ *   4. On failure: inline .form-error is shown
+ */
+
+interface Props {
+  /** Where to send the user AFTER successful submission. */
+  redirectTo?: string;
+  /** Submit button label. */
+  submitText?: string;
+  class?: string;
+}
+
+const {
+  redirectTo = '/thank-you',
+  submitText = 'Submit Asset Tag Report',
+  class: className,
+} = Astro.props;
+
+const TURNSTILE_SITEKEY = '0x4AAAAAAAQTptj2So4dx43e';
+
+const deviceTypes = [
+  { value: 'laptop',     label: 'Laptop' },
+  { value: 'desktop',    label: 'Desktop Tower' },
+  { value: 'all-in-one', label: 'All-in-One' },
+  { value: 'monitor',    label: 'Monitor / Display' },
+  { value: 'other',      label: 'Other' },
+];
+---
+
+<div class:list={['form-block-asset-tag', className]}>
+  <form
+    id="asset-tag-reporting-form"
+    name="asset-tag-reporting-form"
+    data-name="Asset Tag Reporting"
+    method="post"
+    action="/api/asset-tag-report"
+    data-asset-tag-form
+    data-redirect-to={redirectTo}
+    enctype="multipart/form-data"
+    class="form"
+    novalidate
+  >
+    <!-- Reporter info -->
+    <div class="flex">
+      <input
+        class="form-input"
+        maxlength="256"
+        name="Reporter-Name"
+        placeholder="Your name"
+        type="text"
+        id="asset-Reporter-Name"
+        required
+      />
+      <input
+        class="form-input"
+        maxlength="256"
+        name="Reporter-Company"
+        placeholder="Company"
+        type="text"
+        id="asset-Reporter-Company"
+        required
+      />
+    </div>
+
+    <input
+      class="form-input"
+      maxlength="256"
+      name="Reporter-Email"
+      placeholder="Email address"
+      type="email"
+      id="asset-Reporter-Email"
+      required
+    />
+
+    <!-- Asset details -->
+    <div class="field-group">
+      <label class="field-label" for="asset-Tag-Number">
+        Asset tag number
+        <span class="field-hint">— the 6-digit number under the barcode on the blue sticker</span>
+      </label>
+      <input
+        class="form-input"
+        maxlength="32"
+        name="Asset-Tag-Number"
+        placeholder="123456"
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]{6}"
+        id="asset-Tag-Number"
+        required
+      />
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="asset-Device-Type">Device type</label>
+      <select
+        class="form-input"
+        name="Device-Type"
+        id="asset-Device-Type"
+        required
+      >
+        <option value="" disabled selected>Select device type</option>
+        {deviceTypes.map((d) => (
+          <option value={d.value}>{d.label}</option>
+        ))}
+      </select>
+    </div>
+
+    <div class="flex">
+      <input
+        class="form-input"
+        maxlength="64"
+        name="Device-Make"
+        placeholder="Make (e.g. Dell, Apple, Lenovo)"
+        type="text"
+        id="asset-Device-Make"
+      />
+      <input
+        class="form-input"
+        maxlength="64"
+        name="Device-Model"
+        placeholder="Model (e.g. XPS 15, MacBook Pro)"
+        type="text"
+        id="asset-Device-Model"
+      />
+    </div>
+
+    <input
+      class="form-input"
+      maxlength="128"
+      name="Device-Serial"
+      placeholder="Device serial number"
+      type="text"
+      id="asset-Device-Serial"
+    />
+
+    <!-- Photo upload -->
+    <div class="field-group">
+      <label class="field-label" for="asset-Photo">
+        Photo of the tagged device
+        <span class="field-hint">— one clear photo showing the asset tag in place</span>
+      </label>
+      <input
+        class="form-input file-input"
+        type="file"
+        name="Photo"
+        id="asset-Photo"
+        accept="image/*"
+        capture="environment"
+      />
+    </div>
+
+    <!-- Notes -->
+    <div class="field-group">
+      <label class="field-label" for="asset-Notes">
+        Notes <span class="field-hint">(optional)</span>
+      </label>
+      <textarea
+        class="form-input textarea"
+        name="Notes"
+        placeholder="Anything else we should know? Location of the device, special handling, etc."
+        id="asset-Notes"
+        rows="4"
+      ></textarea>
+    </div>
+
+    <!-- Hidden source_url -->
+    <input
+      class="hidden-form-input"
+      maxlength="256"
+      name="source_url"
+      type="text"
+      id="asset-source_url"
+      tabindex="-1"
+      aria-hidden="true"
+    />
+
+    <!-- Cloudflare Turnstile -->
+    <div
+      class="cf-turnstile"
+      data-sitekey={TURNSTILE_SITEKEY}
+    ></div>
+
+    <input
+      type="submit"
+      class="button form-button"
+      value={submitText}
+    />
+  </form>
+
+  <div class="form-success" role="alert" hidden>
+    <div>Thank you! Your asset tag report has been received.</div>
+  </div>
+  <div class="form-error" role="alert" hidden>
+    <div>Oops! Something went wrong while submitting the report.</div>
+  </div>
+</div>
+
+<script>
+  // Turnstile lazy-load.
+  const assetTurnstile = document.querySelectorAll('.form-block-asset-tag .cf-turnstile');
+  if (assetTurnstile.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          if (!document.querySelector('script[src*="challenges.cloudflare.com"]')) {
+            const s = document.createElement('script');
+            s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+            s.async = true;
+            s.defer = true;
+            document.head.appendChild(s);
+          }
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    assetTurnstile.forEach((w) => observer.observe(w));
+  }
+</script>
+
+<script>
+  /**
+   * AssetTagReportingForm submit handler.
+   *
+   * Same pattern as the EbookEmailForm but multipart/form-data so the
+   * Photo file is preserved in the POST body. Fetch handles multipart
+   * encoding automatically when you pass a FormData object.
+   */
+  function initAssetTagForms() {
+    const forms = document.querySelectorAll<HTMLFormElement>(
+      'form[data-asset-tag-form]:not([data-asset-tag-bound])',
+    );
+
+    forms.forEach((form) => {
+      form.setAttribute('data-asset-tag-bound', '1');
+
+      const sourceUrlInput = form.querySelector<HTMLInputElement>(
+        'input[name="source_url"]',
+      );
+      if (sourceUrlInput) sourceUrlInput.value = window.location.href;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const wrap = form.closest('.form-block-asset-tag');
+        const successEl = wrap?.querySelector<HTMLElement>('.form-success');
+        const errorEl = wrap?.querySelector<HTMLElement>('.form-error');
+        const submitBtn = form.querySelector<HTMLInputElement>(
+          'input[type="submit"]',
+        );
+        const originalBtnText = submitBtn?.value;
+
+        if (sourceUrlInput) sourceUrlInput.value = window.location.href;
+        successEl?.setAttribute('hidden', '');
+        errorEl?.setAttribute('hidden', '');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.value = 'Sending...';
+        }
+
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          const data = (await res.json().catch(() => ({ ok: false }))) as {
+            ok?: boolean;
+          };
+
+          if (res.ok && data.ok) {
+            const target =
+              form.getAttribute('data-redirect-to') || '/thank-you';
+            window.location.href = target;
+            return;
+          }
+
+          if (errorEl) errorEl.removeAttribute('hidden');
+        } catch {
+          if (errorEl) errorEl.removeAttribute('hidden');
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            if (originalBtnText) submitBtn.value = originalBtnText;
+          }
+          const tsAPI = (
+            window as unknown as {
+              turnstile?: { reset: (el: Element | string) => void };
+            }
+          ).turnstile;
+          const widget = form.querySelector('.cf-turnstile');
+          if (tsAPI && widget) tsAPI.reset(widget);
+        }
+      });
+    });
+  }
+
+  initAssetTagForms();
+  document.addEventListener('astro:page-load', initAssetTagForms);
+</script>
+
+<style>
+  .form-block-asset-tag {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .flex {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+  .form-input {
+    width: 100%;
+    height: var(--input-height);
+    border: 1px solid var(--color-dark-border);
+    border-radius: var(--radius-default);
+    color: var(--color-text-dark);
+    font-size: var(--text-body);
+    background-color: transparent;
+    padding: 0 16px;
+    font-family: var(--font-body);
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+  .form-input::placeholder { color: #3b3b33cc; }
+
+  .file-input {
+    padding: 12px 16px;
+    line-height: var(--leading-body);
+    height: auto;
+  }
+  .textarea {
+    height: auto;
+    padding: 14px 16px;
+    line-height: var(--leading-body);
+    resize: vertical;
+    font-family: var(--font-body);
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field-label {
+    font-size: var(--text-body);
+    color: var(--color-brand-dark);
+    font-weight: 600;
+  }
+  .field-hint {
+    font-weight: 400;
+    color: var(--color-text-dark-body);
+  }
+
+  select.form-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23001944' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .cf-turnstile { min-height: 65px; }
+
+  .form-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height);
+    padding: 0 var(--btn-px);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .form-button:hover { opacity: 0.85; }
+
+  .hidden-form-input { display: none; }
+
+  .form-success,
+  .form-error {
+    border-radius: var(--radius-default);
+    margin-top: 12px;
+    padding: 18px;
+  }
+  .form-success {
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+  }
+  .form-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+
+  @media (max-width: 479px) {
+    .flex { flex-direction: column; }
+  }
+</style>

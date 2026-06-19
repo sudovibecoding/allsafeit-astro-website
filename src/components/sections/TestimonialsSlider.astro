@@ -1,0 +1,261 @@
+---
+import Icon from '../primitives/Icon.astro';
+
+interface TestimonialItem {
+  quote: string;
+  author: string;
+  photo?: string;
+}
+
+interface Props {
+  heading?: string;
+  lead?: string;
+  /** Storyblok-managed testimonial items. */
+  items?: TestimonialItem[];
+}
+
+const {
+  heading = 'Testimonials',
+  lead = 'See what our clients are saying about our IT services',
+  items: cmsItems = [],
+} = Astro.props;
+
+const testimonials = cmsItems.filter((t) => t.author && t.quote);
+---
+
+<section class="section quote-slider-section smal-margin-top">
+  <div class="container">
+    <div class="section-content quote-slider-content">
+
+      <div class="content_grid">
+        <div class="title">
+          <h2 class="h3">{heading}</h2>
+        </div>
+        <p class="lead-text">{lead}</p>
+      </div>
+
+      <div class="rating-testimonial-wrppaer">
+        <img src="/images/Google__G__Logo.svg_1Google__G__Logo.svg.avif" alt="" class="google-logo" width="30" height="30" loading="lazy" />
+        <img src="/images/stars-ratings-saas-x-template.svg" alt="5 star rating" class="rating-stars" width="120" height="24" loading="lazy" />
+        <h3 class="h4">4.8 (56 reviews)</h3>
+      </div>
+
+      <div data-slider data-slider-delay="4000" class="quote-box-slider">
+        <div class="quote-box-slider-viewport">
+          <div data-slider-mask class="quote-box-slider-mask">
+            {testimonials.map(t => (
+              <div data-slider-slide class="quote-box-slide">
+                <div class="quote-box">
+                  <img
+                    src="/images/stars-ratings-saas-x-template.svg"
+                    alt="5-star rating"
+                    class="image-26"
+                    width="120"
+                    height="24"
+                    loading="lazy"
+                  />
+                  <div class="quote-text">{t.quote}</div>
+                  <div class="quote-author-wrap inside-quote-box">
+                    {t.photo ? (
+                      <img src={t.photo} alt={t.author} class="avatar" width="54" height="54" loading="lazy" />
+                    ) : (
+                      <div class="avatar-initial" aria-hidden="true">{t.author.charAt(0)}</div>
+                    )}
+                    <p class="badge-text">{t.author}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button data-slider-prev class="circle-button slider-prev" aria-label="Previous testimonial">
+          <div class="circle-button-icon-wrapper prev">
+            <Icon name="slider-arrow" class="circle-button-icon" />
+          </div>
+        </button>
+        <button data-slider-next class="circle-button slider-next" aria-label="Next testimonial">
+          <div class="circle-button-icon-wrapper">
+            <Icon name="slider-arrow" class="circle-button-icon" />
+          </div>
+        </button>
+      </div>
+
+      <a href="/testimonials" class="icon-button-link">
+        <div class="circle-button">
+          <div class="circle-button-icon-wrapper">
+            <Icon name="custom-arrow" class="icon--arrow" />
+          </div>
+        </div>
+        <span class="badge-text">See All Testimonials</span>
+      </a>
+
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* #1 fix: the slider itself must NOT clip — its prev/next buttons sit
+     ABOVE the track (top: -96px). Clipping happens on the inner viewport
+     instead, so the off-screen slides are hidden but the buttons show. */
+  .quote-box-slider {
+    background-color: transparent;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow: visible;
+  }
+
+  .quote-box-slider-viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .quote-box-slider-mask {
+    display: flex;
+    transition: transform 0.5s ease;
+    /* Mask width matches one slide's width so translateX(-100%) advances
+       exactly one slide at a time. */
+    width: var(--container-4col);
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .quote-box-slide {
+    /* FIXED width — was previously `min-width` only, so long quotes forced
+       the slide to grow horizontally and text never wrapped. With `flex: 0 0`
+       the slide is locked to one 4-col-container wide and text wraps inside
+       the quote-box naturally. */
+    flex: 0 0 var(--container-4col);
+    max-width: 100%;
+    padding-right: 24px;
+    box-sizing: border-box;
+    /* Allow inner flex column (.quote-box) to constrain its children so the
+       lead-text wraps instead of overflowing. */
+    min-width: 0;
+  }
+
+  /* Ensure long quotes wrap rather than push the slide wider. */
+  .quote-box-slide .quote-box {
+    min-width: 0;
+    height: 100%;
+  }
+  .quote-box-slide .lead-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* ── Slider prev/next buttons ──
+     Inherit shape from the global `.circle-button` class (34×34 circle).
+     This component ADDS:
+       - filled accent background (Webflow uses the "filled" circle variant for sliders)
+       - absolute positioning at top-right of the slider (desktop)
+       - stacked-at-bottom layout (tablet + mobile)
+     Reset only the native <button> chrome that .circle-button doesn't cover. */
+  .slider-prev,
+  .slider-next {
+    cursor: pointer;
+    background-color: var(--color-accent);
+    color: var(--color-light-1);
+    /* keep border from .circle-button — Webflow does the same in the filled variant */
+  }
+  /* Desktop: both buttons float at top-right, above the slider mask. */
+  .slider-prev {
+    position: absolute;
+    top: -96px;
+    right: 60px;
+  }
+  .slider-next {
+    position: absolute;
+    top: -96px;
+    right: 0;
+  }
+
+  @media (max-width: 991px) {
+    /* Tablet/mobile: prev sits in flow below the mask, next is pinned to
+       the bottom-left of the slider 60px in from the edge — same as Webflow. */
+    .slider-prev {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin-top: 24px;
+      align-self: flex-start;
+    }
+    .slider-next {
+      position: absolute;
+      top: auto;
+      right: auto;
+      bottom: 0;
+      left: 60px;
+    }
+  }
+
+  .circle-button-icon-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 18px;
+    height: 18px;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .circle-button-icon-wrapper.prev {
+    transform: rotate(180deg);
+  }
+
+  .circle-button-icon {
+    width: 18px;
+    height: 18px;
+    display: flex;
+  }
+
+  .rating-testimonial-wrppaer {
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .google-logo  { width: 30px; height: 30px; }
+  .image-26     { width: 120px; height: auto; }
+
+  /* #2 fix: quote text — was lead-size + weight 700 (too heavy). Webflow
+     renders the quote at regular weight; use lead size, weight 400. */
+  .quote-text {
+    color: var(--color-brand-dark);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    font-weight: 400;
+    overflow-wrap: break-word;
+  }
+
+  .avatar-initial {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-brand-dark);
+    color: var(--color-light-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .icon--arrow {
+    line-height: 1;
+    width: 18px;
+    height: 18px;
+    display: flex;
+  }
+
+  @media (max-width: 991px) {
+    /* Mobile/tablet: one full-width slide visible at a time. */
+    .quote-box-slider-mask { width: 100%; }
+    .quote-box-slide       { flex: 0 0 100%; padding-right: 0; }
+  }
+</style>

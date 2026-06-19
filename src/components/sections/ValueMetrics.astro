@@ -1,0 +1,90 @@
+---
+interface Metric {
+  /** Optional inline SVG markup for the card icon. Pass viewBox + path. */
+  icon?: string;
+  /** Optional extra class on widget__embed-icons wrapper (e.g. "rotate", "yellow-icon", "cyan-icon"). */
+  iconClass?: string;
+  /** The headline statement (e.g. "30% boost in operational efficiency"). */
+  label: string;
+  /** Optional supporting body text shown under the label. */
+  body?: string;
+}
+
+interface Props {
+  heading: string;
+  metrics: Metric[];
+}
+
+const { heading, metrics } = Astro.props;
+---
+
+<section class="section padding-small">
+  <div class="container">
+    <div class="section-content">
+      <div class="centered-title">
+        <h2 class="h3 text_center" set:html={heading}></h2>
+      </div>
+      <div class="metrics-grid">
+        {metrics.map(m => (
+          <article class="metric-card">
+            {m.icon && (
+              <div class="boxed-icon bg__color-blue">
+                <div class={`widget__embed-icons${m.iconClass ? ' ' + m.iconClass : ''}`} set:html={m.icon} />
+              </div>
+            )}
+            <div class="metric-card-content">
+              <h3 class="h5 bold">{m.label}</h3>
+              {m.body && <p class="lead-text body-text">{m.body}</p>}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .centered-title {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    align-items: center;
+    max-width: var(--container-6col);
+    margin: 0 auto 3rem;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .metric-card {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .metric-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .metric-card .h5 {
+    color: var(--color-brand-dark);
+    font-weight: 500;
+  }
+
+  @media (max-width: 991px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 575px) {
+    .metrics-grid { grid-template-columns: 1fr; }
+  }
+</style>

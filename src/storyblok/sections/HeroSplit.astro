@@ -1,0 +1,29 @@
+---
+import HeroSplit from '../../components/sections/HeroSplit.astro';
+import { storyblokAssetUrl } from '../../lib/storyblok-asset';
+
+interface Props {
+  blok: {
+    title_line1?: string;
+    title_line2?: string;
+    lead?: string;
+    cta_text?: string;
+    cta_href?: string;
+    hero_image?: { filename?: string } | string;
+    hero_image_alt?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const heroImageSrc = storyblokAssetUrl(blok.hero_image);
+---
+
+<HeroSplit
+  titleLine1={blok.title_line1}
+  titleLine2={blok.title_line2}
+  lead={blok.lead}
+  ctaText={blok.cta_text}
+  ctaHref={blok.cta_href}
+  heroImageSrc={heroImageSrc}
+  heroImageAlt={blok.hero_image_alt}
+/>

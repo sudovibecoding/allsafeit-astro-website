@@ -1,0 +1,193 @@
+---
+/**
+ * Ebook landing — Co-Managed IT for Manufacturing Industry.
+ *
+ * Same template as /co-managed-it-for-small-businesses-ebook, different
+ * content + cover + PDF destination. Demonstrates that the design system
+ * supports two structurally-identical ebook landings with no new components.
+ *
+ * Indexing: indexable.
+ */
+
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Accreditations from '../components/sections/Accreditations.astro';
+import IntroSplit from '../components/sections/IntroSplit.astro';
+import NumberedListSplit from '../components/sections/NumberedListSplit.astro';
+import SplitContent from '../components/sections/SplitContent.astro';
+import EbookCta from '../components/sections/EbookCta.astro';
+
+const COVER_IMAGE = '/images/co-managed-it-manufacturing-cover.avif';
+
+const AWARD_BADGES = [
+  { src: '/images/CRN_MSP-500_optimized.avif', alt: 'CRN MSP 500 award' },
+  { src: '/images/inc-500-medallion-optimized.avif', alt: 'Inc. 5000 fastest-growing companies' },
+  { src: '/images/AICPA-Logo-1.avif', alt: 'AICPA SOC 2 certified' },
+  { src: '/images/BBBrating.avif', alt: 'BBB Accredited Business' },
+  { src: '/images/top_clutch.co_help_desk_service_provider_los_angeles_2023.avif', alt: 'Clutch Top Help Desk Service Provider Los Angeles' },
+  { src: '/images/top_clutch.co_it_services_company_retail_california.avif', alt: 'Clutch Top IT Services Company Retail California' },
+  { src: '/images/top_it_provider.avif', alt: 'UpCity Top IT Provider' },
+  { src: '/images/Compliancy-Group---HIPAA.avif', alt: 'AllSafe IT HIPAA Compliant' },
+];
+
+const learningOutcomes = [
+  { term: '01', body: 'How co-managed IT services can enhance your existing IT team\'s capabilities on the factory floor and in the office.' },
+  { term: '02', body: 'Integration of advanced cybersecurity solutions tailored to manufacturing supply chains and OT environments.' },
+  { term: '03', body: 'How AI and automation can modernize production-floor systems without disrupting daily operations.' },
+  { term: '04', body: 'Aligning IT strategy with manufacturing KPIs: uptime, throughput, quality, and compliance.' },
+  { term: '05', body: 'Case studies from small and mid-market manufacturers who scaled with co-managed IT.' },
+];
+---
+
+<Base
+  title="E-Book: Co-Managed IT for Manufacturing Industry | AllSafe IT"
+  description="Get next-level technologies and their integration into a co-managed IT relationship with AllSafe IT's eBook. Download today to stay ahead of the competition."
+>
+  <section class="section padding-small ebook-hero">
+    <div class="container">
+      <div class="ebook-hero-grid">
+        <div class="ebook-hero-content">
+          <h1 class="h1">Download Our E-Book: The Future of Co-Managed IT Services for Manufacturing</h1>
+          <ul class="hero-benefits">
+            <li><strong>Modernize the factory floor</strong> — AI, automation, and integration strategies tailored to manufacturers.</li>
+            <li><strong>Secure your supply chain</strong> — practical cybersecurity for OT, IT, and everything in between.</li>
+            <li><strong>Scale without surprises</strong> — co-managed support that flexes with seasonal production demands.</li>
+          </ul>
+          <Button href="#download-form">Get the e-book!</Button>
+        </div>
+        <div class="ebook-hero-cover">
+          <img
+            src={COVER_IMAGE}
+            alt="Co-Managed IT for Manufacturing ebook cover"
+            width="280"
+            height="364"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Accreditations
+    heading="One of the most respected IT providers in North America"
+    body="AllSafe IT is recognized by industry leaders and clients alike. Our credentials and awards reflect our commitment to excellence in managed IT services for manufacturers."
+    badges={AWARD_BADGES}
+  />
+
+  <IntroSplit
+    heading="Transform Your Business with Next-Level IT Support"
+    body="Manufacturing IT is uniquely demanding — uptime, security, and integration all matter. This e-book lays out a practical framework for adopting co-managed IT, AI, and automation in a real production environment without breaking what already works."
+  />
+
+  <NumberedListSplit
+    heading="What you'll learn"
+    intro="A five-part roadmap, written specifically for manufacturing leaders."
+    items={learningOutcomes}
+    image="/images/allsafe-employee-1.avif"
+    imageAlt="AllSafe IT engineer working with manufacturing client"
+  />
+
+  <SplitContent
+    heading="Not your typical IT guide"
+    image="/images/allsafeitdreamteam-p-800.avif"
+    imageAlt="The AllSafe IT team"
+    imageRight={true}
+  >
+    <p class="lead-text">
+      Most IT ebooks rehash the same generic playbook. This one was
+      written for manufacturers — by a team that has worked inside SoCal
+      factories, designed networks for OT integration, and lived through
+      the compliance audits.
+    </p>
+    <p class="body-text">
+      You'll get specific, actionable strategies that account for
+      production realities — not theoretical frameworks for greenfield
+      environments.
+    </p>
+  </SplitContent>
+
+  <SplitContent
+    heading="Backed by manufacturer references"
+    image="/images/Inc-2024-optmized.avif"
+    imageAlt="Inc. 5000 fastest-growing private companies award — AllSafe IT"
+  >
+    <p class="lead-text">
+      AllSafe IT supports manufacturers across Southern California with
+      managed IT, cybersecurity, and cloud services. The patterns in this
+      guide are drawn directly from those engagements — and we can
+      connect you with a reference customer in your industry once you're
+      ready.
+    </p>
+  </SplitContent>
+
+  <EbookCta
+    heading="Ready to Take Your IT Management to the Next Level?"
+    body="Enter your email to get the manufacturing-focused e-book delivered immediately."
+    redirectTo="/co-managed-it-for-manufacturing-industry-ebook-download"
+    coverImage={COVER_IMAGE}
+    coverImageAlt="Co-Managed IT for Manufacturing ebook cover"
+    submitText="Get the e-book!"
+    formId="download-form"
+  />
+</Base>
+
+<style>
+  /* Hero styles identical to the SMB ebook landing — kept inline rather
+     than centralized so per-page tweaks (like background tints) stay
+     local. If a third ebook landing emerges, factor into an EbookLandingHero
+     component. */
+  .ebook-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .ebook-hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .hero-benefits {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .hero-benefits li {
+    padding-left: 28px;
+    position: relative;
+    color: var(--color-text-dark-body);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+  }
+  .hero-benefits li::before {
+    content: '✓';
+    color: var(--color-accent);
+    font-weight: 700;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .hero-benefits li strong {
+    color: var(--color-brand-dark);
+  }
+  .ebook-hero-cover {
+    display: flex;
+    justify-content: center;
+  }
+  .ebook-hero-cover img {
+    border-radius: var(--radius-default);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.16);
+    max-width: 100%;
+    height: auto;
+  }
+  @media (max-width: 991px) {
+    .ebook-hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .ebook-hero-cover { order: -1; }
+  }
+</style>

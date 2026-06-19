@@ -1,0 +1,241 @@
+---
+/**
+ * Hero for industry-detail CMS pages.
+ * Matches Webflow `detail_industries.html` hero section:
+ *   - Light bg (no dark hero like service-detail)
+ *   - Breadcrumb inside section, outside container
+ *   - Row 1 (.horizontal-title): H1 title left + lead subhead right
+ *   - Row 2 (.hero-4-grid): 3-column collage — square image | metric box | portrait image
+ *
+ * Only the SQUARE image is CMS-driven (per-industry). The metric box
+ * ("98% CSAT") and the portrait image (a static AllSafe IT employee photo)
+ * are constant across every industry page — matches Webflow's pattern of
+ * one swap-able image plus brand-consistent decoration.
+ */
+import Breadcrumb from '../Breadcrumb.astro';
+
+interface Props {
+  title: string;
+  lead: string;
+  featuredImage: string;
+  featuredImageAlt: string;
+}
+
+const { title, lead, featuredImage, featuredImageAlt } = Astro.props;
+
+// Static portrait — same on every industry page.
+const PORTRAIT_SRC = '/images/DSC_2148-mission.avif';
+const PORTRAIT_ALT = 'AllSafe IT team member at work';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Industries', href: '/industries' },
+  { label: title },
+];
+---
+
+<section class="section margin-top-small hero-industry">
+  <div class="container detail-breadcrumb-container">
+    <Breadcrumb crumbs={crumbs} />
+  </div>
+
+  <div class="container">
+    <div class="section-content">
+      <div class="horizontal-title">
+        <div class="title">
+          <h1 class="h2">{title}</h1>
+        </div>
+        <p class="lead-text horizontal-subheading">{lead}</p>
+      </div>
+
+      <div class="hero-4-grid">
+        <img
+          src={featuredImage}
+          alt={featuredImageAlt}
+          class="square-image"
+          width="600"
+          height="600"
+          loading="eager"
+          fetchpriority="high"
+        />
+
+        <div class="hero-metric-box">
+          <div class="badge-text">CUSTOMER SATISFACTION RATE</div>
+          <div class="metric-text">98%</div>
+          <p class="lead-text color__white-shade1">
+            Based on survey responses for 2025 service tickets.
+          </p>
+        </div>
+
+        <img
+          src={PORTRAIT_SRC}
+          alt={PORTRAIT_ALT}
+          class="portrait-image"
+          width="400"
+          height="600"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Section top padding — Webflow's spec uses its
+     `--_section-padding---x-small` token (48px) on `.section`. Our project
+     equivalent is `--spacing-section-xs` (also 48px). Applying it
+     explicitly here so the value can't be silently overridden by ancestor
+     cascade. The breadcrumb adds its own 1rem top padding inside, so the
+     visible whitespace above the breadcrumb text reads as ~64px — matches
+     the live Webflow industry hero. */
+  .hero-industry.section {
+    padding-top: var(--spacing-section-xs, 48px);
+  }
+
+  /* Breadcrumb container — Webflow puts the breadcrumb in a wrapper
+     classed `.section-title` (48px margin-top + 48px margin-bottom).
+     Combined with the section's 48px padding-top, Webflow's visible
+     space above the breadcrumb text is 96px and below it is 48px.
+     Our `Breadcrumb.astro` adds its OWN 16px vertical padding inside
+     the row, so the margins here are 16px lighter (32px each) — net
+     visible spacing matches Webflow's 96px/48px exactly. */
+  .detail-breadcrumb-container {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  /* Webflow `.horizontal-title` — title + subhead side-by-side, bottom-aligned.
+     No bottom margin: spacing to .hero-4-grid is the parent `.section-content`
+     gap (72px). A margin here would double that gap. */
+  .horizontal-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+  }
+
+  .horizontal-title .title {
+    flex: 0 1 auto;
+  }
+
+  .horizontal-title h1 {
+    margin: 0;
+  }
+
+  .horizontal-subheading {
+    flex: 1 1 var(--container-5col);
+    max-width: var(--container-6col);
+    margin: 0;
+    color: var(--color-text-dark-body);
+  }
+
+  /* Webflow `.hero-4-grid` — 1.5fr 1fr 1fr layout, 12px gap */
+  .hero-4-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .square-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-default);
+  }
+
+  /* Portrait image — width fills column, height stretches to row (driven by
+     the square-image's 1:1 aspect at 1.5fr) and cover-crops cleanly. */
+  .portrait-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-default);
+    display: block;
+  }
+
+  /* Webflow `.hero-metric-box` — dark navy bg, light text, flex column */
+  .hero-metric-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px;
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+    border-radius: var(--radius-default);
+    overflow: hidden;
+  }
+
+  .hero-metric-box .badge-text {
+    color: var(--color-light-1);
+    z-index: 1;
+  }
+
+  /* Webflow `.metric-text` — 81px geist mono, line-height 0.9em */
+  .hero-metric-box .metric-text {
+    font-family: var(--font-badges);
+    font-size: 81px;
+    line-height: 0.9em;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    z-index: 1;
+    margin: 0;
+  }
+
+  .hero-metric-box .lead-text {
+    z-index: 1;
+    margin: 0;
+  }
+
+  /* Tablet (≤991px) — Webflow keeps `.section-content` at 72px gap on
+     tablet and only tightens it to 2rem at the mobile (≤767px) breakpoint.
+     The horizontal-title flips to column with 24px gap; hero-4-grid stays
+     12px gap but stacks. */
+  @media (max-width: 991px) {
+    /* Webflow `.horizontal-title` at ≤991px: column flow, 24px gap. */
+    .horizontal-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    /* Webflow `.hero-4-grid` at ≤991px: column flow, gap stays 12px
+       (NOT 1rem — verified against Webflow CSS). */
+    .hero-4-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    /* Stacked: image-link parent is unconstrained, give portrait a
+       defined aspect so it doesn't stretch awkwardly tall on phones. */
+    .portrait-image {
+      aspect-ratio: 4 / 3;
+    }
+
+    .hero-metric-box .metric-text {
+      font-size: 64px;
+    }
+
+    /* Tighten breadcrumb spacing slightly on tablet — Webflow's 96/48
+       feels disproportionate when the navbar is also smaller. Keeping
+       proportions but using `--spacing-section-xs / 1.5` as a rough
+       compromise (32 / 16px visible). */
+    .detail-breadcrumb-container {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+  }
+
+  /* Mobile (≤767px) — Webflow drops `.section-content` to 2rem (32px)
+     here. We mirror that to keep the H1 row close to the image collage
+     on phones where vertical real-estate is precious. */
+  @media (max-width: 767px) {
+    .hero-industry .section-content {
+      gap: 2rem;
+    }
+  }
+</style>

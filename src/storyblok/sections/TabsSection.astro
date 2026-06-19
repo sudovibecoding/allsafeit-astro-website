@@ -1,0 +1,46 @@
+---
+import Tabs from '../../components/sections/Tabs.astro';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, resolveRichOrHtml, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface TabBlok {
+  label?: string;
+  content?: unknown;
+  content_html?: string;
+}
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    lead?: unknown;
+    background?: 'white' | 'gradient';
+    tabs?: TabBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+const tabs = (blok.tabs ?? [])
+  .map((t) => ({
+    label: t.label ?? '',
+    content: resolveRichOrHtml(t.content_html, t.content),
+  }))
+  .filter((t) => t.label && t.content);
+---
+
+{tabs.length > 0 && (
+  <section class={`section ${blok.background === 'gradient' ? 'bg-gradient' : ''}`}>
+    <div class="container">
+      <div class="section-content">
+        <div class="centered-title">
+          {blok.heading && (
+            <h2 class="h3 text_center">{headingPlainText(blok.heading)}</h2>
+          )}
+          {blok.lead && (
+            <p class="lead-text text_center">{stripHtmlTags(renderBodyContentInner(blok.lead))}</p>
+          )}
+        </div>
+        <Tabs tabs={tabs} initial={0} />
+      </div>
+    </div>
+  </section>
+)}

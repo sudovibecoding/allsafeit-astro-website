@@ -1,0 +1,78 @@
+---
+interface Props {
+  padding?: 'xs' | 'sm' | 'default' | 'lg' | 'none';
+  background?: 'white' | 'light' | 'gradient' | 'dark' | 'transparent';
+  class?: string;
+  id?: string;
+  as?: 'section' | 'div' | 'article';
+}
+
+const {
+  padding = 'default',
+  background = 'white',
+  class: className,
+  id,
+  as: Tag = 'section',
+} = Astro.props;
+---
+
+<Tag
+  class:list={['section', `padding-${padding}`, `bg-${background}`, className]}
+  id={id}
+>
+  <slot />
+</Tag>
+
+<style>
+  .section {
+    position: relative;
+  }
+
+  /* ── Padding variants ───────────────────────────────────────── */
+  .padding-xs {
+    padding-top: var(--spacing-section-xs);
+    padding-bottom: var(--spacing-section-xs);
+  }
+
+  .padding-sm {
+    padding-top: var(--spacing-section-sm);
+    padding-bottom: var(--spacing-section-sm);
+  }
+
+  .padding-default {
+    padding-top: var(--spacing-section-xs);    /* 48px top */
+    padding-bottom: var(--spacing-section-sm); /* 72px bottom — matches Webflow .section default */
+  }
+
+  .padding-lg {
+    padding-top: var(--spacing-section-lg);
+    padding-bottom: var(--spacing-section-lg);
+  }
+
+  .padding-none {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* ── Background variants ────────────────────────────────────── */
+  .bg-white {
+    background-color: #fff;
+  }
+
+  .bg-light {
+    background-color: var(--color-light-1);
+  }
+
+  .bg-gradient {
+    background-image: linear-gradient(180deg, var(--color-light-1), var(--color-light-2));
+  }
+
+  .bg-dark {
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+  }
+
+  .bg-transparent {
+    background-color: transparent;
+  }
+</style>

@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { label?: string; body?: string; icon_html?: string; icon_class?: string };
+}
+---
+
+<div hidden data-metric={Astro.props.blok.label} />

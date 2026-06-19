@@ -1,0 +1,157 @@
+---
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import Base from '../../layouts/Base.astro';
+import { fetchStory, storyblokVersion } from '../../lib/storyblok-fetch';
+import { storyblokAssetUrl } from '../../lib/storyblok-asset';
+import { faqSchema, orgSchema } from '../../data/schemas';
+
+interface Props {
+  storySlug: string;
+  /** Show the dark POC banner (demo routes only). */
+  demo?: boolean;
+  /** Extra JSON-LD when rendering the homepage. */
+  includeHomeSchema?: boolean;
+  /** Inject ebook hidden field script (homepage). */
+  ebookScript?: boolean;
+}
+
+const { storySlug, demo = false, includeHomeSchema = false, ebookScript = false } = Astro.props;
+
+const version = storyblokVersion(Astro.url, import.meta.env.DEV);
+const inStoryblokEditor = Astro.url.searchParams.has('_storyblok');
+
+let story = null;
+let fetchError: string | null = null;
+
+try {
+  story = await fetchStory(storySlug, version);
+} catch (err) {
+  fetchError = err instanceof Error ? err.message : 'Could not load Storyblok content.';
+}
+
+const content = story?.content ?? {};
+const pageTitle =
+  (content.meta_title as string | undefined) ??
+  `${story?.name ?? 'AllSafe IT'} | AllSafe IT`;
+const pageDescription =
+  (content.meta_description as string | undefined) ??
+  'Managed IT services, cybersecurity, and 24/7 support for California businesses.';
+const canonical =
+  (content.canonical as string | undefined) ??
+  `https://www.allsafeit.com${storySlug === 'home' ? '' : `/${storySlug}`}`;
+
+function parseSchemaJson(raw?: string): Record<string, unknown>[] | undefined {
+  if (!raw?.trim()) return undefined;
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [parsed];
+  } catch {
+    return undefined;
+  }
+}
+
+const cmsSchema = parseSchemaJson(content.schema_json as string | undefined);
+const schema =
+  cmsSchema ?? (includeHomeSchema ? [faqSchema, orgSchema] : undefined);
+
+const indexable = content.indexable !== false;
+const ogTitle = (content.og_title as string | undefined) || pageTitle;
+const ogDescription = (content.og_description as string | undefined) || pageDescription;
+const featuredImage = storyblokAssetUrl(
+  content.featured_image as { filename?: string } | string | undefined,
+);
+const ogImageOverride = storyblokAssetUrl(
+  content.og_image as { filename?: string } | string | undefined,
+);
+const ogImage = ogImageOverride || featuredImage || '/images/og-default.jpg';
+---
+
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
+  ogImage={ogImage}
+  schema={schema}
+  noindex={demo || !indexable}
+>
+  {
+    demo && (
+      <div class="demo-banner">
+        <div class="container">
+          <strong>Storyblok preview</strong>
+          <span>
+            Story: <code>{storySlug}</code>
+            {inStoryblokEditor && ' · visual editor'}
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    fetchError && (
+      <section class="container error-box">
+        <h1>Storyblok connection failed</h1>
+        <p>{fetchError}</p>
+        <p>
+          Ensure <code>STORYBLOK_TOKEN</code> is in <code>.env</code> and run{' '}
+          <code>npm run storyblok:push-components</code> to sync bloks.
+        </p>
+      </section>
+    )
+  }
+
+  {story && <StoryblokComponent blok={story.content} />}
+
+  {!fetchError && !story && (
+    <section class="container error-box">
+      <h1>No Storyblok story</h1>
+      <p>
+        Create a story with slug <code>{storySlug}</code> and add sections to its{' '}
+        <strong>body</strong> field in Storyblok.
+      </p>
+    </section>
+  )}
+</Base>
+
+{
+  ebookScript && (
+    <script>
+      const ebookSourceUrl = document.getElementById('ebook-source_url') as HTMLInputElement | null;
+      if (ebookSourceUrl) ebookSourceUrl.value = window.location.href;
+    </script>
+  )
+}
+
+<style>
+  .demo-banner {
+    padding: 0.75rem 0;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 0.875rem;
+  }
+
+  .demo-banner .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: center;
+  }
+
+  .demo-banner code {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85em;
+    color: #7dd3fc;
+  }
+
+  .error-box {
+    padding: 4rem 0;
+  }
+
+  .error-box code {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.9em;
+  }
+</style>

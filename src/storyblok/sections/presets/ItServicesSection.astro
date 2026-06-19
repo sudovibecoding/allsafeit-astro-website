@@ -1,0 +1,32 @@
+---
+import ItServicesSection from '../../../components/sections/ItServicesSection.astro';
+
+interface Props {
+  blok: {
+    heading?: string;
+    body_html?: string;
+    metric_1_text?: string;
+    metric_1_value?: string;
+    metric_2_text?: string;
+    metric_2_value?: string;
+    metric_3_text?: string;
+    metric_3_value?: string;
+    image_path?: string;
+    image_alt?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+<ItServicesSection
+  heading={blok.heading}
+  bodyHtml={blok.body_html}
+  metric1Text={blok.metric_1_text}
+  metric1Value={blok.metric_1_value}
+  metric2Text={blok.metric_2_text}
+  metric2Value={blok.metric_2_value}
+  metric3Text={blok.metric_3_text}
+  metric3Value={blok.metric_3_value}
+  imagePath={blok.image_path}
+  imageAlt={blok.image_alt}
+/>

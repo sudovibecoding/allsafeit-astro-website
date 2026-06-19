@@ -1,0 +1,130 @@
+---
+/**
+ * Shared blog post grid — featured hero + 3-column cards.
+ * Used by /blog and /blog-categories/* pages.
+ */
+import Icon from '../primitives/Icon.astro';
+import { blogPostHref, heroBlogImage, type BlogStory } from '../../lib/storyblok-blog';
+
+interface Props {
+  posts: BlogStory[];
+  showFeatured?: boolean;
+}
+
+const { posts, showFeatured = true } = Astro.props;
+const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+const [featured, ...rest] = showFeatured ? posts : [undefined, ...posts];
+const gridPosts = showFeatured ? rest : posts;
+---
+
+{showFeatured && featured && (
+  <div class="featured-post">
+    <div class="featured-post-content">
+      <div class="featured-post-top">
+        <div class="featured-post-line" aria-hidden="true"></div>
+        <div class="featured-post-title">
+          <div class="blog-meta">
+            <span class="badge-text">{dateFmt.format(new Date(featured.content.publish_date!))}</span>
+          </div>
+          <a href={blogPostHref(featured)} class="featured-post-headline-link">
+            <h2 class="h3 long-text">{featured.name}</h2>
+          </a>
+        </div>
+      </div>
+      <a href={blogPostHref(featured)} class="icon-button-link">
+        <div class="circle-button">
+          <Icon name="custom-arrow" class="icon--arrow" />
+        </div>
+        <span class="badge-text">Read Story</span>
+      </a>
+    </div>
+    <a href={blogPostHref(featured)} class="featured-post-image-link">
+      <img
+        src={heroBlogImage(featured)}
+        alt={featured.content.body?.find((b) => b.component === 'hero_blog_post')?.image_alt ?? featured.name}
+        class="featured-blog-post"
+        loading="eager"
+      />
+    </a>
+  </div>
+)}
+
+<div class="blog-grid-thirds">
+  {gridPosts.map((post) => {
+    const hero = post.content.body?.find((b) => b.component === 'hero_blog_post');
+    const href = blogPostHref(post);
+    return (
+      <div class="blog-item bg-light1">
+        <a href={href} class="blog-item-link">
+          <img src={hero?.image_path} alt={hero?.image_alt ?? post.name} loading="lazy" />
+        </a>
+        <div class="blog-item-content">
+          <div class="blog-item-title">
+            <div class="blog-meta">
+              <span class="badge-text">{dateFmt.format(new Date(post.content.publish_date!))}</span>
+            </div>
+            <a href={href} class="blog-item-headline h5">{post.name}</a>
+          </div>
+          <a href={href} class="button small">Read story</a>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<style is:global>
+  .featured-post {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    border-radius: var(--radius-large);
+    background-color: var(--color-light-2);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .featured-post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 24px 48px 24px 24px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .featured-post-top { display: flex; flex-direction: column; gap: 18px; width: 100%; }
+  .featured-post-line { width: 100%; height: 1px; background-color: var(--color-dark-border); }
+  .featured-post-title { display: flex; flex-direction: column; gap: 1rem; }
+  .blog-meta { display: flex; gap: 12px; color: var(--color-brand-dark); }
+  .featured-post-headline-link { display: block; color: inherit; text-decoration: none; }
+  .featured-post-headline-link:hover { color: var(--color-accent); }
+  .featured-post-headline-link .h3 { margin: 0; }
+  .icon-button-link {
+    display: inline-flex; align-items: center; gap: 12px;
+    color: var(--color-brand-dark); text-decoration: none; align-self: flex-start;
+  }
+  .featured-post-image-link { display: block; overflow: hidden; }
+  .featured-blog-post { width: 100%; height: 100%; min-height: 559px; object-fit: cover; display: block; }
+  .blog-grid-thirds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .blog-item {
+    display: flex; flex-direction: column; gap: 18px; padding: 10px;
+    border: 0.5px solid #3b3b331c; border-radius: var(--radius-default); height: 100%;
+  }
+  .blog-item.bg-light1 { background-color: var(--color-light-1); }
+  .blog-item-link { display: block; border-radius: var(--radius-default); overflow: hidden; aspect-ratio: 16 / 10; }
+  .blog-item-link img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .blog-item-content {
+    display: flex; flex-direction: column; gap: 1.5rem; flex: 1;
+    padding: 0.5rem 0.75rem 0.75rem; justify-content: space-between; align-items: flex-start;
+  }
+  .blog-item-title { display: flex; flex-direction: column; gap: 0.75rem; }
+  .blog-item-headline { color: var(--color-brand-dark); text-decoration: none; }
+  .blog-item-headline:hover { color: var(--color-accent); }
+  @media (max-width: 991px) {
+    .featured-post { grid-template-columns: 1fr; }
+    .featured-blog-post { height: auto; min-height: 0; }
+    .blog-grid-thirds { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 767px) {
+    .blog-grid-thirds { grid-template-columns: 1fr; }
+  }
+</style>

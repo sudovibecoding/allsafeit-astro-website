@@ -1,0 +1,145 @@
+---
+/**
+ * Work Smarter, Share Safer — Lunch & Learn Pasadena (September 24, 2025).
+ *
+ * This event has already happened. The page is preserved here as a
+ * historical archive (noindex) so any inbound links from past
+ * promotional emails still resolve.
+ *
+ * Per user decision: build as a clearly-labeled past-event page; not a
+ * generic reusable event template (yet).
+ *
+ * Indexing: noindex — past event has no SEO value.
+ */
+
+import Base from '../layouts/Base.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+
+const EVENT = {
+  date: 'Wednesday, September 24, 2025',
+  time: '12:30 PM',
+  location: 'Pasadena (address provided after registration)',
+};
+
+const takeaways = [
+  'Smart, secure ways to store information in your collaboration stack.',
+  'AI-driven data loss prevention that catches risky sharing in real time.',
+  'How to balance productivity with protection without slowing your team down.',
+];
+---
+
+<Base
+  title="Work Smarter, Share Safer | Lunch &amp; Learn Pasadena"
+  description="Past event: Sept 24, 2025 in Pasadena. AP Logic & AllSafe IT covered Microsoft 365 collaboration and securing data with AI guardrails."
+  noindex={true}
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <p class="badge-text past-event-tag">Past event · September 24, 2025</p>
+        <h1 class="h2">Work Smarter, Share Safer: From Microsoft 365 to AI Guardrails</h1>
+        <p class="lead-text">
+          AP Logic and AllSafe IT hosted this Pasadena Lunch &amp; Learn
+          on boosting collaboration with Microsoft 365 — and keeping your
+          data safe with modern AI guardrails.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h2 class="h3">What attendees learned</h2>
+      </div>
+      <ul class="takeaways-list">
+        {takeaways.map((t) => (
+          <li class="lead-text">{t}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="event-details-card">
+        <p class="badge-text">Event details</p>
+        <dl class="event-dl">
+          <div class="event-row">
+            <dt>Date</dt>
+            <dd>{EVENT.date}</dd>
+          </div>
+          <div class="event-row">
+            <dt>Time</dt>
+            <dd>{EVENT.time}</dd>
+          </div>
+          <div class="event-row">
+            <dt>Location</dt>
+            <dd>{EVENT.location}</dd>
+          </div>
+          <div class="event-row">
+            <dt>Includes</dt>
+            <dd>Lunch and refreshments provided</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <TalkToExpertCta
+    heading="Interested in our next Lunch &amp; Learn?"
+    body="We host occasional events for Southern California business leaders. Reach out and we'll keep you posted on the next one."
+    ctaText="Talk to an Expert"
+  />
+</Base>
+
+<style>
+  .past-event-tag {
+    color: var(--color-accent);
+  }
+  .takeaways-list {
+    list-style: disc;
+    padding-left: 1.5rem;
+    max-width: var(--container-8col);
+    margin: 1.5rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .event-details-card {
+    max-width: var(--container-6col);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-large);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .event-dl {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+  }
+  .event-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+  }
+  .event-row dt {
+    font-weight: 600;
+    color: var(--color-brand-dark);
+  }
+  .event-row dd {
+    color: var(--color-text-dark-body);
+    margin: 0;
+  }
+  @media (max-width: 479px) {
+    .event-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>

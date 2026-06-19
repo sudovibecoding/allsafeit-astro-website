@@ -1,0 +1,53 @@
+---
+import RelatedPosts from '../../components/sections/RelatedPosts.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+import { blogPostHref, fetchBlogPosts } from '../../lib/storyblok-blog';
+import { storyblokVersion } from '../../lib/storyblok-fetch';
+
+interface Props {
+  blok: {
+    count?: number;
+  };
+}
+
+const { blok } = Astro.props;
+const count = blok.count ?? 3;
+const version = storyblokVersion(Astro.url, import.meta.env.DEV);
+const currentPath = Astro.url.pathname;
+
+let posts: Array<{
+  title: string;
+  href: string;
+  featuredImage?: string;
+  featuredImageAlt?: string;
+  category?: string;
+  categoryHref?: string;
+  publishDate: Date;
+}> = [];
+
+try {
+  const sbApi = useStoryblokApi();
+  const stories = await fetchBlogPosts(sbApi, version);
+  posts = stories
+    .filter((s) => blogPostHref(s) !== currentPath)
+    .slice(0, count)
+    .map((s) => {
+      const hero = s.content.body?.find((b) => b.component === 'hero_blog_post');
+      return {
+        title: s.name,
+        href: blogPostHref(s),
+        featuredImage: hero?.image_path,
+        featuredImageAlt: hero?.image_alt,
+        category: s.content.blog_category,
+        categoryHref: s.content.blog_category
+          ? `/blog-categories/${s.content.blog_category}`
+          : undefined,
+        publishDate: new Date(s.content.publish_date!),
+      };
+    });
+} catch {
+  /* Storyblok unavailable — section hidden */
+}
+---
+
+{posts.length > 0 && <RelatedPosts posts={posts} />}

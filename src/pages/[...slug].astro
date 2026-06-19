@@ -1,0 +1,19 @@
+---
+/**
+ * Storyblok-managed pages (any slug except those with a static .astro file).
+ * Static routes in src/pages/ always win — migrate a page by removing its .astro
+ * file and creating the same slug as a Story in Storyblok.
+ */
+export const prerender = false;
+
+import StoryblokStoryPage from '../components/storyblok/StoryblokStoryPage.astro';
+
+const slugParam = Astro.params.slug;
+const storySlug = Array.isArray(slugParam) ? slugParam.join('/') : slugParam ?? '';
+
+if (!storySlug || storySlug === 'home') {
+  return Astro.redirect('/');
+}
+---
+
+<StoryblokStoryPage storySlug={storySlug} />

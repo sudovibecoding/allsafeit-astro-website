@@ -1,0 +1,39 @@
+---
+interface Props {
+  blok: {
+    headline?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<section class="storyblok-teaser">
+  <div class="container">
+    <p class="eyebrow">Storyblok demo</p>
+    <h1>{blok.headline}</h1>
+  </div>
+</section>
+
+<style>
+  .storyblok-teaser {
+    padding: 3rem 0 1rem;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent, #00b4d8);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.15;
+    max-width: 20ch;
+    margin-inline: auto;
+  }
+</style>

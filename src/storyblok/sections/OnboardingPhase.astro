@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { number?: number; title?: string; body?: unknown };
+}
+---
+
+<div hidden data-onboarding-phase={Astro.props.blok.title} />

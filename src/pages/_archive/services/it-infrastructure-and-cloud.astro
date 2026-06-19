@@ -1,0 +1,180 @@
+---
+import Base from '../../layouts/Base.astro';
+import HeroService from '../../components/sections/HeroService.astro';
+import SectionIntro from '../../components/sections/SectionIntro.astro';
+import SplitContent from '../../components/sections/SplitContent.astro';
+import ServiceCardList from '../../components/sections/ServiceCardList.astro';
+import WhyChooseAccordion from '../../components/sections/WhyChooseAccordion.astro';
+import LocationCards from '../../components/sections/LocationCards.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
+import ContactSection from '../../components/sections/ContactSection.astro';
+import { IT_INFRASTRUCTURE_FAQS } from '../../data/faqs/it-infrastructure';
+import type { ServiceItem } from '../../components/sections/ServiceCardList.astro';
+
+// Sub-service detail pages don't exist as Tina entries yet — link the
+// CTAs to the contact form anchor so the cards are still actionable.
+const INFRA_HREF = '/contact-us#form';
+const coreServices: ServiceItem[] = [
+  {
+    title: 'Server Management',
+    description: 'Proactive monitoring, maintenance, and optimization of your physical and virtual servers. Maximum uptime, minimum surprises, and predictable performance.',
+    href: INFRA_HREF,
+  },
+  {
+    title: 'Network Infrastructure',
+    description: 'Design, deploy, and manage reliable networks. Redundancy built in, performance tuned, security hardened. Networks that support how your business actually works.',
+    href: INFRA_HREF,
+  },
+  {
+    title: 'Microsoft Azure Management',
+    description: 'Cloud infrastructure provisioned correctly, optimized for cost, and monitored continuously. We manage Azure so you get the benefits without the complexity.',
+    href: INFRA_HREF,
+  },
+  {
+    title: 'Microsoft 365 Administration',
+    description: 'User provisioning, license management, Teams configuration, and ongoing optimization of your M365 environment for maximum productivity.',
+    href: INFRA_HREF,
+  },
+  {
+    title: 'Cloud Cost Optimization',
+    description: 'Most businesses overspend on cloud by 30–40%. We find and eliminate waste while maintaining — and often improving — performance and reliability.',
+    href: INFRA_HREF,
+  },
+  {
+    title: 'Disaster Recovery & Business Continuity',
+    description: 'Tested recovery plans that get your business back online fast when the unexpected happens. Backup strategies that actually work under pressure.',
+    href: INFRA_HREF,
+  },
+];
+
+const SVG_640 = (path: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor"><path d="${path}"/></svg>`;
+
+const processSteps = [
+  {
+    label: 'Comprehensive assessment',
+    body: "We evaluate your current IT infrastructure and cloud environment, identifying performance issues, security measures gaps, and opportunities for cost reduction. This IT infrastructure consulting process reveals what's working and what needs improvement.",
+    icon: SVG_640('M439.4 96L448 96C483.3 96 512 124.7 512 160L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 160C128 124.7 156.7 96 192 96L200.6 96C211.6 76.9 232.3 64 256 64L384 64C407.7 64 428.4 76.9 439.4 96zM376 176C389.3 176 400 165.3 400 152C400 138.7 389.3 128 376 128L264 128C250.7 128 240 138.7 240 152C240 165.3 250.7 176 264 176L376 176zM256 320C256 302.3 241.7 288 224 288C206.3 288 192 302.3 192 320C192 337.7 206.3 352 224 352C241.7 352 256 337.7 256 320zM288 320C288 333.3 298.7 344 312 344L424 344C437.3 344 448 333.3 448 320C448 306.7 437.3 296 424 296L312 296C298.7 296 288 306.7 288 320zM288 448C288 461.3 298.7 472 312 472L424 472C437.3 472 448 461.3 448 448C448 434.7 437.3 424 424 424L312 424C298.7 424 288 434.7 288 448zM224 480C241.7 480 256 465.7 256 448C256 430.3 241.7 416 224 416C206.3 416 192 430.3 192 448C192 465.7 206.3 480 224 480z'),
+  },
+  {
+    label: 'Custom strategy development',
+    body: 'Based on assessment findings, we create a detailed roadmap aligning infrastructure management and cloud strategies with your business objectives. No cookie-cutter solutions.',
+    icon: SVG_640('M232 120L232 160L153.9 160C139.6 160 128 171.6 128 185.9C128 189.9 128.9 193.9 130.7 197.5L164.1 264.3C152.7 266.1 143.9 276 143.9 288C143.9 301.3 154.6 312 167.9 312L173.5 312L159.9 448L103.7 518.3C98.7 524.6 95.9 532.4 95.9 540.5C95.9 560.1 111.8 576 131.4 576L380.3 576C399.9 576 415.8 560.1 415.8 540.5C415.8 532.4 413.1 524.6 408 518.3L352 448L338.4 312L344 312C357.3 312 368 301.3 368 288C368 276.1 359.3 266.1 347.8 264.3L381.2 197.5C383 193.9 383.9 189.9 383.9 185.9C383.9 171.6 372.3 160 358 160L279.9 160L279.9 120L295.9 120C309.2 120 319.9 109.3 319.9 96C319.9 82.7 309.3 72 296 72L280 72L280 56C280 42.7 269.3 32 256 32C242.7 32 232 42.7 232 56L232 72L216 72C202.7 72 192 82.7 192 96C192 109.3 202.7 120 216 120L232 120zM389.8 343.6L398.3 429.1L445.7 488.3L449.9 494C459.1 507.7 464 523.9 464 540.5C464 553.2 461.2 565.3 456.1 576L539.2 576C559.5 576 576 559.5 576 539.2C576 531.9 573.8 524.8 569.8 518.8L544 480.1L544 416.1L557.3 402.8C569.3 390.8 576 374.5 576 357.5L576 256C576 238.3 561.7 224 544 224C526.3 224 512 238.3 512 256L512 272L480 272L480 256C480 238.3 465.7 224 448 224C430.3 224 416 238.3 416 256L416 288C416 310.4 405.8 330.4 389.8 343.6z'),
+  },
+  {
+    label: 'Phased implementation',
+    body: 'We roll out infrastructure services and cloud management in carefully planned stages. Each component integrates seamlessly with existing systems. Veeam backup solutions deploy before major changes. Testing happens before production.',
+    icon: SVG_640('M296.5 69.2C311.4 62.3 328.6 62.3 343.5 69.2L562.1 170.2C570.6 174.1 576 182.6 576 192C576 201.4 570.6 209.9 562.1 213.8L343.5 314.8C328.6 321.7 311.4 321.7 296.5 314.8L77.9 213.8C69.4 209.8 64 201.3 64 192C64 182.7 69.4 174.1 77.9 170.2L296.5 69.2zM112.1 282.4L276.4 358.3C304.1 371.1 336 371.1 363.7 358.3L528 282.4L562.1 298.2C570.6 302.1 576 310.6 576 320C576 329.4 570.6 337.9 562.1 341.8L343.5 442.8C328.6 449.7 311.4 449.7 296.5 442.8L77.9 341.8C69.4 337.8 64 329.3 64 320C64 310.7 69.4 302.1 77.9 298.2L112 282.4zM77.9 426.2L112 410.4L276.3 486.3C304 499.1 335.9 499.1 363.6 486.3L527.9 410.4L562 426.2C570.5 430.1 575.9 438.6 575.9 448C575.9 457.4 570.5 465.9 562 469.8L343.4 570.8C328.5 577.7 311.3 577.7 296.4 570.8L77.9 469.8C69.4 465.8 64 457.3 64 448C64 438.7 69.4 430.1 77.9 426.2z'),
+  },
+  {
+    label: 'Testing and optimization',
+    body: 'Every system undergoes rigorous testing before going live. Performance monitoring identifies bottlenecks. Continuous optimization keeps infrastructure running at peak efficiency with performance tuning and security policies enforcement.',
+    icon: SVG_640('M545.7 304.1C528.1 302.9 512.8 316.1 511.5 333.8C508.2 380.8 487.9 423.2 456.7 454.8L425 423C418.1 416.1 407.8 414.1 398.8 417.8C389.8 421.5 384 430.3 384 440L384 552C384 565.3 394.7 576 408 576L520 576C529.7 576 538.5 570.2 542.2 561.2C545.9 552.2 543.9 541.9 537 535L502 500C543.7 457.8 570.9 401.2 575.4 338.2C576.6 320.6 563.4 305.3 545.7 304zM103 105L138 140C96.3 182.2 69.1 238.8 64.6 301.8C63.4 319.4 76.6 334.7 94.3 336C112 337.3 127.2 324 128.5 306.3C131.8 259.3 152.1 216.9 183.3 185.3L215 217C221.9 223.9 232.2 225.9 241.2 222.2C250.2 218.5 256 209.7 256 200L256 88C256 74.7 245.3 64 232 64L120 64C110.3 64 101.5 69.8 97.8 78.8C94.1 87.8 96.2 98.1 103 105zM304 94.3C302.8 111.9 316 127.2 333.7 128.5C380.7 131.8 423.1 152.1 454.7 183.3L423 215C416.1 221.9 414.1 232.2 417.8 241.2C421.5 250.2 430.3 256 440 256L552 256C565.3 256 576 245.3 576 232L576 120C576 110.3 570.2 101.5 561.2 97.8C552.2 94.1 541.9 96.2 535 103L500 138C457.8 96.3 401.2 69.1 338.2 64.6C320.6 63.4 305.3 76.6 304 94.3zM105 537L140 502C182.2 543.7 238.8 570.9 301.8 575.4C319.4 576.6 334.7 563.4 336 545.7C337.3 528 324 512.8 306.3 511.5C259.3 508.2 216.9 487.9 185.3 456.7L217 425C223.9 418.1 225.9 407.8 222.2 398.8C218.5 389.8 209.7 384 200 384L88 384C74.7 384 64 394.7 64 408L64 520C64 529.7 69.8 538.5 78.8 542.2C87.8 545.9 98.1 543.8 105 537z'),
+  },
+  {
+    label: 'Ongoing support and monitoring',
+    body: "The relationship doesn't end at implementation. We provide 24/7 infrastructure monitoring, regular updates, and proactive maintenance. New technologies get evaluated. Routine tasks become automated. Your IT environment evolves as your business grows.",
+    icon: SVG_640('M272 88C272 74.7 282.7 64 296 64L344 64C357.3 64 368 74.7 368 88L368 144L424 144C437.3 144 448 154.7 448 168L448 216C448 229.3 437.3 240 424 240L368 240L368 296C368 309.3 357.3 320 344 320L296 320C282.7 320 272 309.3 272 296L272 240L216 240C202.7 240 192 229.3 192 216L192 168C192 154.7 202.7 144 216 144L272 144L272 88zM98.7 448L141.2 405.5C165.2 381.5 197.8 368 231.7 368L384 368C401.7 368 416 382.3 416 400C416 417.7 401.7 432 384 432L312 432C298.7 432 288 442.7 288 456C288 469.3 298.7 480 312 480L424.6 480L544.3 391.8C562.1 378.7 587.1 382.5 600.2 400.3C613.3 418.1 609.5 443.1 591.7 456.2L465.1 549.5C441.7 566.7 413.5 576 384.4 576L64 576C46.3 576 32 561.7 32 544L32 480C32 462.3 46.3 448 64 448L98.7 448z'),
+  },
+];
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'IT Infrastructure Management Services',
+  url: 'https://www.allsafeit.com/services/it-infrastructure-and-cloud',
+  serviceType: 'IT Infrastructure',
+  description: 'AllSafe IT delivers IT infrastructure management services and cloud management services that keep your systems reliable, your data secure, and your business growing.',
+  provider: { '@type': 'Organization', '@id': 'https://www.allsafeit.com#organization' },
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+    { '@type': 'ListItem', position: 2, name: 'IT Infrastructure & Cloud', item: 'https://www.allsafeit.com/services/it-infrastructure-and-cloud' },
+  ],
+};
+---
+
+<Base
+  title="IT Infrastructure Management Services | AllSafe IT"
+  description="Get reliable IT infrastructure management services nearby. Networks, servers, cloud migration, and Microsoft 365 for small businesses. Get a free assessment."
+  canonical="https://www.allsafeit.com/services/it-infrastructure-and-cloud"
+  schema={[serviceSchema, breadcrumbSchema]}
+>
+  <HeroService
+    heading="IT Infrastructure & Cloud Management Services"
+    lead="IT infrastructure management services and cloud management services that keep your systems reliable, your data secure, and your business growing without constant IT firefighting or expensive downtime."
+    video={{
+      poster: '/videos/servers_poster.0000000.jpg',
+      mp4: '/videos/servers_mp4.mp4',
+      webm: '/videos/servers_webm.webm',
+    }}
+  />
+
+  <SectionIntro heading="IT Infrastructure Management Services that fuel business growth">
+    <p class="lead-text">Your infrastructure shouldn't slow you down. It should power you forward. Our IT infrastructure management services handle the complexity of servers, networks, storage, and security so you can focus on running your business.</p>
+    <p class="lead-text">We take a proactive approach to infrastructure management. Instead of waiting for systems to fail, we monitor performance around the clock, catch issues before they impact operations, and optimize your IT infrastructure for reliability. With Cisco networking equipment, VMware virtualization, and Veeam backup solutions, your infrastructure stays available when you need it most.</p>
+    <p class="lead-text">Disaster recovery isn't an afterthought. It's built into every infrastructure management decision we make. Your business continuity depends on infrastructure that recovers quickly from failures, maintains data security through every scenario, and scales as your business requirements change.</p>
+  </SectionIntro>
+
+  <SplitContent
+    heading="Cloud Management Services for scalable growth"
+    image="/images/ladyfromourteam.avif"
+    imageAlt="IT infrastructure management services monitoring servers, networks, and business systems"
+    bg="gradient"
+  >
+    <p class="body-text">Cloud resources give you flexibility that traditional infrastructure can't match. Our cloud management services help you leverage Microsoft Azure, AWS, and Google Cloud Platform to build cloud infrastructure that scales with your business goals.</p>
+    <p class="body-text">Moving to the cloud doesn't mean starting from scratch. We support hybrid cloud environments that combine your existing infrastructure with cloud based assets, giving you the best of both worlds. Whether you need public cloud for burst capacity, private cloud for sensitive data, or a hybrid approach, we design cloud strategies around your business needs.</p>
+    <p class="body-text">Cloud management means more than just hosting. We optimize cloud resources to control costs, monitor performance continuously, and ensure your cloud infrastructure supports business operations without surprise bills or performance issues. Many organizations overspend on cloud services because resource usage isn't properly managed. We prevent that.</p>
+  </SplitContent>
+
+  <SplitContent
+    heading="What makes our Cloud Management Services unique"
+    image="/images/managementservice.avif"
+    imageAlt="Business technology environment supported by IT infrastructure management services"
+    imageRight
+  >
+    <p class="body-text">Many IT providers focus solely on fixing problems after they occur. We prevent problems from happening in the first place. Our cloud management services include predictive analytics that identify potential issues weeks before they could impact your operations.</p>
+    <p class="body-text">We also believe in transparent pricing. You'll never get surprised by hidden fees or unexpected charges. Our pricing model makes budgeting simple and ensures you get maximum value from every dollar invested in technology.</p>
+    <p class="body-text">Another key difference is our local presence. While some companies provide support from distant call centers, our technicians live and work in the communities we serve. When you need help, you get a real person who understands your business and can be on-site quickly if needed.</p>
+  </SplitContent>
+
+  <ServiceCardList
+    heading="Your IT Infrastructure and Cloud toolkit"
+    lead="Real IT infrastructure and cloud services solve actual business problems. Here's what we deliver."
+    items={coreServices}
+  />
+
+  <WhyChooseAccordion
+    heading="Our Proven Infrastructure and Cloud Management process"
+    intro="We follow a structured approach to IT infrastructure management and cloud management that minimizes risk while maximizing results."
+    items={processSteps}
+    image="/images/ITsupportworking.avif"
+    imageAlt="IT specialist managing and optimizing company IT infrastructure"
+    imageLeft
+  />
+
+  <SplitContent
+    heading="What makes our Infrastructure and Cloud Management different"
+    image="/images/managementservice.avif"
+    imageAlt="Managed IT provider maintaining network, server, and infrastructure systems"
+    imageRight
+  >
+    <p class="body-text">Most IT infrastructure service providers fix problems after they happen. We prevent them in the first place. Our managed IT infrastructure services use cutting edge tools for infrastructure monitoring and security monitoring that catch issues weeks before they could affect your business operations.</p>
+    <p class="body-text">We solve root problems, not just symptoms. When performance slows, we find and fix the underlying cause in your IT infrastructure rather than applying quick patches. This approach to infrastructure management reduces service interruptions and prevents expensive emergency repairs.</p>
+    <p class="body-text">You get a unified managed service provider handling both infrastructure and cloud. No coordination headaches between multiple vendors. One team understands your complete IT environment and ensures infrastructure services and cloud management work together seamlessly. Local expertise meets enterprise-grade capabilities.</p>
+    <p class="body-text">Transparent pricing means no surprises. You know exactly what infrastructure management service costs before we start. No hidden fees for routine tasks or infrastructure monitoring. Service availability stays high while your infrastructure management costs stay predictable.</p>
+  </SplitContent>
+
+  <LocationCards heading="Infrastructure and Cloud Services Across Southern California" />
+
+  <FaqSection faqs={IT_INFRASTRUCTURE_FAQS} heading="Frequently Asked Questions" />
+
+  <ContactSection
+    heading="Ready to stop worrying about your infrastructure and cloud?"
+    body="Let our infrastructure management and cloud management experts handle the complexity while you focus on growing your business."
+  />
+</Base>

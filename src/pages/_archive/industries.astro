@@ -1,0 +1,183 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroGrid from '../components/sections/HeroGrid.astro';
+import SplitContent from '../components/sections/SplitContent.astro';
+import IndustriesGrid from '../components/sections/IndustriesGrid.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Industry-Specific IT Services',
+    url: 'https://www.allsafeit.com/industries',
+    provider: { '@type': 'Organization', '@id': 'https://www.allsafeit.com#organization' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+      { '@type': 'ListItem', position: 2, name: 'Industries', item: 'https://www.allsafeit.com/industries' },
+    ],
+  },
+];
+---
+
+<Base
+  title="IT Services by Industry | Managed IT for California Businesses | AllSafe IT"
+  description="AllSafe IT delivers industry-specific managed IT services for healthcare, finance, legal, manufacturing, retail, and professional services across Southern California."
+  canonical="https://www.allsafeit.com/industries"
+  schema={schema}
+>
+  <HeroGrid
+    heading="Industries we support."
+    lead="We help you build an IT environment around your company's goals. From strategizing to implementation and ongoing support, we ensure you get just what you need to drive growth."
+    image="/images/AllsafeIT-team.avif"
+    imageAlt="AllSafe IT team providing managed IT support across California industries"
+    portrait="/images/ladyfromourteam.avif"
+    portraitAlt="AllSafe IT professional serving California business industries"
+    metricBadge="Trusted by 100+ global companies"
+    metricNumber="100+"
+    metricLabel="Across 8+ industries"
+    ctaHref="#form"
+  />
+
+  <!-- Partner logos marquee -->
+  <div class="partner-section">
+    <div class="container">
+      <p class="partner-label badge-text">Some of our multi-national partners</p>
+      <div class="partner-marquee">
+        <div class="partner-marquee-group">
+          <div class="partner-logos">
+            <div class="plogo"><img src="/images/Sophos_logo_colored.avif" alt="Sophos" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Veeam-Logo.png" alt="Veeam" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/microsoft-logo-png-13.avif" alt="Microsoft" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/ring-central-colored-logo.avif" alt="RingCentral" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Datto_logo_colored.avif" alt="Datto" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Open-AI-White-Logo-PNG.avif" alt="OpenAI" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/anthropic-text.avif" alt="Anthropic" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Apple_logo_with_text_white.avif" alt="Apple" width="80" loading="lazy" /></div>
+          </div>
+        </div>
+        <div class="partner-marquee-group" aria-hidden="true">
+          <div class="partner-logos">
+            <div class="plogo"><img src="/images/Sophos_logo_colored.avif" alt="" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Veeam-Logo.png" alt="" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/microsoft-logo-png-13.avif" alt="" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/ring-central-colored-logo.avif" alt="" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Datto_logo_colored.avif" alt="" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Open-AI-White-Logo-PNG.avif" alt="" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/anthropic-text.avif" alt="" width="80" loading="lazy" /></div>
+            <div class="plogo"><img src="/images/Apple_logo_with_text_white.avif" alt="" width="80" loading="lazy" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SplitContent
+    heading="Struggling with slow, unresponsive IT support?"
+    image="/images/AllSafeITinPasadena.webp"
+    imageAlt="AllSafe IT delivering reliable IT support for California businesses"
+  >
+    <p class="body-text">For forward-thinking businesses, robust and efficient IT is not just an option — it's a necessity. Whether you're battling outdated systems, cybersecurity threats, or the need for scalable solutions, we guide your business toward technological excellence.</p>
+    <p class="body-text">AllSafe IT brings 20+ years of Southern California experience, SOC 2-certified security practices, and a proactive approach that prevents problems before they interrupt your operations.</p>
+  </SplitContent>
+
+  <SplitContent
+    heading="Your complete, customized IT solution is here"
+    image="/images/ladyfromourteam.avif"
+    imageAlt="AllSafe IT team delivering complete managed IT solutions across California industries"
+    imageRight
+    bg="gradient"
+  >
+    <p class="body-text">We understand the critical role of seamless, efficient IT operations. Our managed IT services keep your business ahead of the curve with 24/7 support, network management, cloud services, and end-user support.</p>
+    <p class="body-text">Tailored to your industry's specific needs, we ensure your IT infrastructure is robust, secure, and aligned with your business goals. In an era where cybersecurity threats loom large, our layered protection approach offers comprehensive defense.</p>
+  </SplitContent>
+
+  <IndustriesGrid />
+
+  <!-- Manufacturing CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="section-content">
+        <div class="mfg-cta-wrap">
+          <h2 class="h3">Serving manufacturing companies in Los Angeles?</h2>
+          <p class="lead-text">Download our free co-managed IT guide built specifically for LA manufacturing firms — covering compliance, OT/IT integration, and scalable support models.</p>
+          <a href="/co-managed-it-for-small-businesses-ebook" class="button small">
+            <div class="button-text-wrapper">
+              <span class="button-text">Download the guide</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection />
+</Base>
+
+<style>
+  /* Partner logos section */
+  .partner-section {
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-light-2, #eef0f3);
+    border-bottom: 1px solid var(--color-light-2, #eef0f3);
+  }
+
+  .partner-label {
+    text-align: center;
+    opacity: 0.5;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  .partner-marquee {
+    display: flex;
+    overflow: hidden;
+  }
+
+  .partner-marquee-group {
+    flex: none;
+    animation: ind-scroll 30s linear infinite;
+  }
+
+  .partner-logos {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    padding-right: 72px;
+  }
+
+  .plogo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    opacity: 0.6;
+    filter: grayscale(1);
+  }
+
+  .plogo img {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  @keyframes ind-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .partner-marquee-group { animation: none; }
+  }
+
+  /* Manufacturing CTA */
+  .mfg-cta-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: var(--container-6col);
+  }
+</style>

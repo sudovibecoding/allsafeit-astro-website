@@ -1,0 +1,48 @@
+---
+import ContentImageSplit from '../../components/sections/ContentImageSplit.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { renderHeading } from '../../lib/storyblok-heading';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface ButtonBlok {
+  label?: string;
+  href?: string;
+  style?: 'button' | 'link';
+}
+
+interface Props {
+  blok: {
+    heading: unknown;
+    body?: unknown;
+    body_html?: string;
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt?: string;
+    background?: 'white' | 'gradient';
+    buttons?: ButtonBlok[];
+  };
+  imageRight?: boolean;
+}
+
+const { blok, imageRight = false } = Astro.props;
+const image = resolveImage(blok.image, blok.image_path) ?? '';
+const bodyHtml = resolveRichOrHtml(blok.body_html, blok.body);
+const headingHtml = renderHeading(blok.heading);
+const buttons = (blok.buttons ?? [])
+  .map((b) => ({
+    label: b.label ?? 'Learn more',
+    href: b.href ?? '#',
+    style: b.style ?? 'button',
+  }))
+  .filter((b) => b.label);
+---
+
+<ContentImageSplit
+  headingHtml={headingHtml}
+  bodyHtml={bodyHtml}
+  image={image}
+  imageAlt={blok.image_alt ?? ''}
+  imageRight={imageRight}
+  bg={blok.background ?? 'white'}
+  buttons={buttons}
+/>

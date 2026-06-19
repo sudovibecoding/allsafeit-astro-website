@@ -1,0 +1,100 @@
+---
+interface Props {
+  question: string;
+  open?: boolean;
+}
+
+const { question, open = false } = Astro.props;
+---
+
+<details class="accordion-item" {...(open ? { open: true } : {})}>
+  <summary class="accordion-title">
+    <h3 class="accordion-heading">{question}</h3>
+    <svg class="accordion-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <path d="M9 14.25L9 4.5M3.75 9L9 3.75L14.25 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+    </svg>
+  </summary>
+  <div class="accordion-content-wrap">
+    <div class="accordion-content">
+      <div class="accordion-text">
+        <slot />
+      </div>
+    </div>
+  </div>
+</details>
+
+<style>
+  .accordion-item {
+    border: 1px solid var(--color-dark-border);
+    border-radius: var(--radius-default);
+    cursor: pointer;
+    background-color: transparent;
+    width: 100%;
+  }
+
+  /* Remove default <summary> marker */
+  .accordion-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 18px;
+    font-weight: 500;
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .accordion-title::-webkit-details-marker {
+    display: none;
+  }
+
+  .accordion-heading {
+    margin: 0;
+    color: var(--color-brand-dark);
+    font-family: var(--font-headings);
+    font-size: var(--text-h6);
+    line-height: var(--leading-h5);
+    font-weight: 400;
+    text-align: left;
+  }
+
+  .accordion-arrow {
+    display: block;
+    flex-shrink: 0;
+    color: var(--color-brand-dark);
+    /* Arrow SVG points UP; rotate 180° = pointing DOWN = closed state */
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
+  }
+
+  details[open] .accordion-arrow {
+    transform: rotate(0deg);
+  }
+
+  .accordion-content-wrap {
+    border-bottom-left-radius: var(--radius-default);
+    border-bottom-right-radius: var(--radius-default);
+    padding-bottom: 48px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  /* Webflow `.accordion-text { color: #333 }` — softer body-gray, NOT the
+     dark-blue brand color used for headings. Using --color-text-base
+     (the global #333 token) keeps it in the design system instead of
+     hard-coding the hex. */
+  .accordion-text {
+    color: var(--color-text-base);
+    width: 100%;
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-arrow {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  class?: string;
+  color?: 'dark' | 'light' | 'accent';
+}
+
+const { class: className, color = 'dark' } = Astro.props;
+---
+
+<div class:list={['badge-text', `badge--${color}`, className]}>
+  <slot />
+</div>
+
+<style>
+  .badge-text {
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    line-height: var(--leading-small);
+    font-weight: 500;
+    text-transform: uppercase;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  .badge--dark   { color: var(--color-text-dark); }
+  .badge--light  { color: var(--color-light-2); }
+  .badge--accent { color: var(--color-accent); }
+</style>

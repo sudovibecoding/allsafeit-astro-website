@@ -1,0 +1,209 @@
+---
+/**
+ * EbookEmailForm — single-email-capture form for ebook lead-magnet flows.
+ *
+ * Replicates Webflow's `email-book-download-form` (data-name "Email Form")
+ * exactly:
+ *   - One Email input
+ *   - Hidden source_url populated by JS
+ *   - Cloudflare Turnstile CAPTCHA
+ *
+ * Submission flow:
+ *   1. Client script POSTs FormData to `/api/ebook-download`
+ *   2. Endpoint validates email, verifies captcha, fires notification email
+ *   3. On success: client redirects browser to the `redirectTo` page
+ *   4. On failure: error message is shown inline
+ *
+ * Appears on the live Webflow site at:
+ *   - / (homepage, inside the EbookCta section)
+ *
+ * In our Astro project this component is also reused on the per-ebook
+ * landing pages since they need the same single-email shape.
+ */
+
+interface Props {
+  /**
+   * Where to send the user AFTER successful submission. Mirrors Webflow's
+   * `redirect` form attribute. Defaults to `/lead-magnet-download`.
+   */
+  redirectTo?: string;
+  /** Submit button label. */
+  submitText?: string;
+  /** Render variant — "light" places it on dark backgrounds (default). */
+  variant?: 'light' | 'dark';
+  /** Optional DOM id (defaults to Webflow's). */
+  formId?: string;
+  class?: string;
+}
+
+const {
+  redirectTo = '/lead-magnet-download',
+  submitText = 'Download Ebook',
+  variant = 'light',
+  formId = 'email-book-download-form',
+  class: className,
+} = Astro.props;
+
+// Same Turnstile site key as the Inquiry Form — public key, safe to commit.
+const TURNSTILE_SITEKEY = '0x4AAAAAAAQTptj2So4dx43e';
+---
+
+<div class:list={['form-block-ebook', `variant-${variant}`, className]}>
+  <form
+    id={formId}
+    name="email-form"
+    data-name="Email Form"
+    method="post"
+    action="/api/ebook-download"
+    data-ebook-form
+    data-redirect-to={redirectTo}
+    class="form book"
+  >
+    <input
+      class:list={['form-input', variant === 'light' && 'whiteversion']}
+      maxlength="256"
+      name="Email"
+      placeholder="Email Address"
+      type="email"
+      id={`${formId}-Email`}
+      required
+    />
+
+    <input
+      class="hidden-form-input"
+      maxlength="256"
+      name="source_url"
+      type="text"
+      id={`${formId}-source_url`}
+      tabindex="-1"
+      aria-hidden="true"
+    />
+
+    <div
+      class="cf-turnstile"
+      data-sitekey={TURNSTILE_SITEKEY}
+    ></div>
+
+    <input
+      type="submit"
+      class="button form-button"
+      value={submitText}
+    />
+  </form>
+
+  <div class="form-success" role="alert" hidden>
+    <div>Thank you! Your submission has been received!</div>
+  </div>
+  <div class="form-error" role="alert" hidden>
+    <div>Oops! Something went wrong while submitting the form.</div>
+  </div>
+</div>
+
+<!-- Turnstile lazy-load (shared API script — see InquiryForm) -->
+<script>
+  const ebookTurnstileWidgets = document.querySelectorAll('.form-block-ebook .cf-turnstile');
+  if (ebookTurnstileWidgets.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          if (!document.querySelector('script[src*="challenges.cloudflare.com"]')) {
+            const s = document.createElement('script');
+            s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+            s.async = true;
+            s.defer = true;
+            document.head.appendChild(s);
+          }
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    ebookTurnstileWidgets.forEach((w) => observer.observe(w));
+  }
+</script>
+
+<!-- Submit handler — shared with EbookCta via src/scripts/ebookForm.ts -->
+<script>
+  import '../../scripts/ebookForm';
+</script>
+
+<style>
+  .form.book {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 12px;
+    width: auto;
+  }
+
+  .form-input {
+    flex: 1 1 240px;
+    height: var(--input-height);
+    border: 1px solid var(--color-dark-border);
+    border-radius: var(--radius-default);
+    color: var(--color-text-dark);
+    font-size: var(--text-body);
+    background-color: transparent;
+    padding: 0 16px;
+    font-family: var(--font-body);
+  }
+  .form-input:focus { outline: none; border-color: var(--color-accent); }
+  .form-input::placeholder { color: #3b3b33cc; }
+
+  /* Light variant: on dark/branded backgrounds (the .large-quote-box). */
+  .variant-light .form-input.whiteversion {
+    border-color: var(--color-light-1);
+    color: var(--color-light-2);
+  }
+  .variant-light .form-input.whiteversion::placeholder {
+    color: var(--color-light-1);
+  }
+
+  .cf-turnstile {
+    min-height: 65px;
+    align-self: center;
+  }
+
+  .form-button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height);
+    padding: 0 var(--btn-px);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    font-weight: 500;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .form-button:hover { opacity: 0.85; }
+
+  .hidden-form-input { display: none; }
+
+  .form-success,
+  .form-error {
+    border-radius: var(--radius-default);
+    margin-top: 12px;
+    padding: 18px;
+  }
+  .form-success {
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+  }
+  .form-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+
+  @media (max-width: 767px) {
+    .form.book { flex-direction: column; }
+    .form-button { width: 100%; }
+  }
+</style>

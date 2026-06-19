@@ -1,0 +1,236 @@
+---
+import Base from '../../layouts/Base.astro';
+import HeroService from '../../components/sections/HeroService.astro';
+import IntroSplit from '../../components/sections/IntroSplit.astro';
+import ProblemsGrid from '../../components/sections/ProblemsGrid.astro';
+import NumberedListSplit from '../../components/sections/NumberedListSplit.astro';
+import ServiceCardGrid from '../../components/sections/ServiceCardGrid.astro';
+import Tabs from '../../components/sections/Tabs.astro';
+import IndustriesGrid from '../../components/sections/IndustriesGrid.astro';
+import WhyChooseAccordion from '../../components/sections/WhyChooseAccordion.astro';
+import OnboardingProcess from '../../components/sections/OnboardingProcess.astro';
+import ServiceAreas from '../../components/sections/ServiceAreas.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
+import ContactSection from '../../components/sections/ContactSection.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { ONBOARDING_PHASES, MAP_EMBEDS, PROBLEM_ICONS as ICONS } from '../../data/locations-shared';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.allsafeit.com' },
+    { '@type': 'ListItem', position: 2, name: 'Managed IT Services Pasadena', item: 'https://www.allsafeit.com/locations/managed-it-services-pasadena' },
+  ],
+};
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'AllSafe IT — Pasadena',
+  url: 'https://www.allsafeit.com/locations/managed-it-services-pasadena',
+  telephone: '+1-888-400-2748',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '70 South Lake Ave, Suite 690',
+    addressLocality: 'Pasadena',
+    addressRegion: 'CA',
+    postalCode: '91101',
+    addressCountry: 'US',
+  },
+};
+
+const problems = [
+  { title: 'Network downtime and system failures', body: 'We deploy proactive monitoring and redundant systems that catch technical issues before they cause outages. When IT systems go down, production stops, clinics lose patient records, billing fails. We\'ve seen Pasadena companies lose thousands per hour to preventable downtime.', icon: ICONS.wifi },
+  { title: 'Cybersecurity Threats and Data Breaches', body: 'Real network security requires 24/7 managed detection and response, not just antivirus. We\'ve seen phishing emails fool employees and ransomware encrypt competitors\' critical data in minutes. For Pasadena organizations under HIPAA or CCPA, we provide audited security controls and compliance support that prove data protection.', icon: ICONS.shield },
+  { title: 'Unpredictable IT costs', body: 'Flat-rate managed services eliminate surprise bills and give predictable monthly budgets. We\'ve worked with Pasadena CA companies paying for unused Microsoft 365 licenses and overlapping tools. We optimize what you have, cut what you don\'t need, align spending with business value. More cost effective without sacrificing quality.', icon: ICONS.dollar },
+  { title: 'Compliance and industry regulations', body: 'We\'re SOC2 certified ourselves. Whether you need HIPAA for healthcare, CCPA for California businesses, PCI DSS for retail, or CMMC, we document controls and provide audit-ready evidence.', icon: ICONS.doc },
+  { title: 'Slow emergency response', body: 'Our Pasadena headquarters means onsite response to Old Town, South Lake, or Altadena in minutes. For <a href="/it-support-pasadena">managed IT support pasadena</a> companies trust, we respond with rapid response times and real people who know your environment. No phone trees, no waiting.', icon: ICONS.bolt },
+  { title: 'In-house IT team limitations', body: 'Co-managed IT gives you both. Your internal team maintains control while we provide 24/7 coverage, specialized expertise, and enterprise security. We\'ve helped Pasadena companies scale from 50 to 200+ employees without adding IT headcount.', icon: ICONS.people },
+  { title: 'Growth outpacing infrastructure', body: 'We assess your setup, identify bottlenecks, and build IT infrastructure that scales with headcount. When Pasadena businesses double quickly, we\'ve seen cloud solutions fail and security gaps emerge. We plan migrations that support business growth without disrupting business operations.', icon: ICONS.growth },
+];
+
+const lookForItems = [
+  { term: 'Track record and stability.', body: 'Past performance matters more than promises. Look for client retention, measurable service levels, and stability over time.' },
+  { term: 'SOC 2 compliance.', body: 'Independent third-party audits of security controls over time. This certification is a meaningful differentiator in the Pasadena market.' },
+  { term: 'Security operations, not just software.', body: 'The cyber threats targeting your business are human-targeted. Your partner needs managed detection and response with active threat detection, not just tools.' },
+  { term: 'Growth expertise.', body: 'Can they handle what you\'re building? Multiple locations, rapid scaling, cloud migrations. They should have guided similar companies and helped them achieve business goals.' },
+  { term: 'Local presence.', body: 'Response time to your Pasadena office should be measured in minutes, not hours. Physical proximity matters for onsite work and same-day support.' },
+  { term: 'Compliance experience.', body: 'If your industry has HIPAA, PCI DSS, or CMMC requirements, your managed service provider in Pasadena needs proven experience documenting controls.' },
+  { term: 'Transparent pricing.', body: 'Understand what you\'re paying for, what\'s included, what costs extra before you sign. Surprises erode trust.' },
+];
+
+// Tab content for the "Complete IT Coverage" section. Each panel is rendered
+// inside the Tabs component (slim, no-framework, lazy-load via init.ts) —
+// matches Webflow's `.tabs-2` block. Tables are inlined as small HTML so we
+// don't proliferate one-off table components for a single page.
+const coveragePanels = [
+  {
+    heading: 'Modern Security for Modern Threats',
+    intro: 'Today\'s cybersecurity challenges require more than traditional IT models. We provide layered advanced cybersecurity for Pasadena organizations.',
+    table: [
+      { label: 'Safe Cloud', body: 'Microsoft 365 monitoring that catches suspicious logins, business email compromise, and AI-powered attacks' },
+      { label: 'Safe Endpoint', body: 'Protection for every device. Essential for hybrid teams across Pasadena, East Pasadena, and remote locations' },
+      { label: 'Managed Detection & Response', body: 'Real humans watching your network 24/7. When cyber threats emerge, we respond immediately' },
+    ],
+    paragraphs: ['Proactive support keeps operations smooth. Your critical data stays yours. You focus on winning.'],
+  },
+  {
+    heading: 'Technology as a Growth Engine (AllSafe Intelligence)',
+    intro: 'The right technology multiplies what your team accomplishes. That\'s AllSafe Intelligence.',
+    paragraphs: [
+      'We\'ve seen Pasadena engineering firms where teams spend hours managing files instead of designing. Find opportunities. We audit workflows to identify high-impact automation targets. Build tailored solutions. Real AI agents that integrate with your software and deliver results. Implement seamlessly. We understand your IT infrastructure, which means smoother deployments and faster value. Our dedicated support team handles complexity.',
+      'This is how technology becomes a force multiplier.',
+    ],
+  },
+  {
+    heading: 'Co-Managed IT Services Pasadena',
+    intro: 'Your team. Our support. Complete coverage.',
+    paragraphs: [
+      'You\'ve built internal IT capability that works. But scaling brings challenges. Coverage gaps, specialized projects, security demands that exceed capacity. Co-managed IT services Pasadena firms use mean partnership, not replacement. Your team maintains control while we provide 24/7 network monitoring, specialized expertise, and project support Pasadena businesses trust.',
+      'This is how growing companies get enterprise-level IT without losing internal expertise.',
+    ],
+  },
+  {
+    heading: 'Outsourced IT Support (Help Desk)',
+    intro: 'IT support that actually answers. Fast.',
+    paragraphs: [
+      'Your team shouldn\'t wait on hold when technology stops working. Our help desk responds with real people who can help. Not a recording, not a ticket system. We handle everything from basic troubleshooting to complex technical issues with rapid response for critical problems.',
+      'Fully managed IT support done right. Proactive monitoring catches problems before your team feels them and helps prevent downtime. Technology supports your mission.',
+    ],
+  },
+];
+
+// Build tab items from panels: intro paragraph + optional table + remaining
+// paragraphs, joined as HTML for the Tabs component's set:html slot.
+const coverageTabs = coveragePanels.map((p) => {
+  const intro = `<p class="panel-intro">${p.intro}</p>`;
+  const table = p.table
+    ? `<div class="coverage-table">
+         <div class="coverage-row coverage-row__head">
+           <div>Solution</div><div>What it does</div>
+         </div>
+         ${p.table
+           .map(
+             (r) =>
+               `<div class="coverage-row"><div class="coverage-label">${r.label}</div><div>${r.body}</div></div>`,
+           )
+           .join('')}
+       </div>`
+    : '';
+  const paragraphs = (p.paragraphs ?? []).map((s) => `<p>${s}</p>`).join('');
+  return { label: p.heading, content: `${intro}${table}${paragraphs}` };
+});
+
+const whyChooseItems = [
+  { label: 'SOC2 compliant.', body: 'We prove security standards through independent third-party audits. This certification demonstrates our commitment to data protection and data security.' },
+  { label: 'Rapid onsite support', body: 'South Pasadena, San Marino, Altadena, East Pasadena. At your door in minutes when you need us with rapid response times.' },
+  { label: 'AI consulting built in', body: 'AllSafe Intelligence helps you use technology to grow, not just operate. Value beyond traditional IT services that enhance productivity.' },
+  { label: 'Recognized by industry leaders', body: 'Channel Futures MSP 501 and CRN MSP 500 recognize our excellence. BBB A+ accreditation reflects our commitment to Pasadena businesses.' },
+  { label: 'Co-managed options', body: 'Have an IT manager? We provide the dedicated team and resources they need to focus on strategic IT planning.' },
+];
+
+const faqs = [
+  { q: 'How much do managed IT services cost in Pasadena?', a: 'Flat-rate monthly pricing based on user count and service level. You get a full team of experts for less than hiring one internal IT manager. Predictable costs make budgeting simple and help reduce IT related expenses.' },
+  { q: 'What are the benefits of managed IT services for small businesses in Pasadena?', a: '24/7 system monitoring, proactive maintenance, rapid help desk support, enterprise-grade security, strategic IT planning. All without hiring full-time staff. Your small businesses gain access to specialized expertise with predictable monthly costs and enhanced operational efficiency.' },
+  { q: 'Do you provide onsite support in Pasadena?', a: 'Yes. We\'re headquartered at 70 South Lake Avenue in Pasadena\'s Downtown Financial District. Onsite response to Old Town, South Lake, or managed IT services South Pasadena areas measured in minutes. For remote managed IT services in Pasadena, we respond immediately with real people.' },
+  { q: 'How does co-managed IT in Pasadena differ from fully managed IT?', a: 'Co-managed IT services Pasadena means we work alongside your existing IT staff. We provide backup, specialized expertise, 24/7 coverage. Fully comprehensive managed means we handle your complete environment. Both give you enterprise capabilities and enhance efficiency.' },
+  { q: 'Do you understand the compliance needs of Pasadena businesses?', a: 'Yes. We\'re SOC2 certified, which means we understand rigorous compliance frameworks. We work with HIPAA for healthcare, CCPA for California businesses, industry-specific mandates. Our security practices are independently audited providing compliance support.' },
+  { q: 'How quickly can managed IT services respond in Pasadena?', a: 'We\'re headquartered in Downtown Pasadena. Onsite response to Pasadena CA locations measured in minutes with rapid response times. For remote technical support, we respond immediately. Day or night. Our presence helps prevent downtime before it impacts business operations.' },
+];
+---
+
+<Base
+  title="Managed IT Services Pasadena | 24/7 Support | AllSafe IT"
+  description="Expert managed IT services in Pasadena. 7x CRN MSP 500 winner. 24/7 cybersecurity and cloud support. SOC 2 certified. Free IT assessment."
+  canonical="https://www.allsafeit.com/locations/managed-it-services-pasadena"
+  schema={[breadcrumbSchema, localBusinessSchema]}
+>
+  <HeroService
+    heading="Managed IT Services Pasadena"
+    lead={[
+      "You're tired of talking about tech support. We hear that. It's time for tech to support you.",
+      `<a href="/">AllSafe IT</a> is headquartered at 70 South Lake Avenue in Pasadena's Downtown Financial District. We deliver SOC 2-compliant managed IT services in Pasadena, cybersecurity, and AllSafe Intelligence. Everything your business needs from technology under one roof.`,
+    ]}
+    image="/images/AllSafeITinPasadena.webp"
+    imageAlt="AllSafe IT Pasadena headquarters — managed IT services"
+  />
+
+  <div class="container">
+    <Breadcrumb crumbs={[{ label: 'Home', href: '/' }, { label: 'Managed IT Services Pasadena' }]} />
+  </div>
+
+  <IntroSplit
+    heading="Top-Rated Managed Services Provider in Pasadena"
+    body='<a href="/">AllSafe IT</a> has served Pasadena, Los Angeles, and Orange County for over 20 years managing IT infrastructure, protecting against cyber threats, and building AI solutions that amplify what teams can do. Our Pasadena headquarters means response time to Old Town, Playhouse Village, or South Pasadena is measured in minutes, not hours. Your technology should support your mission. We make sure it does.'
+    image="/images/allsafeitdreamteam.jpg"
+    imageAlt="AllSafe IT technicians providing managed IT services at our Pasadena headquarters"
+  />
+
+  <ProblemsGrid
+    heading="Problems We Solve for Businesses in Pasadena"
+    intro="We've worked with Pasadena businesses across every sector. These are the problems we solve."
+    problems={problems}
+  />
+
+  <NumberedListSplit
+    heading="What to Look for in a Pasadena Managed IT Services Provider"
+    intro="Seven things that matter when choosing managed IT services in Pasadena."
+    items={lookForItems}
+    outro="The right services provider in Pasadena doesn't just keep systems running. They align with your growth and invest in your success."
+    image="/images/managedIThollywood.avif"
+    imageAlt="AllSafe IT — managed IT services provider Pasadena"
+  />
+
+  <ServiceCardGrid
+    heading="Complete Pasadena Managed IT, Security, and AI Under One Roof"
+    lead="Five service pillars, one trusted partner."
+  />
+
+  {/* Webflow `.tabs-2` — slim no-framework tabbed coverage panel, lazy-loaded. */}
+  <section class="section bg-gradient">
+    <div class="container">
+      <div class="section-content">
+        <div class="centered-title">
+          <h2 class="h3 text_center">Complete IT Coverage, One Trusted Partner</h2>
+          <p class="lead-text text_center">Technology should work as one system. Managed IT keeps your business running smoothly. Cybersecurity keeps you protected. AI multiplies what your team accomplishes.</p>
+        </div>
+        <Tabs tabs={coverageTabs} initial={0} />
+      </div>
+    </div>
+  </section>
+
+  <IndustriesGrid />
+
+  <WhyChooseAccordion
+    heading="Why choose Us for Managed IT Services in Pasadena"
+    intro="Headquartered in the Downtown Financial District. Local expertise means faster response and stronger partnerships. We're your neighbors at 70 South Lake Avenue, Pasadena CA 91101."
+    items={whyChooseItems}
+    image="/images/ITsupportconsultation.avif"
+    imageAlt="IT support person providing managed IT support in Pasadena"
+    imageLeft
+  />
+
+  <OnboardingProcess
+    heading={`AllSafe IT Client <br>Onboarding Process`}
+    phases={ONBOARDING_PHASES}
+    image="/images/DSC_1927DSC_1926.avif"
+    imageAlt="Co managed IT for Pasadena businesses"
+  />
+
+  <ServiceAreas
+    heading="Serving Pasadena and Beyond"
+    mapEmbedUrl={MAP_EMBEDS.pasadena}
+    addressLine={`AllSafe IT serves Pasadena from our headquarters at <a href="https://www.google.com/maps?cid=16677091962897709847" target="_blank" rel="noopener">70 South Lake Avenue, Suite 690, Pasadena, CA 91101</a>. We're located in the Downtown Financial District, steps from <a href="https://www.cityofpasadena.net/" target="_blank" rel="noopener">Pasadena City Hall</a> and minutes from the <a href="https://playhousevillage.org/" target="_blank" rel="noopener">Playhouse Village</a> district.`}
+    pinLabel="Pasadena, California"
+    bg="gradient"
+  >
+    <p>Our dedicated teams provide managed IT services throughout Pasadena and surrounding business hubs. We provide dedicated support to businesses in Old Town Pasadena (91103), South Pasadena (91030), San Marino (91108), Altadena (91001), and Sierra Madre (91024).<br />Our mobile teams also provide rapid response to neighboring business hubs, including <a href="/it-services-burbank">Burbank</a> and <a href="/locations/managed-it-services-los-angeles">Los Angeles</a>, ensuring complete coverage across the San Gabriel Valley and Metro LA area. This coverage delivers fast response when issues cannot wait.</p>
+    <p>With a nearby dedicated team that understands the area and your business environment, you get timely support that keeps systems running and staff productive. Choose an MSP in Pasadena that is close by, responsive, and ready to support you when it matters most.</p>
+  </ServiceAreas>
+
+  <FaqSection faqs={faqs} heading="Common Questions About Managed IT Services in Pasadena" />
+  <ContactSection />
+</Base>
+{/* `.coverage-table` styles for the Tabs section live in `src/styles/global.css`
+    — shared across all three location pages. */}

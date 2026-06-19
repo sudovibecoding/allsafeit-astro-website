@@ -1,0 +1,43 @@
+---
+import WhyChooseAccordion from '../../components/sections/WhyChooseAccordion.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface ItemBlok {
+  label?: string;
+  body?: unknown;
+  body_html?: string;
+}
+
+interface Props {
+  blok: {
+    heading: unknown;
+    intro?: unknown;
+    intro_html?: string;
+    image?: { filename?: string; id?: number } | string;
+    image_path?: string;
+    image_alt: string;
+    image_left?: boolean;
+    background?: 'gradient' | 'plain';
+    items?: ItemBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+const introHtml = resolveRichOrHtml(blok.intro_html, blok.intro);
+const items = (blok.items ?? []).map((i) => ({
+  label: i.label ?? '',
+  body: resolveRichOrHtml(i.body_html, i.body),
+}));
+---
+
+<WhyChooseAccordion
+  heading={headingPlainText(blok.heading)}
+  intro={introHtml}
+  items={items}
+  image={resolveImage(blok.image, blok.image_path) ?? ''}
+  imageAlt={blok.image_alt}
+  imageLeft={blok.image_left ?? false}
+  bg={blok.background ?? 'gradient'}
+/>

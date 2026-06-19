@@ -1,0 +1,54 @@
+---
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    name?: string;
+    position?: string;
+    picture_path?: string;
+    bio?: unknown;
+    bio_html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const bioHtml = resolveRichOrHtml(blok.bio_html, blok.bio);
+---
+
+<section class="section">
+  <div class="container">
+    <div class="author-profile">
+      {blok.picture_path && (
+        <img
+          src={blok.picture_path}
+          alt={blok.name ?? ''}
+          class="author-photo"
+          width="160"
+          height="160"
+          loading="eager"
+        />
+      )}
+      <div>
+        <h1 class="h2">{blok.name}</h1>
+        {blok.position && <p class="lead-text">{blok.position}</p>}
+        {bioHtml && <div class="article-richtext body-text cms-rich-text" set:html={bioHtml} />}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .author-profile {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .author-photo {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  @media (max-width: 767px) {
+    .author-profile { grid-template-columns: 1fr; }
+  }
+</style>

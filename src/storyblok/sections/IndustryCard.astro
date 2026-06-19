@@ -1,0 +1,10 @@
+---
+/** Nested industry_card blok — rendered inside IndustriesGrid. */
+interface Props {
+  blok: { heading?: string };
+}
+
+const { blok } = Astro.props;
+---
+
+<div hidden data-industry-card={blok.heading} />

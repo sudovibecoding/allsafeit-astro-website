@@ -1,0 +1,27 @@
+---
+interface Props {
+  blok: {
+    name?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<article class="storyblok-feature">
+  <h2>{blok.name}</h2>
+</article>
+
+<style>
+  .storyblok-feature {
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+    background: color-mix(in srgb, var(--color-accent, #00b4d8) 6%, transparent);
+  }
+
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+</style>

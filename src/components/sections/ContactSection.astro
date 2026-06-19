@@ -1,0 +1,30 @@
+---
+import ContactForm from '../ContactForm.astro';
+
+interface Props {
+  heading?: string;
+  /** Body copy. HTML allowed. */
+  body?: string;
+}
+
+const DEFAULT_BODY = `Start with a conversation. No pressure. No decks. Just an honest look at your current IT setup, what's working, and what's not.<br /><br />If we can help, we'll say how. If we're not the right fit, we'll tell you that too. Because we want you to win. And that starts with the truth.`;
+
+const {
+  heading = 'Ready to Make Technology Work for You?',
+  body = DEFAULT_BODY,
+} = Astro.props;
+---
+
+<div id="form" class="form_section">
+  <div class="container">
+    <div class="process-box color__white-shade1">
+      <div class="content_grid">
+        <div class="content">
+          <h2 class="h4">{heading}</h2>
+          <p class="body-text" set:html={body}></p>
+        </div>
+        <ContactForm />
+      </div>
+    </div>
+  </div>
+</div>

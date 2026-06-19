@@ -1,0 +1,102 @@
+---
+/**
+ * Form Not Received — `/form-not-received`.
+ *
+ * Form-submission failure page. Originally a Basin (usebasin.com) error
+ * URL; we own the route now so the title gets a real label instead of
+ * Webflow's literal `404 usebasin` leftover.
+ *
+ * Webflow reference: `form-not-received.html` — `.utility-page-wrap` with
+ * dark photo bg, white type, twin CTAs (Contact Us + Back to Home). We
+ * mirror the dark hero treatment for visual consistency with `/404`,
+ * `/thank-you`, `/unsubscribed`, and add a clickable phone link inline so
+ * urgent failed-submissions can dial straight from the error message.
+ *
+ * Indexing: noindex — error landing, not for search results.
+ */
+import Base from '../layouts/Base.astro';
+
+const SUPPORT_PHONE_DISPLAY = '(888) 400-2748';
+const SUPPORT_PHONE_HREF = 'tel:+18884002748';
+---
+
+<Base
+  title="Form not received | AllSafe IT"
+  description="Your form submission did not go through. Please call us or try again."
+  noindex={true}
+>
+  <section class="utility-section">
+    <div class="container">
+      <div class="utility-wrap">
+        <h1 class="h2 color__white-shade1">We did not receive your form</h1>
+        <p class="lead-text color__white-shade1">
+          Unfortunately, something went wrong. Please call us on
+          <a href={SUPPORT_PHONE_HREF}>{SUPPORT_PHONE_DISPLAY}</a>
+          or try again.
+        </p>
+        <div class="utility-actions">
+          <a href="/contact-us" class="button small">Contact us</a>
+          <a href="/" class="button small ghost">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Same dark photo hero pattern as `/404`, `/thank-you`, `/unsubscribed`. */
+  .utility-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-brand-dark);
+    background-image:
+      linear-gradient(rgba(0, 25, 68, 0.7), rgba(0, 25, 68, 0.85)),
+      url('/images/DSC_1695DSC_1694.avif');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 4rem 0;
+  }
+
+  .utility-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: var(--container-6col);
+    align-items: flex-start;
+  }
+  .utility-wrap .h2 { margin: 0; }
+  .utility-wrap .lead-text { margin: 0; }
+
+  /* Inline phone link — accent color on the dark hero, underlined so it
+     reads as actionable inside the body sentence. */
+  .lead-text a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .lead-text a:hover { color: var(--color-light-1); }
+
+  .utility-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+  .button.ghost {
+    background-color: transparent;
+    border: 1px solid var(--color-light-1);
+    color: var(--color-light-1);
+  }
+  .button.ghost:hover {
+    background-color: var(--color-light-1);
+    color: var(--color-brand-dark);
+  }
+
+  @media (max-width: 767px) {
+    .utility-wrap { align-items: center; text-align: center; }
+    .utility-actions { justify-content: center; }
+  }
+</style>

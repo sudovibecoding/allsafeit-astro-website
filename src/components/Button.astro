@@ -1,0 +1,84 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'small' | 'ghost';
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  type = 'button',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+{href ? (
+  <a
+    href={href}
+    class:list={['button', variant !== 'primary' && variant, className]}
+    {...rest}
+  >
+    <slot />
+  </a>
+) : (
+  <button
+    type={type}
+    class:list={['button', variant !== 'primary' && variant, className]}
+    {...rest}
+  >
+    <slot />
+  </button>
+)}
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height);
+    padding: 0 var(--btn-px);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-primary);
+    color: var(--color-text-light);
+    font-family: var(--font-badges);
+    font-size: var(--text-small);
+    font-weight: 500;
+    line-height: var(--leading-small);
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+
+  .button:hover {
+    opacity: 0.85;
+  }
+
+  /* Small variant */
+  .button.small {
+    height: var(--btn-height-sm);
+    padding: 0 var(--btn-px-sm);
+  }
+
+  /* Ghost variant — frosted glass for dark hero backgrounds */
+  .button.ghost {
+    background-color: #f8f8f333;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background-color 0.2s;
+  }
+
+  .button.ghost:hover {
+    background-color: #f8f8f366;
+    opacity: 1;
+  }
+</style>

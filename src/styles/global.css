@@ -1,0 +1,1310 @@
+@import "tailwindcss";
+/* @config "../../tailwind.config.mjs"; */
+
+/* ============================================================
+   FONT FACES — self-hosted variable fonts (public/fonts/)
+   ============================================================ */
+
+@font-face {
+  font-family: "Funnelsans Font";
+  src: url("../assets/fonts/FunnelSans-VariableFont_wght.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geistmono Font";
+  src: url("../assets/fonts/GeistMono-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   DESIGN TOKENS — CSS Custom Properties
+   Source of truth for all values. Tailwind config references
+   these via var(). No hex values appear outside this block.
+   ============================================================ */
+
+:root {
+  /* --- Brand Colors ---
+     FLAG: --color-brand-dark consolidates three Webflow vars that
+     share the same value: --_colors---brand--brand-2,
+     --_colors---secondary, and --_colors---ui--dark (all #001944).
+     FLAG: --color-accent renamed from --_colors---primary-gradient
+     which is a solid blue (#0e73d6), not a gradient. */
+  --color-brand-primary: #0054a5;
+  --color-brand-dark: #001944;
+  --color-accent: #0e73d6;
+
+  /* --- UI Surface Colors --- */
+  --color-light-1: #f5f7fa;
+  --color-light-2: #eceff4;
+  --color-light-1-faded: #0054a51f;
+  --color-dark-faded: #3b3b3366;
+  --color-dark-border: #0019442e;
+  --color-navbar-bg: #c0e0ff66;
+
+  /* --- Text Colors --- */
+  --color-text-base: #333333;
+  --color-text-dark: var(--color-brand-dark);
+  --color-text-dark-body: #001944;
+  --color-text-light: var(--color-light-1);
+
+  /* --- Icon Colors --- */
+  --color-icon-green: #00c489;
+  --color-icon-cyan: #46bcff;
+  --color-icon-blue: #4457ff;
+  --color-icon-yellow: #ffc147;
+
+  /* --- Typography: Font Families ---
+     Both body and headings use Funnelsans Font per Webflow source. */
+  --font-body: "Funnelsans Font", Arial, sans-serif;
+  --font-headings: "Funnelsans Font", Arial, sans-serif;
+  --font-badges: "Geistmono Font", Arial, sans-serif;
+
+  /* --- Typography: Type Scale — Sizes --- */
+  --text-small: 13px;
+  --text-body: 16px;
+  --text-lead: 1.125rem;
+  --text-h6: 20px;
+  --text-h5: 25px;
+  --text-h4: 32px;
+  --text-h3: 40px;
+  --text-h2: 51px;
+  --text-h1: 60px;
+
+  /* --- Typography: Line Heights --- */
+  --leading-small: 1.4em;
+  --leading-body: 1.4em;
+  --leading-lead: 1.4em;
+  --leading-h5: 1.25em;
+  --leading-h4: 1.2em;
+  --leading-h3: 1.2em;
+  --leading-h2: 1.15em;
+  --leading-h1: 1.05em;
+
+  /* --- Typography: Letter Spacing --- */
+  --tracking-h3: -0.01em;
+  --tracking-h2: -0.01em;
+  --tracking-h1: -0.02em;
+
+  /* --- Spacing: Section Padding --- */
+  --spacing-section-xs: 48px;
+  --spacing-section-sm: 72px;
+  --spacing-section-default: 144px;
+  --spacing-section-lg: 240px;
+
+  /* --- Layout: Containers --- */
+  --container-main: 1366px;
+  --container-gutter: 24px;
+  --container-2col: 214px;
+  --container-3col: 333px;
+  --container-4col: 452px;
+  --container-5col: 571px;
+  --container-6col: 690px;
+  --container-8col: 928px;
+  --container-10col: 1166px;
+
+  /* --- Components: Buttons --- */
+  --btn-height: 60px;
+  --btn-height-sm: 42px;
+  --btn-px: 48px;
+  --btn-px-sm: 18px;
+
+  /* --- Components: Border Radius --- */
+  --radius-default: 6px;
+  --radius-large: 12px;
+
+  /* --- Components: Navbar --- */
+  --navbar-height: 72px;
+  --navbar-negative-height: -72px;
+
+  /* --- Components: Forms --- */
+  --input-height: var(--btn-height);
+
+  /* --- Decorations --- */
+  --strip-height-default: 72px;
+  --strip-height-sm: 24px;
+  --strip-height-md: 48px;
+  --decoration-line-width: 1px;
+  --decoration-lines-gap: 6px;
+}
+
+/* ============================================================
+   BASE — global typography (augments Tailwind Preflight)
+   All rules use CSS vars — no hex values below this line.
+   ============================================================ */
+
+/* ============================================================
+   UTILITY CLASSES — ported from allsafeit.webflow.css
+   Grouped by concern. All values reference :root tokens.
+   ============================================================ */
+
+/* ── Typography: heading visual overrides ───────────────────
+   Webflow uses <h2 class="h3"> patterns (semantic ≠ visual).
+   These classes force any element to a specific visual scale. */
+.h1 {
+  font-family: var(--font-headings);
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: var(--tracking-h1);
+  font-weight: 400;
+  text-align: left;
+}
+
+.h2 {
+  font-family: var(--font-headings);
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--tracking-h2);
+  font-weight: 400;
+  text-align: left;
+}
+
+.h3 {
+  font-family: var(--font-headings);
+  color: var(--color-text-dark);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  letter-spacing: var(--tracking-h3);
+  text-align: left;
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+
+.h3.text_center {
+  text-align: center;
+  align-self: center;
+}
+.h3.long-text {
+  /* no extra styles at desktop; overridden at 767px */
+}
+
+.h4 {
+  font-family: var(--font-headings);
+  color: var(--color-brand-dark);
+  font-size: var(--text-h4);
+  line-height: var(--leading-h4);
+  text-align: left;
+  font-weight: 400;
+}
+
+.h4.text_center {
+  text-align: center;
+}
+
+.h5 {
+  font-family: var(--font-headings);
+  color: var(--color-brand-dark);
+  font-size: var(--text-h6);
+  line-height: var(--leading-h5);
+  text-align: left;
+  font-weight: 400;
+}
+
+.h5.bold {
+  font-weight: 500;
+}
+
+.h6 {
+  font-family: var(--font-headings);
+  color: var(--color-brand-dark);
+  font-size: var(--text-h6);
+  text-align: left;
+  font-weight: 400;
+}
+
+/* ── Typography: body text classes ─────────────────────────── */
+.lead-text {
+  color: var(--color-brand-dark);
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+}
+
+.lead-text.color__darkblue.bold-text {
+  color: var(--color-brand-dark);
+  font-weight: 700;
+}
+
+/* Webflow's `.body-text` uses lead-size (1.125rem) and base text color
+   (#333), not body-size/brand-dark. Site-wide so every body paragraph
+   matches the live site. */
+.body-text {
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  color: var(--color-text-base);
+}
+
+.body-text.color__white-shade1 {
+  color: var(--color-light-2);
+}
+
+/* Storyblok CMS rich text — inherits site typography classes from renderer */
+.cms-rich-text > * + * {
+  margin-top: 1rem;
+}
+.cms-rich-text ul.cms-list,
+.cms-rich-text ol.cms-list {
+  padding-left: 1.25rem;
+  margin-top: 0.75rem;
+}
+.cms-rich-text ul.cms-list {
+  list-style: disc;
+}
+.cms-rich-text ol.cms-list--ordered {
+  list-style: decimal;
+}
+.cms-rich-text a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cms-rich-text a:hover {
+  color: var(--color-brand-primary);
+}
+
+/* Permalinks in section body copy (split layouts, intros, tabs, etc.) */
+.section-content .content a:not(.button):not(.icon-button-link):not(.badge-text):not(.blog-item-headline):not(.featured-post-headline-link):not(.hover-text-link-label),
+.article.topintro a,
+.cms-html a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.section-content .content a:not(.button):not(.icon-button-link):hover,
+.article.topintro a:hover,
+.cms-html a:hover {
+  color: var(--color-brand-primary);
+}
+.cms-rich-text blockquote.cms-quote {
+  border-left: 3px solid var(--color-brand-primary, #0066cc);
+  padding-left: 1rem;
+  margin: 1rem 0;
+}
+.cms-html > * + * {
+  margin-top: 1rem;
+}
+
+.italics {
+  font-style: italic;
+}
+.bold {
+  font-weight: 700;
+}
+.text_center {
+  text-align: center;
+}
+
+/* Webflow richtext paragraph */
+.richtext__paragraphs {
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+}
+
+/* ── Service-detail article body (MDX richtext) ───────────────────
+   Used on /services/<category>/<slug> pages for the main article
+   content. Mirrors Webflow `.article` / `.w-richtext` spacing exactly:
+   flex column with 36px gap between block-level children (no margin
+   collapse weirdness, matches Webflow gap behavior). */
+
+/* Webflow `.article-wrapper` — narrows the column to 6-col width centered */
+.article-wrapper.article-richtext {
+  max-width: var(--container-6col);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.article-richtext {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  color: var(--color-text-dark-body);
+}
+
+/* Webflow `.article h2` — h4 size, dark brand color, weight 400 */
+.article-richtext h2 {
+  font-family: var(--font-headings);
+  font-size: var(--text-h4);
+  line-height: var(--leading-h4);
+  color: var(--color-brand-dark);
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Webflow `.article h3` — h5 size, accent blue color */
+.article-richtext h3 {
+  font-family: var(--font-headings);
+  font-size: var(--text-h5);
+  line-height: var(--leading-h5);
+  color: var(--color-accent);
+  font-weight: 400;
+  margin: 0;
+}
+
+.article-richtext h4 {
+  font-family: var(--font-headings);
+  font-size: var(--text-h6);
+  line-height: var(--leading-h5);
+  color: var(--color-brand-dark);
+  font-weight: 500;
+  margin: 0;
+}
+
+.article-richtext p {
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  margin: 0;
+}
+
+.article-richtext a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-richtext a:hover {
+  color: var(--color-brand-primary);
+}
+
+.article-richtext strong {
+  color: var(--color-brand-dark);
+  font-weight: 600;
+}
+
+/* Lists: render as a single flex item inside the article (no double gap),
+   but list items themselves have a small internal gap. */
+.article-richtext ul,
+.article-richtext ol {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.article-richtext ul {
+  list-style: disc;
+}
+.article-richtext ol {
+  list-style: decimal;
+}
+
+.article-richtext li {
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+}
+
+.article-richtext img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-default);
+}
+
+/* Webflow `.article blockquote` — 1px left border, 24px padding */
+.article-richtext blockquote {
+  border-left: 1px solid var(--color-dark-border);
+  padding: 24px 0 24px 24px;
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  margin: 0;
+}
+
+.article-richtext hr {
+  border: 0;
+  border-top: 1px solid var(--color-dark-border);
+  margin: 0;
+}
+
+/* Webflow `.article figure` — bigger spacing around media */
+.article-richtext figure {
+  margin: 12px 0;
+}
+
+/* `.article.topintro` — used in the overview section.
+   Webflow makes its text use brand-dark (vs the body's lighter color). */
+.article.topintro p,
+.article.topintro li {
+  color: var(--color-text-dark);
+}
+
+/* ── Badge / monospace text ─────────────────────────────────── */
+.badge-text {
+  font-family: var(--font-badges);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.badge-text-white {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-badges);
+  color: var(--color-light-1);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.badge-text-blue {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-badges);
+  color: var(--color-brand-dark);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* ── Color utilities ────────────────────────────────────────── */
+/* FLAG: .color__white-shade1 in base = #eceff4 (light-2),
+         but .badge-text.color__white-shade1 = #fff per Webflow source.
+         Preserved as-is per 1:1 migration rule. */
+.color__white-shade1 {
+  color: var(--color-light-2);
+}
+.color__white-shade1.text_center {
+  text-align: center;
+}
+.color__darkblue {
+  color: var(--color-brand-dark);
+}
+.color__lightblue {
+  color: var(--color-accent);
+  line-height: 2em;
+  display: block;
+}
+
+/* ── Background utilities ───────────────────────────────────── */
+.bg-gradient {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-light-1),
+    var(--color-light-2)
+  );
+}
+
+.bg-brand-2 {
+  background-color: var(--color-brand-dark);
+  color: var(--color-text-light);
+}
+
+/* ── Section wrapper ────────────────────────────────────────── */
+.section {
+  position: relative;
+  padding-top: var(--spacing-section-xs);
+  padding-bottom: var(--spacing-section-sm);
+}
+
+.section.bg-gradient {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-light-1),
+    var(--color-light-2)
+  );
+}
+
+.section.padding-small {
+  padding-top: var(--spacing-section-sm);
+  padding-bottom: var(--spacing-section-sm);
+}
+
+.section.padding-top-small {
+  padding-top: var(--spacing-section-sm);
+}
+.section.margin-top-small {
+  margin-top: var(--spacing-section-sm);
+}
+
+/* Matches live Webflow: full-bleed, bottom padding zero (slider sits flush). */
+.section.quote-slider-section {
+  max-width: 100vw;
+  padding-bottom: 0;
+  overflow: clip;
+}
+/* Webflow uses padding-top: 144px (default section size) here.
+   Was previously `margin-top: -24px` which caused the slider to climb
+   over the section above it. */
+.section.quote-slider-section.smal-margin-top {
+  padding-top: var(--spacing-section-default);
+}
+
+/* ── Container ──────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container-main);
+  padding-left: var(--container-gutter);
+  padding-right: var(--container-gutter);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Section content layout ─────────────────────────────────── */
+.section-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-section-sm);
+  width: 100%;
+  overflow: visible;
+}
+
+.section-content.quote-slider-content {
+  gap: 48px;
+}
+
+.section-content.horizontal {
+  gap: 2rem;
+  flex-direction: column;
+}
+
+/* ── Two-column content grid ────────────────────────────────── */
+.content_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  position: relative;
+}
+
+/* ── Generic content block ──────────────────────────────────── */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Title block ────────────────────────────────────────────── */
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ── Centered title ─────────────────────────────────────────── */
+.centered-title {
+  width: 80%;
+  max-width: var(--container-8col);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Two-column grid ────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-columns: 1fr;
+  gap: 2rem;
+  place-items: start center;
+}
+
+.grid.align-top {
+  place-items: start;
+}
+
+/* ── Three-column card grid ─────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-columns: 1fr;
+  gap: 24px;
+}
+
+.card-grid.thirds {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* ── Service card ───────────────────────────────────────────── */
+.service-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  background-color: var(--color-light-1);
+  border-radius: var(--radius-default);
+  gap: 0;
+}
+
+.service-card.bg-brand-2 {
+  background-color: var(--color-brand-dark);
+}
+
+.service-card.bg-brand-2._1rem {
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.service-card.centered {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.service-card.centered.bg-brand-2 {
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.div-block-20 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.div-block-21,
+.div-block-22 {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.div-block-23 {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Boxed icon ─────────────────────────────────────────────── */
+.boxed-icon {
+  border-radius: var(--radius-default);
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  color: var(--color-accent);
+  background-color: transparent;
+}
+
+.boxed-icon.bg__color-blue {
+  color: var(--color-accent);
+  background-color: transparent;
+  padding: 10px;
+}
+
+/* ── Embed icons ────────────────────────────────────────────── */
+.widget__embed-icons {
+  width: 2rem;
+  color: var(--color-accent);
+  background-color: transparent;
+  position: static;
+}
+
+.widget__embed-icons.color__white-shade1,
+.widget__embed-icons.color__white-shade1.big {
+  width: 3rem;
+}
+
+.widget__embed-icons.green-icon {
+  color: var(--color-icon-green);
+}
+.widget__embed-icons.cyan-icon {
+  color: var(--color-accent);
+}
+.widget__embed-icons.yellow-icon {
+  color: var(--color-icon-yellow);
+}
+.widget__embed-icons.rotate {
+  transform: scaleX(-1);
+}
+
+/* ── Button flex row (card footer) ─────────────────────────── */
+/* ── Button (site-wide; matches Webflow `.button`) ──
+   Brand-primary fill, Geist Mono UPPERCASE 13px, 60px height (42px small),
+   48px x-padding (18px small). Previously this lived in the homepage's
+   <style is:global>, so every other page rendered .button as a plain link. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-height);
+  padding: 0 var(--btn-px);
+  background-color: var(--color-brand-primary);
+  color: var(--color-text-light);
+  border-radius: var(--radius-default);
+  text-decoration: none;
+  font-family: var(--font-badges);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: opacity 0.15s ease;
+}
+.button:hover { opacity: 0.85; }
+.button.small {
+  height: var(--btn-height-sm);
+  padding: 0 var(--btn-px-sm);
+}
+
+/* Section-title vertical rhythm (used by Breadcrumb + others). */
+.section-title {
+  margin-top: var(--spacing-section-xs);
+  margin-bottom: var(--spacing-section-xs);
+}
+
+.button-flex {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+/* ── Small inline icon ──────────────────────────────────────── */
+.small_icon {
+  width: 1rem;
+}
+
+/* ── Icon button link (arrow + label) ──────────────────────── */
+.icon-button-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Square sticky image column ────────────────────────────── */
+.square-image-wrap {
+  aspect-ratio: 1;
+  border-radius: var(--radius-default);
+  flex: 0 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.square-image-wrap.sticky {
+  position: sticky;
+  top: 100px;
+}
+
+.square-parallax-image {
+  aspect-ratio: 1;
+  border-radius: var(--radius-default);
+  object-fit: cover;
+  width: 110%;
+  /* Mirror image horizontally (as in Webflow source) */
+  transform: rotateY(180deg);
+}
+
+.square-parallax-image.reversed {
+  transform: none;
+}
+
+/* ── Justify vertical (flex column with space-between) ──────── */
+.justify-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 0 50%;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-width: 0;
+}
+
+/* ── Metric grid and boxes ──────────────────────────────────── */
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.metric-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  border-radius: var(--radius-default);
+  background-color: var(--color-light-1);
+  min-height: 240px;
+  padding: 18px;
+  min-width: 0;
+}
+
+.metric-box.color__lightblue {
+  background-color: var(--color-accent);
+}
+.metric-box.color__darkblue {
+  background-color: var(--color-brand-dark);
+  color: var(--color-text-light);
+}
+
+.metric-box-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.metric-text {
+  font-family: var(--font-badges);
+  text-transform: uppercase;
+  font-size: 81px;
+  font-weight: 400;
+  line-height: 0.9em;
+}
+
+.metric-text.color__darkblue {
+  color: var(--color-brand-dark);
+}
+
+/* ── Icon items list (horizontal icon + text rows) ──────────── */
+.icon-items-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px dotted var(--color-dark-faded);
+}
+
+.horizontal-icon-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px dotted var(--color-dark-faded);
+}
+
+/* ── Quote / testimonial box ────────────────────────────────── */
+/* Matches live Webflow: CSS grid (not flex) with fixed height so every
+   card in the slider is the same size. `justify-content: space-between`
+   pushes the star rating to the top and the author block to the bottom,
+   with the quote text in the middle and free to wrap. */
+.quote-box {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr;
+  grid-auto-columns: 1fr;
+  height: var(--container-3col); /* 333px on desktop */
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: stretch;
+  background-color: var(--color-light-2);
+  border-radius: var(--radius-default);
+  padding: 18px;
+  margin-right: 10px;
+}
+
+.quote-author-wrap {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quote-author-wrap.inside-quote-box {
+  justify-content: flex-start;
+}
+
+/* ── Avatar ─────────────────────────────────────────────────── */
+.avatar {
+  border-radius: 200px;
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+}
+
+.avatar.inside-group {
+  border: 1px solid #f8f8f3;
+  margin-right: -12px;
+}
+
+/* ── Circle button (prev/next arrows) ───────────────────────── */
+.circle-button {
+  border: 1px solid var(--color-light-2);
+  width: 34px;
+  height: 34px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
+
+/* ── Accordion (FAQ list) ───────────────────────────────────── */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* ── Process / feature box ──────────────────────────────────── */
+.process-box {
+  border-radius: var(--radius-large);
+  background-color: var(--color-light-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 72px 48px;
+}
+
+.process-box.color__white-shade1 {
+  background-color: var(--color-light-1);
+}
+
+/* ── FAQ grid (2-col: title + accordion) ────────────────────── */
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  place-items: start;
+  position: relative;
+}
+
+/* ── Large quote / CTA box ──────────────────────────────────── */
+.large-quote-box {
+  display: flex;
+  gap: 72px;
+  justify-content: center;
+  max-width: var(--container-10col);
+  border-radius: var(--radius-large);
+  background-image: linear-gradient(180deg, var(--color-accent), #599fe4);
+  color: var(--color-text-light);
+  padding: 72px 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.large-quote-box.book {
+  background-color: var(--color-accent);
+  background-image: none;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.large-quote-box-text {
+  max-width: var(--container-6col);
+}
+
+/* Section that overlaps previous with negative margin */
+.quote-below-title {
+  z-index: 50;
+  margin-top: -48px;
+  position: relative;
+}
+
+/* ── Form section wrapper ───────────────────────────────────── */
+.form_section {
+  padding-top: var(--spacing-section-sm);
+  padding-bottom: var(--spacing-section-sm);
+  background-color: #fff;
+}
+
+/* ── Responsive breakpoints ─────────────────────────────────── */
+/* Breakpoints mirror Webflow's stops: 991 (tablet), 767 (mobile L),
+   479 (mobile P). Rules below were back-ported from live Webflow CSS
+   (see scripts/extract-webflow-css.mjs for the extraction approach). */
+
+@media (max-width: 991px) {
+  .grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: var(--container-6col);
+    margin-left: auto;
+    margin-right: auto;
+    gap: 3rem;
+  }
+
+  .card-grid,
+  .card-grid.thirds {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .content_grid {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-grid {
+    grid-template-columns: 1fr;
+    max-width: var(--container-6col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .centered-title {
+    width: 100%;
+  }
+
+  .process-box.color__white-shade1 {
+    padding: 48px 18px;
+  }
+
+  /* Tablet quote box grows taller (more line-wraps fit). */
+  .quote-box {
+    height: var(--container-4col);
+  }
+
+  /* Section-content gaps tighten on tablet (Webflow parity). */
+  .section-content.quote-slider-content {
+    gap: 2rem;
+  }
+
+  /* Mobile sticky reset — and equally important, CONSTRAIN the image's
+     height. A square image at 100% column width on a 400px-wide phone
+     is a 400px-tall image; combined with stacked text it pushes the next
+     section far below the fold and visually "overlaps" earlier content
+     when the user is mid-scroll. Capping the wrapper at 380px (with
+     `object-fit: cover` on the inner image) keeps the section compact
+     and predictable on phones. */
+  .square-image-wrap.sticky {
+    position: static;
+  }
+  .square-image-wrap {
+    max-height: 380px;
+  }
+  .square-image-wrap > img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 767px) {
+  .card-grid {
+    gap: 12px;
+  }
+  .card-grid.thirds {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Webflow `.content_grid` tightens from 2rem → 1.5rem at ≤767px so the
+     stacked title + body sit closer together on phones. */
+  .content_grid { gap: 1.5rem; }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-text {
+    font-size: 52px;
+  }
+
+  .large-quote-box {
+    flex-direction: column;
+  }
+
+  .h3.long-text {
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4);
+    letter-spacing: 0;
+  }
+
+  .horizontal-icon-item {
+    flex-direction: column;
+  }
+
+  /* Tighter section-content gap on mobile (Webflow uses 2rem). */
+  .section-content {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Mobile portrait. Webflow has subtle adjustments here we can extend
+     later if needed. For now: keep card grid single column (already from
+     767px rule via .card-grid.thirds) and rely on existing rules. */
+}
+
+/* ============================================================
+   BASE — global typography (augments Tailwind Preflight)
+   All rules use CSS vars — no hex values below this line.
+   ============================================================ */
+@layer base {
+  /* `overflow-x: clip` prevents horizontal scroll WITHOUT creating a new
+     scroll container — which is what `hidden` does. `hidden` breaks
+     `position: sticky` on any descendant; `clip` does not. */
+  html {
+    overflow-x: clip;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-brand-dark);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  /* Lock body scroll when mobile nav is open */
+  body[data-nav-open] {
+    overflow: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-headings);
+    font-weight: 400;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--leading-h1);
+    letter-spacing: var(--tracking-h1);
+  }
+
+  /* Webflow renders bare <h2> at h4-size (32px), keeping the larger h2-size
+     (51px) reserved for the `.h2` utility class. Match that pattern so
+     pages using semantic <h2> tags don't accidentally render at 51px. */
+  h2 {
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--leading-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  h4 {
+    font-size: var(--text-h4);
+    line-height: var(--leading-h4);
+  }
+
+  /* Webflow's bare <h5> uses h5-size (25px). The `.h5` utility class uses
+     h6-size (20px) per its rule above — a deliberate semantic ≠ visual gap. */
+  h5 {
+    font-size: var(--text-h5);
+    line-height: var(--leading-h5);
+  }
+
+  h6 {
+    font-size: var(--text-h6);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* ── Honeypot anti-spam field (used by ContactForm + InquiryForm) ─
+   Positioned off-screen instead of `display: none` — some bots skip
+   `display: none` inputs because that's a recognised anti-bot pattern.
+   Off-screen + `tabindex="-1"` + `aria-hidden` is invisible to real users
+   (visual + keyboard + screen reader) but still in the DOM as a plain
+   text input, so naive scrapers happily fill it. */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ── Astro View Transitions ────────────────────────────────────────
+   Speed up the default cross-fade to ~180ms so transitions feel snappy
+   rather than draggy (Astro's stock animation is ~300ms, which reads as
+   slow on a content site). Easing is `ease` for clean acceleration.
+   Reduced-motion users skip the animation entirely (no fade — instant cut). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+  animation-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   COVERAGE TABLE — used inside the Tabs component on location pages
+   (Pasadena / LA / Orange County). Rendered via set:html from a string
+   in each page's frontmatter, so it cannot use Astro scoped styles —
+   the global selectors are namespaced under .coverage-* to keep blast
+   radius minimal.
+   ============================================================ */
+.panel-intro {
+  font-size: var(--text-lead);
+  line-height: var(--leading-lead);
+  color: var(--color-brand-dark);
+  font-weight: 500;
+  margin: 0 0 1rem;
+}
+.coverage-table {
+  border-radius: var(--radius-default);
+  overflow: hidden;
+  border: 1px solid var(--color-light-2);
+  margin: 0 0 1.25rem;
+}
+.coverage-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--color-light-2);
+}
+.coverage-row:first-child { border-top: 0; }
+.coverage-row__head {
+  background-color: var(--color-brand-dark);
+  color: var(--color-text-light);
+  font-weight: 600;
+}
+.coverage-label {
+  font-weight: 600;
+  color: var(--color-brand-dark);
+}
+@media (max-width: 767px) {
+  .coverage-row { grid-template-columns: 1fr; gap: 0.25rem; }
+  .coverage-row__head { display: none; }
+}
+
+/* Visually-hidden text for screen readers + SEO crawlers.
+   Used inside image-only anchors (footer social icons, blog card images,
+   the home logo link, etc.) so search engines see real anchor text while
+   the rendered UI stays unchanged. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

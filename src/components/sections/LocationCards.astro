@@ -1,0 +1,109 @@
+---
+/**
+ * LocationCards — "Rapid On-Site IT Support Near These Locations" — three
+ * dark cards (one per office) on the four service pillar pages. Mirrors
+ * Webflow `.service-card.bg-brand-2._1rem`.
+ *
+ * Typography: every text node uses a design-system class (`.h3`, `.h4`,
+ * `.lead-text`, `.badge-text-white`, `.color__white-shade1`) — NO inline
+ * font-size overrides. Webflow's own page uses these exact classes, so the
+ * type hierarchy stays consistent with the rest of the site.
+ */
+import Icon from '../primitives/Icon.astro';
+import { LOCATIONS } from '../../data/locations';
+
+interface Props {
+  heading?: string;
+}
+
+const { heading = 'Rapid On-Site IT Support Near These Locations' } = Astro.props;
+
+// Format the digits-only phone number for display, e.g. "8884002748" →
+// "(888) 400-2748". Falls back to the raw string if it's not 10 digits.
+const formatPhone = (digits: string): string => {
+  const d = digits.replace(/\D/g, '');
+  if (d.length !== 10) return digits;
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+};
+---
+
+<section class="section bg-gradient">
+  <div class="container">
+    <div class="section-content">
+      <div class="centered-title">
+        {/* Webflow uses a plain `.h3` heading here — no <strong> wrap. */}
+        <h2 class="h3 text_center">{heading}</h2>
+      </div>
+      <div class="locations-grid">
+        {LOCATIONS.map(loc => (
+          <div class="service-card bg-brand-2">
+            <div class="location-card-body">
+              <h3 class="h4 color__white-shade1">{loc.city}</h3>
+              <p class="lead-text color__white-shade1">
+                {loc.address[0]}<br />{loc.address[1]}<br /><br />
+                <strong>Phone:</strong>{' '}
+                <a class="color__white-shade1" href={`tel:${loc.phone}`}>{formatPhone(loc.phone)}</a>
+              </p>
+            </div>
+            <a class="button-flex" href={loc.href}>
+              <span class="badge-text color__lightblue">{loc.linkLabel}</span>
+              <Icon name="arrow-right" class="small_icon color__lightblue" />
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Webflow `.div-block-19` — 3-up → 2-up → 1-up grid, 1rem gap. */
+  .locations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: var(--spacing-section-sm);
+  }
+
+  /* Webflow `.service-card.bg-brand-2._1rem` — dark fill, rounded, 1rem
+     padding, flex-column with title block above and CTA pinned to bottom. */
+  .service-card {
+    background-color: var(--color-brand-2, var(--color-brand-dark));
+    border-radius: var(--radius-default);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .location-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .location-card-body .h4 { margin: 0; }
+  .location-card-body .lead-text { margin: 0; }
+
+  /* "Managed IT [city] →" CTA — entire row is the link, arrow nudges
+     right on hover. */
+  .button-flex {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+  .button-flex .small_icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+  }
+  .button-flex:hover .small_icon { transform: translateX(4px); }
+
+  @media (max-width: 991px) {
+    .locations-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  }
+  @media (max-width: 767px) {
+    .locations-grid { grid-template-columns: 1fr; }
+  }
+</style>

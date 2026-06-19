@@ -1,0 +1,17 @@
+---
+import Accreditations from '../../components/sections/Accreditations.astro';
+import { renderBodyContentInner } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading: string;
+    body: unknown;
+  };
+}
+
+const { blok } = Astro.props;
+const body =
+  renderBodyContentInner(blok.body) || (typeof blok.body === 'string' ? blok.body : '');
+---
+
+<Accreditations heading={blok.heading} body={body} />

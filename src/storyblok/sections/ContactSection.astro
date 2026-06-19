@@ -1,0 +1,18 @@
+---
+import ContactSection from '../../components/sections/ContactSection.astro';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    body?: unknown;
+    body_html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const bodyHtml = resolveRichOrHtml(blok.body_html, blok.body);
+---
+
+<ContactSection heading={headingPlainText(blok.heading) || undefined} body={bodyHtml || undefined} />

@@ -1,0 +1,31 @@
+---
+import ValueMetrics from '../../components/sections/ValueMetrics.astro';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface MetricBlok {
+  label?: string;
+  body?: unknown;
+  icon_html?: string;
+  icon_class?: string;
+}
+
+interface Props {
+  blok: {
+    heading: unknown;
+    metrics?: MetricBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+const metrics = (blok.metrics ?? []).map((m) => ({
+  label: m.label ?? '',
+  body: stripHtmlTags(renderBodyContentInner(m.body)) || undefined,
+  icon: m.icon_html,
+  iconClass: m.icon_class,
+}));
+---
+
+{metrics.length > 0 && (
+  <ValueMetrics heading={headingPlainText(blok.heading)} metrics={metrics} />
+)}

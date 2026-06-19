@@ -1,0 +1,34 @@
+---
+import StrategicSupport from '../../../components/sections/StrategicSupport.astro';
+
+interface Props {
+  blok: {
+    heading?: string;
+    subheading?: string;
+    lead?: string;
+    bullet_1_title?: string;
+    bullet_1_body?: string;
+    bullet_2_title?: string;
+    bullet_2_body?: string;
+    bullet_3_title?: string;
+    bullet_3_body?: string;
+    image_path?: string;
+    image_alt?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+<StrategicSupport
+  heading={blok.heading}
+  subheading={blok.subheading}
+  lead={blok.lead}
+  bullet1Title={blok.bullet_1_title}
+  bullet1Body={blok.bullet_1_body}
+  bullet2Title={blok.bullet_2_title}
+  bullet2Body={blok.bullet_2_body}
+  bullet3Title={blok.bullet_3_title}
+  bullet3Body={blok.bullet_3_body}
+  imagePath={blok.image_path}
+  imageAlt={blok.image_alt}
+/>

@@ -1,0 +1,185 @@
+---
+name: " What Is Zero Trust Security and Does Your Business Need It?"
+status: published
+mainImage: /images/blog/what-is-zero-trust/20221206-zero-trust.jpeg
+mainImageAlt: What is Zero Trust? — AllSafe IT blog
+introductionParagraph: Discover the key principles and advantages of zero trust security, a framework that assumes no trust and verifies everything. AllSafe IT shows you how.
+category: security
+author: bones-ijeoma
+firstPublishedDate: "2022-12-06T00:00:00.000Z"
+postFeatured: false
+metaTitleForBlogs: What is Zero Trust? | IT Support Los Angeles | AllSafe IT
+metaDescriptionForBlogs: Discover the key principles and advantages of zero trust security, a framework that assumes no trust and verifies everything. AllSafe IT shows you how.
+---
+
+The old approach to network security had a simple assumption built into it. Once you were inside the building, you were safe.
+
+Employees logged in through the office network and got access to everything they needed. IT teams built strong walls around the perimeter and focused on keeping attackers out. If you were already inside, the system trusted you.
+
+That assumption is what attackers rely on today.
+
+Stolen credentials, compromised devices, and phishing attacks all get an attacker past the front door. Once inside a traditional network, they can move freely through systems, escalate privileges, and cause serious damage before anyone notices. The perimeter model did not fail because it was badly designed. It failed because the world changed around it.
+
+Zero trust is the response to that failure. It removes the assumption of trust entirely. Every user, every device, and every connection is verified before access is granted, every time. Being inside the network gives you nothing by default.
+
+According to [CIO.com](https://www.cio.com/article/3962906/why-81-of-organizations-plan-to-adopt-zero-trust-by-2026.html), 96% of organizations now favor a zero trust approach and 81% plan to implement zero trust strategies within the next 12 months. The shift is happening because the threats made it necessary, not because zero trust is a trend.
+
+This guide covers what zero trust actually means, the core principles behind it, how it differs from traditional security, and what small and mid-sized businesses can do to start moving toward it.
+
+## The Old Security Model and Why It Stopped Working
+
+Think of traditional network security like a castle and moat. The moat is hard to cross. Guards check credentials at the drawbridge. But once you're inside the castle walls, you can walk anywhere freely.
+
+That model worked when everyone worked in the same building, data lived on servers in the basement, and the perimeter was a physical thing you could define and defend.
+
+None of those conditions hold today.
+
+Employees connect from home networks, coffee shops, and personal devices. Company data lives across cloud platforms, SaaS applications, and file sharing tools that exist entirely outside the traditional network boundary. A distributed team in 2025 has no single perimeter to defend.
+
+Attackers figured this out. Phishing campaigns steal credentials that unlock the drawbridge from the outside. Once in, the attacker moves laterally through the network, accessing systems the compromised account has permission to reach. In the castle model, that movement goes undetected because the system assumes anyone inside is supposed to be there.
+
+The result: a single stolen password can expose an entire business.
+
+## What Is Zero Trust Security
+
+Zero trust is a security framework built on one principle. Never trust anything by default. Always verify.
+
+The term was coined by John Kindervag at Forrester Research in 2010. His argument was straightforward: the common assumption that users and devices inside the network are trustworthy is the vulnerability. Removing that assumption removes a significant attack surface.
+
+Under zero trust, access is not granted because someone is connected to the company network. It is granted because they have been verified as the right person, on an authorized device, requesting access to something their role permits, at that specific moment.
+
+[NIST](https://csrc.nist.gov/publications/detail/sp/800-207/final) published Special Publication 800-207 in 2020 as the definitive framework for zero trust architecture. It is vendor-neutral, widely adopted across industries, and the standard most organizations reference when designing or evaluating a zero trust approach.
+
+Zero trust is not a single product you install. It is an approach to how security is designed and enforced across your entire environment.
+
+## The Core Principles of Zero Trust
+
+### Continuous verification
+
+In a traditional model, verification happens once at login. You enter your credentials, the system recognizes you, and access is granted for the session.
+
+Zero trust verifies continuously. If a user's behavior changes mid-session, if they access a system outside their normal pattern, or if their device state changes, the system triggers re-verification. A stolen session token or a compromised device does not slide through undetected because the session was already authenticated.
+
+This is where [multi-factor authentication](https://www.allsafeit.com/blog/multi-factor-authentication-mfa) becomes essential rather than optional. A password alone is not sufficient verification in a zero trust model. A second factor confirms that the person logging in is who they claim to be, even if their password was stolen.
+
+### Least privilege access
+
+Every user gets access to only what their role requires. Nothing more.
+
+An employee in accounts receivable does not need access to engineering repositories. A marketing manager does not need admin rights across the company's cloud environment. An IT technician for one department does not automatically have access to all systems across the organization.
+
+When credentials are stolen, least privilege limits what the attacker can reach. Instead of gaining access to everything the network touches, they are contained to what that specific account was permitted to access. The damage is real but contained.
+
+AllSafe IT's [endpoint management](https://www.allsafeit.com/services/managed-it/endpoint-management) service enforces device-level controls that support least privilege by ensuring every device accessing business systems is known, authorized, and maintained.
+
+### Microsegmentation
+
+Traditional networks are open inside. Once an attacker gets past the perimeter, they can move from system to system without additional barriers.
+
+Microsegmentation divides the network into small zones, each requiring separate authorization. Think of it as every room in the building having its own lock instead of one key opening everything.
+
+An attacker who compromises one account cannot move freely to other systems. They are contained to the zone that account could access. This stops lateral movement, which is how most ransomware attacks spread from a single entry point to the whole organization.
+
+### Assume breach
+
+Zero trust does not operate on the assumption that the perimeter is holding. It operates on the assumption that an attacker may already be inside.
+
+This changes how security is designed. Rather than building everything around keeping attackers out, the model designs containment into the architecture from the start. Monitoring, segmentation, and access controls are built for limiting damage when something gets through, not just preventing entry.
+
+For businesses that have experienced a breach, this principle resonates immediately. For those that haven't, it describes exactly the mindset that would have reduced the damage.
+
+## Zero Trust vs VPN
+
+VPNs were the standard answer to remote access for many years. Connect to the VPN and you're connected to the network. Your traffic is encrypted. You're in.
+
+The problem is exactly that. You're in the whole network.
+
+A VPN grants broad network access based on a single authentication event. An attacker with valid VPN credentials gets everything that network touches. [56% of organizations reported VPN-exploited breaches last year](https://www.cio.com/article/3962906/why-81-of-organizations-plan-to-adopt-zero-trust-by-2026.html), and 65% now plan to replace their VPN within the year.
+
+Zero Trust Network Access works differently. Instead of connecting a user to the whole network, ZTNA connects them to specific applications they are authorized to use. Nothing else is visible. Nothing else is accessible.
+
+A compromised account under ZTNA reaches what that account was permitted to reach and nothing more. The lateral movement that turns a credential theft into a full breach is stopped by design.
+
+For businesses currently relying on VPN for remote access, moving toward ZTNA is not an overnight replacement. It is a direction of travel worth understanding and planning for. [MFA fatigue attacks](https://www.allsafeit.com/blog/prevent-mfa-fatigue-attacks) are one of the primary methods attackers use to bypass VPN authentication, which makes this transition increasingly relevant for any business with a distributed workforce.
+
+## What Zero Trust Protects Against
+
+Understanding zero trust principles is easier when they connect to real threats.
+
+**Ransomware.** Most ransomware attacks follow the same pattern. An attacker gains access through a phishing email or stolen credentials, then moves laterally through the network to infect as many systems as possible before triggering the encryption. Microsegmentation and least privilege stop that lateral movement. The attack is contained to the initial entry point instead of spreading organization-wide.
+
+**Credential theft.** Phishing and credential-based attacks are the most common way attackers get in. Zero trust limits what stolen credentials can access and requires continuous verification rather than a one-time password check. Stolen credentials that reach a zero trust environment find far fewer open doors.
+
+**Insider threats.** Whether accidental or intentional, insider incidents are harder to detect in traditional models because trusted insiders have broad access. Continuous monitoring and least privilege make unusual behavior visible quickly and limit the damage any single account can cause. Understanding [what a cybersecurity threat](https://www.allsafeit.com/blog/what-is-a-cybersecurity-threat) looks like in practice helps frame why this monitoring matters.
+
+**Remote and hybrid work risks.** Employees connecting from unmanaged devices and home networks represent real exposure. Zero trust verifies device health before granting access rather than assuming a device is safe because the right password was entered. Monitoring behavior throughout the session catches anomalies that a one-time login check would miss.
+
+## What Zero Trust Looks Like in Practice for a Small Business
+
+Here's what most articles on zero trust skip entirely.
+
+Zero trust is not something only enterprise security teams with dedicated budgets can implement. Most small businesses already have some of the building blocks in place. The goal is to move toward the model progressively, not build a new architecture from scratch.
+
+Here are practical starting points for any business regardless of size.
+
+**Enable MFA on everything.** Email, cloud applications, admin accounts, remote access tools. Multi-factor authentication is the single highest-impact zero trust control available at any budget level. It addresses the most common attack vector, credential theft, without requiring a major infrastructure change.
+
+**Review and tighten access permissions.** Go through your systems and ask who actually needs access to what. Remove permissions that are no longer needed. Apply least privilege to your most sensitive systems first. This is often a matter of configuration, not new investment.
+
+**Segment your network where possible.** Even basic segmentation separates guest Wi-Fi from business systems and isolates sensitive data from general employee access. It does not require enterprise-grade networking tools to implement meaningfully.
+
+**Monitor for unusual behavior.** Logins from unexpected locations, access to systems outside normal patterns, and large volumes of data leaving the network should all trigger alerts. Most modern security tools include this capability. The question is whether it is configured and someone is reviewing it.
+
+**Know and manage every device accessing your systems.** Every laptop, phone, and tablet used for work should be known to IT, monitored, and kept current. Unmanaged personal devices are a blind spot in any security model. An [MDR vs SOC](https://www.allsafeit.com/blog/mdr-vs-soc) comparison helps businesses understand what level of monitoring is appropriate for their size and risk profile.
+
+For businesses without in-house IT expertise to implement and maintain these controls, a managed IT partner handles the configuration, monitoring, and ongoing management that zero trust requires to work in practice rather than just on paper.
+
+## How Zero Trust Fits With Your Existing Security
+
+Zero trust is not a replacement for the security tools you already have.
+
+Firewalls, endpoint protection, email security, and security awareness training all remain relevant and important. Zero trust is the framework that ties them together around the principle of continuous verification.
+
+Your [managed firewall](https://www.allsafeit.com/services/cybersecurity/managed-firewall) enforces network-level controls. Your [endpoint protection](https://www.allsafeit.com/services/cybersecurity/cybersecurity-and-antivirus) monitors and secures every device. Access controls and MFA handle identity verification. Zero trust is the philosophy that connects these tools into a coherent approach rather than a collection of separate defenses.
+
+## How AllSafe IT Helps Businesses Move Toward Zero Trust
+
+Implementing zero trust principles requires configuring access controls, deploying endpoint management, enforcing and maintaining MFA, and monitoring for anomalies across your environment continuously. For most small and mid-sized businesses, that is a significant operational commitment alongside running the business itself.
+
+AllSafe IT helps businesses across [Los Angeles](https://www.allsafeit.com/locations/managed-it-services-los-angeles) build and maintain the security controls that underpin a zero trust approach. Endpoint management, managed firewall, access control configuration, and continuous monitoring are part of how we secure distributed teams rather than add-ons to consider later.
+
+If you want to understand where your current security posture stands relative to zero trust principles, a security assessment is a practical and straightforward starting point.
+
+## Frequently Asked Questions
+
+### What is zero trust security?
+
+Zero trust is a security framework that requires every user, device, and connection to be verified before access is granted, regardless of whether they are inside or outside the company network. It operates on the principle of never trust, always verify, removing the assumption that anything inside the network is automatically safe.
+
+### Who invented zero trust?
+
+The term was coined by John Kindervag, an analyst at Forrester Research, in 2010. His foundational argument was that treating users and devices inside the network as inherently trustworthy was the core vulnerability in traditional security models.
+
+### What is the difference between zero trust and a VPN?
+
+A VPN encrypts traffic and connects users to the entire network. Zero Trust Network Access connects users only to the specific applications they are authorized to use. VPN grants broad access after a single authentication event. Zero trust verifies continuously and limits access to only what each user's role requires.
+
+### What is Zero Trust Network Access (ZTNA)?
+
+ZTNA is the primary technology used to implement zero trust for remote and distributed workforces. It establishes encrypted connections between a user's device and specific authorized applications rather than connecting them to the whole network, preventing lateral movement if credentials are compromised.
+
+### What is least privilege access?
+
+Least privilege means every user gets the minimum level of access necessary to do their job. An employee in one department does not automatically have access to systems used by another. This limits how far an attacker can move if they compromise a single account.
+
+### What is microsegmentation?
+
+Microsegmentation divides the network into small, isolated zones that each require separate authorization. An attacker who gains access to one zone cannot move to others without additional verification. It is one of the primary ways zero trust contains the damage of a breach.
+
+### Does my small business need zero trust?
+
+If your business stores customer data, has employees working remotely, or uses cloud applications, the answer is yes. Zero trust does not require a complete infrastructure overhaul. Starting with MFA, least privilege access, and network segmentation delivers meaningful protection and forms the foundation of a zero trust approach.
+
+### How do I start implementing zero trust?
+
+Start with the controls that address your highest risks first. Enable MFA across all accounts. Review and tighten access permissions. Segment your network at a basic level. Monitor for unusual behavior. Each of these steps moves your business toward zero trust without requiring a full architecture redesign from day one.

@@ -1,0 +1,98 @@
+---
+/**
+ * Webflow `benefits-section bg-light-2` — used by `it-support-orange-county`.
+ * Layout: two-column title/intro grid above a 3-column icon-card grid.
+ * Background: --color-light-2 (matches Webflow `bg-light-2`).
+ */
+
+interface Benefit {
+  title: string;
+  body: string;
+  /** Optional inline SVG markup for the boxed icon. */
+  icon?: string;
+}
+
+interface Props {
+  heading: string;
+  intro: string;
+  benefits: Benefit[];
+}
+
+const { heading, intro, benefits } = Astro.props;
+---
+
+<section class="section benefits-section">
+  <div class="container">
+    <div class="section-content">
+      <div class="grid">
+        <div class="title">
+          <h2 class="h3">{heading}</h2>
+        </div>
+        <p class="lead-text">{intro}</p>
+      </div>
+      <div class="info-card-grid">
+        {benefits.map(b => (
+          <article class="info-card">
+            {b.icon && (
+              <div class="boxed-icon bg__color-blue">
+                <div class="widget__embed-icons" set:html={b.icon} />
+              </div>
+            )}
+            <div class="info-card-content">
+              <div class="title">
+                <h3 class="h5 bold">{b.title}</h3>
+                <p class="body-text">{b.body}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .benefits-section {
+    background-color: var(--color-light-2);
+  }
+
+  .info-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: var(--spacing-section-sm);
+  }
+
+  .info-card {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .info-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .info-card .h5 {
+    color: var(--color-brand-dark);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .info-card .body-text {
+    margin: 0;
+  }
+
+  @media (max-width: 991px) {
+    .info-card-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 575px) {
+    .info-card-grid { grid-template-columns: 1fr; }
+  }
+</style>

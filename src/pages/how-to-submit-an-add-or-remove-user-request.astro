@@ -1,0 +1,201 @@
+---
+/**
+ * Support doc — how to submit an Add or Remove user request via the AllSafe App.
+ *
+ * Two parallel 4-step tutorials (Add User, Remove User), preceded by a
+ * login instruction and followed by a contact section.
+ */
+
+import Base from '../layouts/Base.astro';
+import TocSidebar from '../components/sections/TocSidebar.astro';
+import TutorialStep from '../components/sections/TutorialStep.astro';
+import Benefits from '../components/sections/Benefits.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+
+const commitments = [
+  { title: 'Fast and responsive service', body: 'Real engineers, real responses, real fast — most tickets resolved within an hour.' },
+  { title: 'Cybersecurity is priority #1', body: 'Every recommendation passes through a security lens before it touches your environment.' },
+  { title: 'We hire only the best', body: 'Vetted, experienced engineers with continuous internal training.' },
+  { title: 'Flexible IT services', body: 'Scope and pricing flex with your team — no penalties for scaling up or down.' },
+];
+
+const toc = [
+  { id: 'login', label: 'Log in to the AllSafe App' },
+  { id: 'add-user', label: 'Add a user' },
+  { id: 'remove-user', label: 'Remove a user' },
+  { id: 'commitment', label: 'Our commitment' },
+];
+
+const SUPPORT_PHONE = 'tel:+12137841959';
+const SUPPORT_EMAIL = 'mailto:info@allsafeit.com';
+---
+
+<Base
+  title="How To Submit an Add or Remove User Request | AllSafe IT"
+  description="All computers onboarded by AllSafe IT will have the AllSafe App installed. Look for a shortcut on your desktop or find it in Search."
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h2">How to Submit an Add or Remove User Request</h1>
+        <p class="lead-text">
+          Use the AllSafe App on any computer we've onboarded. It takes about two minutes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <TocSidebar items={toc} />
+    </div>
+  </section>
+
+  <section id="login" class="section padding-small">
+    <div class="container">
+      <div class="login-section">
+        <h2 class="h3">Log in to the AllSafe App</h2>
+        <p class="lead-text">
+          The AllSafe App is installed on every computer onboarded by AllSafe IT.
+          Look for a shortcut on your desktop, or open the Start menu and search
+          for "AllSafe App."
+        </p>
+        <p class="body-text">
+          Don't have it on your computer? Open <a href="https://app.allsafeit.com" rel="noopener">app.allsafeit.com</a>
+          in your browser. Sign in with either your Microsoft Office 365 account
+          or an email-based one-time token.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="add-user" class="section padding-small">
+    <div class="container">
+      <h2 class="h3" style="text-align:center; margin-bottom:32px;">Add a user</h2>
+      <div class="tutorial-steps">
+        <TutorialStep
+          stepNumber={1}
+          title="Click Open a Ticket"
+          screenshot="/images/AllSafeApp_OpenTicket_1AllSafeApp_OpenTicket.avif"
+          screenshotAlt="AllSafe App showing Open a Ticket button"
+        >
+          <p>From the AllSafe App home screen, click <strong>Open a Ticket</strong>.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={2}
+          title="Select User > Add a New User"
+          screenshot="/images/AllSafeApp_AddUser_1AllSafeApp_AddUser.avif"
+          screenshotAlt="AllSafe App ticket category selector with Add a New User highlighted"
+        >
+          <p>In the ticket category list, choose <strong>User</strong>, then <strong>Add a New User</strong>.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={3}
+          title="Complete the form thoroughly"
+          screenshot="/images/AllSafeApp_AddUserForm_1AllSafeApp_AddUserForm.avif"
+          screenshotAlt="AllSafe App Add User form with multiple fields"
+        >
+          <p>Fill in every field. The more detail you give us, the faster we can provision the account.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={4}
+          title="Submit the ticket"
+          screenshot="/images/AllSafeApp_Submit_1AllSafeApp_Submit.avif"
+          screenshotAlt="AllSafe App ticket submission confirmation"
+        >
+          <p>Click <strong>Submit</strong>. You'll receive a confirmation email with the ticket number.</p>
+        </TutorialStep>
+      </div>
+    </div>
+  </section>
+
+  <section id="remove-user" class="section padding-small">
+    <div class="container">
+      <h2 class="h3" style="text-align:center; margin-bottom:32px;">Remove a user</h2>
+      <div class="tutorial-steps">
+        <TutorialStep
+          stepNumber={1}
+          title="Click Open a Ticket"
+          screenshot="/images/AllSafeApp_OpenTicket_1AllSafeApp_OpenTicket.avif"
+          screenshotAlt="AllSafe App showing Open a Ticket button"
+        >
+          <p>Start the same way — click <strong>Open a Ticket</strong>.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={2}
+          title="Select User > Remove a User"
+          screenshot="/images/AllSafeApp_RemoveUserForm-1_1AllSafeApp_RemoveUserForm-1.avif"
+          screenshotAlt="AllSafe App ticket category with Remove a User"
+        >
+          <p>Choose <strong>User</strong>, then <strong>Remove a User</strong>.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={3}
+          title="Complete the form"
+          screenshot="/images/AllSafeApp_RemoveUserForm_1AllSafeApp_RemoveUserForm.avif"
+          screenshotAlt="AllSafe App Remove User form"
+        >
+          <p>Tell us who the user is and when access should be revoked.</p>
+        </TutorialStep>
+
+        <TutorialStep
+          stepNumber={4}
+          title="Submit the ticket"
+          screenshot="/images/AllSafeApp_SubmitRemove_1AllSafeApp_SubmitRemove.avif"
+          screenshotAlt="AllSafe App remove user confirmation"
+        >
+          <p>Click <strong>Submit</strong> — we'll handle the rest within SLA.</p>
+        </TutorialStep>
+      </div>
+    </div>
+  </section>
+
+  <Benefits
+    heading="Our commitment to our customers"
+    intro="Why clients across Southern California trust AllSafe IT as their managed IT partner."
+    benefits={commitments}
+  />
+
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h2 class="h4">Have additional questions?</h2>
+        <p class="body-text">
+          Call <a href={SUPPORT_PHONE}>+1 (213) 784-1959</a> or email
+          <a href={SUPPORT_EMAIL}>info@allsafeit.com</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <TalkToExpertCta />
+</Base>
+
+<style>
+  .tutorial-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .login-section {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .login-section a,
+  .centered-title a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>

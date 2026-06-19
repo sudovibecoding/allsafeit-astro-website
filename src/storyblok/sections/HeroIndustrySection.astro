@@ -1,0 +1,21 @@
+---
+import HeroIndustry from '../../components/sections/HeroIndustry.astro';
+
+interface Props {
+  blok: {
+    title?: string;
+    lead?: string;
+    image_path?: string;
+    image_alt?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<HeroIndustry
+  title={blok.title ?? ''}
+  lead={blok.lead ?? ''}
+  featuredImage={blok.image_path ?? ''}
+  featuredImageAlt={blok.image_alt ?? ''}
+/>

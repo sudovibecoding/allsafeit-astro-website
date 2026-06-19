@@ -1,0 +1,20 @@
+---
+import LegalContent from '../../components/sections/LegalContent.astro';
+import { resolveRichOrHtml } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    title: string;
+    last_updated?: string;
+    body?: unknown;
+    body_html?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const bodyHtml = resolveRichOrHtml(blok.body_html, blok.body);
+---
+
+<LegalContent title={blok.title} lastUpdated={blok.last_updated}>
+  {bodyHtml && <div set:html={bodyHtml} />}
+</LegalContent>

@@ -1,0 +1,57 @@
+{
+  "name": "allsafeit-website",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "dev:storyblok": "astro dev --host",
+    "storyblok:push-components": "node scripts/storyblok-push-components.mjs",
+    "storyblok:seed-home": "node scripts/storyblok-seed-home.mjs",
+    "storyblok:migrate": "tsx --env-file=.env scripts/storyblok/migrate-all.ts",
+    "storyblok:sync-paths": "tsx --env-file=.env scripts/storyblok/sync-preview-paths.ts",
+    "storyblok:organize-folders": "tsx --env-file=.env scripts/storyblok/organize-folders.ts",
+    "storyblok:convert-richtext": "tsx --env-file=.env scripts/storyblok/convert-html-to-richtext.ts",
+    "storyblok:audit": "tsx --env-file=.env scripts/storyblok/audit-site.ts",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 astro build && tsx scripts/build-worker-wrapper.mjs",
+    "preview": "npm run build && wrangler dev",
+    "astro": "astro",
+    "migrate:webflow": "tsx --env-file=.env scripts/migrate-webflow/index.ts",
+    "generate:redirects": "node scripts/generate-redirects.mjs",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "12",
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
+    "@storyblok/astro": "^9.0.12",
+    "@tailwindcss/vite": "^4.1.14",
+    "@tanstack/react-virtual": "^3.13.18",
+    "astro": "^5.16.16",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-icons": "^5.5.0",
+    "resend": "^6.12.4",
+    "tailwindcss": "^4.1.14",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.1.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/turndown": "^5.0.6",
+    "cross-env": "^10.1.0",
+    "js-yaml": "^4.1.1",
+    "marked": "^18.0.5",
+    "tsx": "^4.22.3",
+    "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2",
+    "wrangler": "^4.100.0"
+  }
+}

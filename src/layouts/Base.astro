@@ -1,0 +1,151 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import funnelSansUrl from '../assets/fonts/FunnelSans-VariableFont_wght.woff2?url';
+import geistMonoUrl from '../assets/fonts/GeistMono-VariableFont_wght.woff2?url';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  twitterCard?: 'summary' | 'summary_large_image';
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = '/images/og-default.jpg',
+  ogType = 'website',
+  twitterCard = 'summary_large_image',
+  schema,
+  noindex = false,
+} = Astro.props;
+
+const SITE_URL = 'https://www.allsafeit.com';
+const resolvedCanonical = canonical ?? new URL(Astro.url.pathname, SITE_URL).href;
+const resolvedOgImage = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicons — sourced from Webflow's allsafeit.com site.
+         public/favicon.png:           browser tab + bookmark icon
+         public/apple-touch-icon.png:  iOS home-screen icon ("Web Clip") -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Primary SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={resolvedCanonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Google Site Verification -->
+    <!-- <meta name="google-site-verification" content="d9JdGfjovKGcMHLRbGB14Ovxu4U7N7ZgG26tJTVzInI" /> -->
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:url" content={resolvedCanonical} />
+    <meta property="og:site_name" content="AllSafe IT" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+
+    <!-- DNS hints for external domains used below the fold -->
+    <link rel="dns-prefetch" href="https://cdn.prod.website-files.com" />
+    <link rel="dns-prefetch" href="https://www.google.com" />
+
+    <!-- Font Preload — Vite-hashed URLs from src/assets/fonts/ -->
+    <link
+      rel="preload"
+      href={funnelSansUrl}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={geistMonoUrl}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Schema.org JSON-LD -->
+    {schema && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(Array.isArray(schema) ? schema : [schema])}
+      />
+    )}
+
+    <!-- Page-specific head additions (preloads, etc.) -->
+    <slot name="head" />
+
+    {/* Astro View Transitions — enables SPA-style cross-fades between
+        pages. Animations are intentionally subtle (default fade) for a
+        "clean" feel. `prefers-reduced-motion` users get an instant cut
+        automatically. Navbar + Footer use `transition:persist` below so
+        they stay mounted across navigations (no flicker, no scroll-state
+        reset on the sticky header). */}
+    <ClientRouter />
+
+    <!-- Google Tag Manager -->
+    <!-- <script is:inline>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-568DZP8K');
+    </script> -->
+  </head>
+  <body>
+    <!-- GTM noscript fallback -->
+    <!-- <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-568DZP8K"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript> -->
+
+    {/* `transition:persist` keeps the navbar mounted across page navigations.
+        Without it, the sticky/fixed nav would flicker on every transition
+        and the mobile menu's open state would reset mid-route-change. The
+        nav script's bindings also survive — no re-init needed. */}
+    <Navbar transition:persist />
+    <main transition:animate="fade">
+      <slot />
+    </main>
+    {/* Footer persists for the same reason — it's identical on every page,
+        so re-rendering it on each transition would be a wasted cross-fade. */}
+    <Footer transition:persist />
+
+    <script>
+      import '../scripts/init';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  width?: 'main' | '10col' | '8col' | '6col' | '5col' | '4col' | 'full';
+  class?: string;
+  id?: string;
+}
+
+const {
+  width = 'main',
+  class: className,
+  id,
+} = Astro.props;
+---
+
+<div class:list={['container', `container--${width}`, className]} id={id}>
+  <slot />
+</div>
+
+<style>
+  .container {
+    width: 100%;
+    padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .container--main  { max-width: var(--container-main); }
+  .container--10col { max-width: var(--container-10col); }
+  .container--8col  { max-width: var(--container-8col); }
+  .container--6col  { max-width: var(--container-6col); }
+  .container--5col  { max-width: var(--container-5col); }
+  .container--4col  { max-width: var(--container-4col); }
+  .container--full  { max-width: 100%; }
+</style>

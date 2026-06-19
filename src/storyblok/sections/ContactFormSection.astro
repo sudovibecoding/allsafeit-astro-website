@@ -1,0 +1,45 @@
+---
+import ContactForm from '../../components/ContactForm.astro';
+import { headingPlainText } from '../../lib/storyblok-heading';
+
+interface Props {
+  blok: {
+    badge?: string;
+    heading?: unknown;
+    subheading?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="form-container">
+      <div class="title">
+        {blok.badge && <div class="badge-text">{blok.badge}</div>}
+        {blok.heading && <h1 class="h3">{headingPlainText(blok.heading)}</h1>}
+      </div>
+      {blok.subheading && <p class="h5 conversation-heading">{blok.subheading}</p>}
+      <ContactForm />
+    </div>
+  </div>
+</section>
+
+<style>
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: var(--container-6col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .form-container .title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .conversation-heading { margin: 0; }
+</style>

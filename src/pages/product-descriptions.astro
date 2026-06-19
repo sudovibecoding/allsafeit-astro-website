@@ -1,0 +1,244 @@
+---
+/**
+ * Product Descriptions — internal catalog of services + licenses.
+ *
+ * Different shape from the other T4 pages: no tutorial steps, no
+ * screenshots. Just a long structured content listing with headings,
+ * sub-headings, and feature bullet lists.
+ *
+ * The content listed here is a representative summary — editors should
+ * extend with the full product catalog over time.
+ *
+ * Indexing: noindex — this is largely an internal reference doc.
+ */
+
+import Base from '../layouts/Base.astro';
+import TocSidebar from '../components/sections/TocSidebar.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+
+const toc = [
+  { id: 'allsafe-services', label: 'AllSafe IT Services & Products' },
+  { id: 'safetotal', label: 'SafeTotal Cybersecurity Solutions' },
+  { id: 'microsoft', label: 'Microsoft Licenses' },
+  { id: 'google', label: 'Google Licenses' },
+  { id: 'sophos', label: 'Sophos Licenses' },
+  { id: 'why-us', label: 'Why choose us' },
+];
+
+const allsafeServices = [
+  { name: 'Managed Server Support', body: 'Proactive monitoring, patching, and maintenance for on-prem and virtualized server environments.' },
+  { name: 'Managed Foundation', body: 'Network, identity, and core-systems management to keep the rest of your stack running smoothly.' },
+  { name: 'Managed Users', body: 'Per-seat managed support including onboarding, helpdesk, and lifecycle management.' },
+  { name: 'Managed Workstation Support', body: 'Full endpoint management — provisioning, patching, security baseline.' },
+  { name: 'Professional Services', body: 'Project-based engagements for migrations, hardware refresh, compliance audits, and infrastructure design.' },
+];
+
+const safeTotal = [
+  { name: 'Workstation Protection', items: ['Next-gen anti-malware', 'EDR with rollback', 'Web filtering'] },
+  { name: 'Server Protection', items: ['Server-class EDR', 'File-integrity monitoring', 'Application allow-listing'] },
+  { name: 'Server Backup', items: ['Immutable cloud backup', 'Point-in-time recovery', 'Off-site replication'] },
+  { name: 'Firewall Protection', items: ['Managed next-gen firewall', 'IPS/IDS', 'Geo-blocking and threat intel feeds'] },
+  { name: 'User Protection', items: ['MFA enforcement', 'Identity threat detection', 'Conditional access policies'] },
+  { name: 'SaaS Protection', items: ['Microsoft 365 / Google Workspace backup', 'Anomalous-activity alerts'] },
+  { name: 'DMARC Protection', items: ['Email-authentication policy enforcement', 'Spoofing-attempt visibility'] },
+  { name: 'SIEM Protection', items: ['24/7 SOC monitoring', 'Correlated alerts across endpoints, network, and cloud'] },
+  { name: 'Web Security', items: ['DNS filtering', 'Malicious-URL blocking', 'Category-based policies'] },
+];
+
+const microsoftLicenses = [
+  { category: 'Communication', items: ['Microsoft Teams', 'Microsoft Teams Phone', 'Skype for Business'] },
+  { category: 'Email & Productivity', items: ['Microsoft 365 Business Basic / Standard / Premium', 'Office Apps for Enterprise'] },
+  { category: 'Project Management', items: ['Microsoft Project (Plan 1/3/5)', 'Microsoft Planner'] },
+  { category: 'Security & Compliance', items: ['Defender for Business', 'Entra ID P1/P2', 'Intune', 'Purview'] },
+  { category: 'Data Management', items: ['OneDrive', 'SharePoint', 'Microsoft Lists'] },
+  { category: 'Business Solutions', items: ['Power BI', 'Power Automate', 'Dynamics 365'] },
+];
+
+const googleLicenses = [
+  {
+    name: 'Google Workspace Business Standard',
+    items: [
+      'Custom business email',
+      '2 TB cloud storage per user',
+      '150-participant video meetings + recording',
+      'Standard support',
+    ],
+  },
+];
+
+const sophos = [
+  {
+    name: 'Intercept X (Advanced / Advanced with XDR)',
+    items: ['Next-gen anti-ransomware', 'Exploit prevention', 'Active adversary mitigations'],
+  },
+  { name: 'Email Advanced', items: ['Anti-phishing', 'Sandboxing', 'Time-of-click URL protection'] },
+  { name: 'Mobile Advanced', items: ['UEM for iOS/Android', 'App-level security policies'] },
+  { name: 'Device Encryption', items: ['BitLocker / FileVault management at scale'] },
+  { name: 'MDR / XDR', items: ['24/7 managed threat response', 'Cross-product threat correlation'] },
+];
+
+const valueProps = [
+  { name: 'Fast and responsive service', body: 'Tickets are routed within minutes. Real engineers, not chatbots.' },
+  { name: 'Cybersecurity is priority #1', body: 'Every recommendation passes through a security lens before it lands in your environment.' },
+  { name: 'We hire only the best', body: 'Engineers we hire are experienced, vetted, and rotated through our internal training program.' },
+  { name: 'Flexible IT services', body: 'Pricing and scope flex with your team — scale up, scale down, no penalties.' },
+];
+---
+
+<Base
+  title="AllSafe IT Product Descriptions"
+  description="Service categories, license catalogs, and security stack reference for AllSafe IT clients and partners."
+  noindex={true}
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h2">AllSafe IT Product Descriptions</h1>
+        <p class="lead-text">
+          Reference catalog of our services, security stack, and licensable
+          products. Bookmark for quick lookup.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <TocSidebar items={toc} />
+    </div>
+  </section>
+
+  <section id="allsafe-services" class="section padding-small">
+    <div class="container">
+      <h2 class="h3 section-h">AllSafe IT Services &amp; Products</h2>
+      <div class="catalog">
+        {allsafeServices.map((s) => (
+          <article class="catalog-card">
+            <h3 class="h5 bold">{s.name}</h3>
+            <p class="body-text">{s.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="safetotal" class="section padding-small">
+    <div class="container">
+      <h2 class="h3 section-h">SafeTotal Cybersecurity Solutions</h2>
+      <div class="catalog">
+        {safeTotal.map((c) => (
+          <article class="catalog-card">
+            <h3 class="h5 bold">{c.name}</h3>
+            <ul class="catalog-list body-text">
+              {c.items.map((i) => <li>{i}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="microsoft" class="section padding-small">
+    <div class="container">
+      <h2 class="h3 section-h">Microsoft Licenses</h2>
+      <div class="catalog">
+        {microsoftLicenses.map((c) => (
+          <article class="catalog-card">
+            <h3 class="h5 bold">{c.category}</h3>
+            <ul class="catalog-list body-text">
+              {c.items.map((i) => <li>{i}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="google" class="section padding-small">
+    <div class="container">
+      <h2 class="h3 section-h">Google Licenses</h2>
+      <div class="catalog">
+        {googleLicenses.map((c) => (
+          <article class="catalog-card">
+            <h3 class="h5 bold">{c.name}</h3>
+            <ul class="catalog-list body-text">
+              {c.items.map((i) => <li>{i}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="sophos" class="section padding-small">
+    <div class="container">
+      <h2 class="h3 section-h">Sophos Licenses</h2>
+      <div class="catalog">
+        {sophos.map((c) => (
+          <article class="catalog-card">
+            <h3 class="h5 bold">{c.name}</h3>
+            <ul class="catalog-list body-text">
+              {c.items.map((i) => <li>{i}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="why-us" class="section padding-small">
+    <div class="container">
+      <h2 class="h3 section-h">Why choose us</h2>
+      <div class="catalog">
+        {valueProps.map((v) => (
+          <article class="catalog-card">
+            <h3 class="h5 bold">{v.name}</h3>
+            <p class="body-text">{v.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <TalkToExpertCta />
+</Base>
+
+<style>
+  .section-h {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .catalog {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: var(--container-10col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .catalog-card {
+    background-color: var(--color-light-1);
+    border-radius: var(--radius-default);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .catalog-card h3 {
+    margin: 0;
+    color: var(--color-brand-dark);
+  }
+  .catalog-list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+  }
+  @media (max-width: 767px) {
+    .catalog {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

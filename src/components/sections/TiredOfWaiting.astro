@@ -1,0 +1,99 @@
+---
+// Plain <img> (not astro:assets <Image>) — serve the pre-optimized Webflow
+// .avif as-is, no re-encode. See StrategicSupport for rationale.
+import photoWhisk from '../../assets/images/Whisk_ccb50cadff38ba0a4e94c479a58da933dr.avif';
+
+interface Item {
+  heading: string;
+  body: string;
+  icon: string;
+}
+
+interface Props {
+  heading?: string;
+  imagePath?: string;
+  imageAlt?: string;
+  item1Heading?: string;
+  item1Body?: string;
+  item2Heading?: string;
+  item2Body?: string;
+  item3Heading?: string;
+  item3Body?: string;
+}
+
+const {
+  heading = 'Are you tired of waiting for Local IT Support in California?',
+  imagePath,
+  imageAlt = 'Trained tech member offering IT support in California',
+  item1Heading = 'Feeling overwhelmed by the complexity of managing your IT needs?',
+  item1Body = 'Managing IT can feel like navigating a maze of complexity, especially for California SMBs that are without dedicated IT departments.',
+  item2Heading = 'Are you worried about how secure your business really is?',
+  item2Body = 'From ransomware to phishing scams, the risks are everywhere. Whether you are in SoCal or the Bay Area, the cost of a breach can be catastrophic.',
+  item3Heading = 'Struggling to align your IT strategy with your business goals?',
+  item3Body = "For many growing companies that don't outsource IT support, technology is seen as a necessary expense rather than a strategic asset.",
+} = Astro.props;
+
+const items: Item[] = [
+  {
+    heading: item1Heading,
+    body: item1Body,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M415.9 344L225 344C227.9 408.5 242.2 467.9 262.5 511.4C273.9 535.9 286.2 553.2 297.6 563.8C308.8 574.3 316.5 576 320.5 576C324.5 576 332.2 574.3 343.4 563.8C354.8 553.2 367.1 535.8 378.5 511.4C398.8 467.9 413.1 408.5 416 344zM224.9 296L415.8 296C413 231.5 398.7 172.1 378.4 128.6C367 104.2 354.7 86.8 343.3 76.2C332.1 65.7 324.4 64 320.4 64C316.4 64 308.7 65.7 297.5 76.2C286.1 86.8 273.8 104.2 262.4 128.6C242.1 172.1 227.8 231.5 224.9 296zM176.9 296C180.4 210.4 202.5 130.9 234.8 78.7C142.7 111.3 74.9 195.2 65.5 296L176.9 296zM65.5 344C74.9 444.8 142.7 528.7 234.8 561.3C202.5 509.1 180.4 429.6 176.9 344L65.5 344zM463.9 344C460.4 429.6 438.3 509.1 406 561.3C498.1 528.6 565.9 444.8 575.3 344L463.9 344zM575.3 296C565.9 195.2 498.1 111.3 406 78.7C438.3 130.9 460.4 210.4 463.9 296L575.3 296z"/></svg>`,
+  },
+  {
+    heading: item2Heading,
+    body: item2Body,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M256 160L256 224L384 224L384 160C384 124.7 355.3 96 320 96C284.7 96 256 124.7 256 160zM192 224L192 160C192 89.3 249.3 32 320 32C390.7 32 448 89.3 448 160L448 224C483.3 224 512 252.7 512 288L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 288C128 252.7 156.7 224 192 224z"/></svg>`,
+  },
+  {
+    heading: item3Heading,
+    body: item3Body,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" aria-hidden="true"><path d="M232 120L232 160L153.9 160C139.6 160 128 171.6 128 185.9C128 189.9 128.9 193.9 130.7 197.5L164.1 264.3C152.7 266.1 143.9 276 143.9 288C143.9 301.3 154.6 312 167.9 312L173.5 312L159.9 448L103.7 518.3C98.7 524.6 95.9 532.4 95.9 540.5C95.9 560.1 111.8 576 131.4 576L380.3 576C399.9 576 415.8 560.1 415.8 540.5C415.8 532.4 413.1 524.6 408 518.3L352 448L338.4 312L344 312C357.3 312 368 301.3 368 288C368 276.1 359.3 266.1 347.8 264.3L381.2 197.5C383 193.9 383.9 189.9 383.9 185.9C383.9 171.6 372.3 160 358 160L279.9 160L279.9 120L295.9 120C309.2 120 319.9 109.3 319.9 96C319.9 82.7 309.3 72 296 72L280 72L280 56C280 42.7 269.3 32 256 32C242.7 32 232 42.7 232 56L232 72L216 72C202.7 72 192 82.7 192 96C192 109.3 202.7 120 216 120L232 120z"/></svg>`,
+  },
+] as const;
+---
+
+<section class="section padding-top-small">
+  <div class="container">
+    <div class="grid">
+      <div class="square-image-wrap sticky">
+        <img
+          class="square-parallax-image"
+            src={imagePath ?? photoWhisk.src}
+            alt={imageAlt}
+          loading="lazy"
+        />
+      </div>
+
+      <div class="justify-vertical">
+        <div class="content">
+          <h2 class="h3">{heading}</h2>
+        </div>
+        <div>
+          <div class="icon-items-list">
+            {items.map(item => (
+              <div class="horizontal-icon-item">
+                <div class="boxed-icon bg__color-blue">
+                  <div class="widget__embed-icons" set:html={item.icon} />
+                </div>
+                <div class="icon-card-content">
+                  <h3 class="h5 bold">{item.heading}</h3>
+                  <p class="lead-text body-text">{item.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .h5.bold   { font-weight: 500; }
+
+  .icon-card-content {
+    gap: 12px;
+    flex-direction: column;
+    display: flex;
+  }
+</style>

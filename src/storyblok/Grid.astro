@@ -1,0 +1,29 @@
+---
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+
+interface Props {
+  blok: {
+    columns?: Array<Record<string, unknown>>;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<section class="storyblok-grid">
+  <div class="container grid-inner">
+    {
+      blok.columns?.map((nestedBlok) => (
+        <StoryblokComponent blok={nestedBlok} />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .grid-inner {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+</style>

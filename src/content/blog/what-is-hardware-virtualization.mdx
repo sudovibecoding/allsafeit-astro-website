@@ -1,0 +1,96 @@
+---
+name: What is Hardware Virtualization?
+status: published
+mainImage: /images/blog/what-is-hardware-virtualization/blog-post-hardware-virtualization.jpeg
+mainImageAlt: What is Hardware Virtualization? — AllSafe IT blog
+introductionParagraph: Learn how hardware virtualization lets you run multiple OS on one machine, and what benefits it has for your business and personal use.
+category: business
+author: bones-ijeoma
+firstPublishedDate: "2022-03-28T00:00:00.000Z"
+postFeatured: false
+metaTitleForBlogs: What is Hardware Virtualization ? Benefits & Uses - AllSafe IT
+metaDescriptionForBlogs: Learn how hardware virtualization lets you run multiple OS on one machine, and what benefits it has for your business and personal use.
+---
+
+Hardware virtualization, which is also called server virtualization or simply virtualization, is the separation of computing resources from the software that uses them. It is also called virtualization. This means that in a traditional physical computing environment, software like an operating system (OS) or an enterprise application can get right down to the hardware and components that make up the computer. This includes the processor, memory, storage, certain chipsets, and OS driver versions.
+
+This caused a lot of problems for software configuration and made it hard to move or reinstall software on different hardware, like when you had to restore backups after a computer accident or a fault in the software.
+
+## **History: Hardware virtualization has been around for a long time**
+
+The term "virtualization" was first used in the late 1960s and early 1970s, when IBM and MIT were working on ways to share computer resources with a lot of people. This led to the creation of the term. IBM had hardware systems from different eras. They would run programs in batches to do multiple things at once. It was when MIT started working on a [**Multiple Access Computer**](https://www.allsafeit.com/services/managed-it) that IBM started to work on a new mainframe (MAC).
+
+People started using mainframe computers in the late 1970s and early 1980s, and virtualization was one of the first things they used. In the late 1990s and early 2000s, the number of individual and underused data center systems made it hard to power and cool them effectively. Developers who were interested in virtualization started making more hypervisor platforms. It was added to the Macintosh platform in 1997.
+
+## **How hardware Virtualization works: Hardware virtualization enable**
+
+Hardware virtualization installs a hypervisor or virtual machine manager (VMM), which creates a layer between the software and the hardware. This layer is called an abstraction layer. Once a hypervisor is in place, software can use virtual representations of the computer's parts, like virtual processors instead of real processors, to run. [VMware's vSphere](https://www.vmware.com/products/cloud-infrastructure/esxi-and-esx), which is based on ESXi, and [Microsoft's Hyper-V](https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/) are two of the most popular hypervisors.
+
+Virtualized computing resources are put into separate "VMs," where operating systems and applications can be set up. Virtualized systems can run multiple VMs at the same time, but each VM is logically separate from the other VMs. There will be no effect on the other VMs if there is malware or if one VM crashes, so this is a good thing [**Multiple virtual machines**](https://www.allsafeit.com/services/managed-it) make the system more efficient and use more of its resources.
+
+Rather than buying 10 separate servers to host 10 physical applications, a single virtualized server could host those same 10 applications on 10 VMs on the same system, instead of buying 10 separate servers for each. A big advantage of virtualization is that more hardware can be used. This allows for a lot of system consolidation, which reduces the number of servers and electricity use in enterprise data centers.
+
+## **Hardware virtualization types**
+
+There are many different types of hardware virtualization, with processes like full virtualization, paravirtualization, and hardware-assisted virtualization.
+
+-   **Full virtualization**:
+
+It completely mimics the hardware so that a guest OS can run in a separate, separate place. It would run on top of a guest OS, which would then run on top of the hypervisor, and then the host OS and hardware. Full virtualization makes it look and act like an OS is running on its own server. Full virtualization allows administrators to run a virtual environment the same way they would run a physical one. There was a full virtualization method used by IBM to make two of its computers, the CP-40 and the CP-67.
+
+Oracle VM and ESXi are two other fully virtualized systems. This means that administrators can use full virtualization to combine both old and new systems. Each feature of the hardware must show up in each VM for the process to be called full virtualization. This means that in order to work with older systems, hardware must be changed to work with newer systems.
+
+-   **Paravirtualization:**
+
+Using paravirtualization, you can run a modified and recompiled version of the guest OS in a VM. This change lets the VM be a little different from the hardware. In paravirtualization, the hardware isn't actually simulated. Instead, an application programme interface (API) is used that can change guest OSes.
+
+The hypervisor then gives the OS commands that can be sent to the hypervisor, called hypercalls, so that they can be done. These are used by the kernel to do things like manage memory and other things. Paravirtualization can improve performance by reducing the number of VMM calls. However, paravirtualization requires that the OS be changed, which could make it difficult to make changes to the OS in the future. There is a programme called Xen that can help with paravirtualization, like that.
+
+-   **Hardware-assisted virtualization:**
+
+Uses the computer's hardware to help build and manage a fully virtualized VM. This type of virtualization is called hardware-assisted virtualization. In 1972, IBM came out with the IBM System/370, which was the first computer with hardware-based virtualization. In order to make a VMM in software, the host system had to do a lot of work. Designers soon realized that virtualization functions could be done far more quickly and efficiently in hardware than in software. This led to the development of command sets for Intel and AMD processors, such as Intel VT and AMD-V extensions.
+
+So, the hypervisor can just call the processor, which then does all the work of making and maintaining VMs. A lot of the system's overhead has been cut, which means that the host system can host more VMs and provide better VM performance for demanding tasks. Using [**hardware to help you virtualize**](https://www.allsafeit.com/services/it-infrastructure-and-cloud) is the most common way to do it.
+
+## **Using hardware virtualization vs. using OS virtualization**
+
+OS virtualization virtualizes hardware at the OS level to make separate virtualized systems run on the same computer. It also doesn't use a hypervisor, so this process can be done without one. Virtualization will make this possible because the guest OS will be able to run the same OS as the host system that is already running. This is how OS virtualization works: The host OS is used as the base for all the separate VMs in a system. OS virtualization eliminates the need for driver emulation, so it doesn't need to be done.
+
+## **Vendors and products in the hardware virtualization field**
+
+VMware ESXi, Microsoft Hyper-V, and Xen are some of the companies and products that make hardware virtualization.
+
+### **VMware ESXi**
+
+In this case, VMware ESXi is a hypervisor for hardware virtualization. ESXi is installed directly on a server and has full control over a machine's resources. Runs without an OS and has its own kernel. ESXi is the smallest version of VMware's ESX. It is now the most popular version of ESX, though. A lot of people don't like that ESXi doesn't have the ESX service console.
+
+### **Microsoft Hyper-V**
+
+Microsoft Hyper-V is a hypervisor for hardware virtualization that runs on an x86 computer. Partitions are created in Hyper-V, and each guest OS will run a part of the VM. Partitions work in the same way as parent and child partitions. Children have a "virtual" view of system resources, but their parents can access hardware directly and see how much space there is. The hypercall API is used by parent partitions to make child partitions. There are 64-bit versions of Windows 8 Professional, Enterprise, and Education that have Hyper-V.
+
+### **Xen**
+
+Xen is a hypervisor that is free and open source. Xen is part of the Linux kernel and is run by the Linux Foundation. If you want to use Xen, you can only use a few Linux distributions, such as SUSE Linux Enterprise Server. Full virtualization, paravirtualization, and hardware-assisted virtualization are all options that the software can run. It's another open-source product that can be used to make, host, and manage virtual machines. XenServer is one of them.
+
+## **What is hardware virtualization in cloud computing**
+
+It is the abstraction of computing resources from the software that uses cloud resources. It involves embedding virtual machine software into the server’s hardware components.
+
+## **What is hardware virtualization support**
+
+Hardware-assisted virtualization is the use of a computer’s physical components to support the software that creates and manages virtual machines (VMs). Virtualization is an idea that traces its roots back to legacy mainframe system designs of the 1960s.
+
+## **What is hardware virtualization in VirtualBox**
+
+Intel and AMD processors have support for so-called hardware virtualization. This means that these processors can help Oracle VM VirtualBox to intercept potentially dangerous operations that a guest operating system may be attempting and also makes it easier to present virtual hardware to a virtual machine.
+
+### **How to enable hardware virtualization**
+
+-   Reboot your Computer and Press the BIOS Key
+-   Locate the section for CPU configuration
+-   Find the Settings for Virtualization
+-   Select the Option for Enabling Virtualization
+-   Save the Changes You Have Made
+-   Exit Your BIOS and Reboot Your Computer
+
+‍

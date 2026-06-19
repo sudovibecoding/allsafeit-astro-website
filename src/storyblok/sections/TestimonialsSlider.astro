@@ -1,0 +1,44 @@
+---
+import TestimonialsSlider from '../../components/sections/TestimonialsSlider.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface ItemBlok {
+  author?: string;
+  quote?: unknown;
+  photo?: { filename?: string; id?: number } | string;
+  image_path?: string;
+}
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    lead?: unknown;
+    items?: ItemBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+
+function quoteText(q: unknown) {
+  if (typeof q === 'string') return q.trim();
+  return stripHtmlTags(renderBodyContentInner(q));
+}
+
+const items = (blok.items ?? [])
+  .map((i) => ({
+    author: i.author ?? '',
+    quote: quoteText(i.quote),
+    photo: resolveImage(i.photo, i.image_path),
+  }))
+  .filter((i) => i.author && i.quote);
+
+const lead = blok.lead ? stripHtmlTags(renderBodyContentInner(blok.lead)) : undefined;
+---
+
+<TestimonialsSlider
+  heading={headingPlainText(blok.heading) || undefined}
+  lead={lead}
+  items={items.length ? items : undefined}
+/>

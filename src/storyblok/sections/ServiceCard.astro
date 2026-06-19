@@ -1,0 +1,17 @@
+---
+/** Nested service_card blok — rendered inside ServiceCardGrid, also registered for Storyblok editor. */
+interface Props {
+  blok: {
+    heading?: string;
+    tagline?: string;
+    body?: string;
+    href?: string;
+    link_label?: string;
+  };
+}
+
+const { blok } = Astro.props;
+---
+
+<!-- Nested blok; parent ServiceCardGrid maps cards. This satisfies Storyblok component registry. -->
+<div hidden data-service-card={blok.heading} />

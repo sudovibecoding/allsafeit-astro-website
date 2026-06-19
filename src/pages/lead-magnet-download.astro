@@ -1,0 +1,48 @@
+---
+/**
+ * Lead Magnet Download — the destination for the homepage EbookCta form.
+ *
+ * Triggered when a visitor submits their email on the homepage's "ebook"
+ * banner (rendered by src/components/sections/EbookCta.astro, which posts
+ * to this URL).
+ *
+ * Composed from the same reusable building blocks as the other two
+ * ebook-download pages.
+ *
+ * Indexing: noindex.
+ */
+
+import Base from '../layouts/Base.astro';
+import PdfDownloadCard from '../components/sections/PdfDownloadCard.astro';
+import TalkToExpertCta from '../components/sections/TalkToExpertCta.astro';
+---
+
+<Base
+  title="Everything to know about AllSafe IT support | PDF"
+  description="This e-book contains everything you need to know about our local IT support across California."
+  noindex={true}
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h2">Your free e-book is ready</h1>
+        <p class="lead-text">
+          Everything you need to know about AllSafe IT support across
+          Southern California — a sneak peek into our world of IT bliss.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <PdfDownloadCard
+    title="Everything to know about AllSafe IT support in California"
+    body="Local IT support, managed services, cybersecurity, and how we partner with growing businesses in Los Angeles, Orange County, and beyond."
+    pdfUrl="/files/allsafe-it-managed-total.pdf"
+    downloadAs="AllSafe-IT-Managed-IT-Overview.pdf"
+    previewImage="/images/book.avif"
+    previewImageAlt="AllSafe IT ebook cover"
+    fileSizeText="PDF · 3.2 MB"
+  />
+
+  <TalkToExpertCta />
+</Base>

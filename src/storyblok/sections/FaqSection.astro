@@ -1,0 +1,30 @@
+---
+import FaqSection from '../../components/sections/FaqSection.astro';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, stripHtmlTags } from '../../lib/storyblok-richtext';
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    lead?: unknown;
+    items?: Array<{ q?: string; a?: unknown }>;
+  };
+}
+
+const { blok } = Astro.props;
+
+const faqs = (blok.items ?? [])
+  .map((item) => ({
+    q: item.q ?? '',
+    a: renderBodyContentInner(item.a),
+  }))
+  .filter((item) => item.q && item.a);
+
+const leadHtml = blok.lead ? stripHtmlTags(renderBodyContentInner(blok.lead)) : undefined;
+---
+
+<FaqSection
+  heading={headingPlainText(blok.heading) || undefined}
+  lead={leadHtml || undefined}
+  faqs={faqs}
+/>

@@ -1,0 +1,63 @@
+---
+import Icon from '../primitives/Icon.astro';
+import AccordionItem from '../AccordionItem.astro';
+
+export interface Faq {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  heading?: string;
+  lead?: string;
+  faqs: Faq[];
+}
+
+const {
+  heading = 'Common Questions',
+  lead = "If you don't see your question here, we're always available to help.",
+  faqs,
+} = Astro.props;
+
+const hasFaqs = Array.isArray(faqs) && faqs.length > 0;
+---
+
+{hasFaqs && (
+<section class="section">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="content faq-title">
+        <div class="title">
+          <h2 class="h3">{heading}</h2>
+        </div>
+        <p class="lead-text" set:html={lead} />
+        <a href="/contact-us" class="icon-button-link">
+          <div class="circle-button">
+            <div class="circle-button-icon-wrapper">
+              <Icon name="custom-arrow" class="icon--arrow" />
+            </div>
+          </div>
+          <span class="badge-text">get in touch</span>
+        </a>
+      </div>
+
+      <div class="accordion">
+        {faqs.map((faq, i) => (
+          <AccordionItem question={faq.q} open={i === 0}>
+            <div class="body-text" set:html={faq.a} />
+          </AccordionItem>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+)}
+
+<style>
+  .icon--arrow {
+    line-height: 1;
+    width: 18px;
+    height: 18px;
+    display: flex;
+  }
+</style>

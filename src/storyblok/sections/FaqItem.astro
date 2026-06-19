@@ -1,0 +1,10 @@
+---
+/** Nested blok inside faq_section — schema only; rendered by FaqSection.astro */
+interface Props {
+  blok: Record<string, unknown>;
+}
+
+const { blok } = Astro.props;
+---
+
+<!-- faq_item is a data-only nested blok: { q, a } -->

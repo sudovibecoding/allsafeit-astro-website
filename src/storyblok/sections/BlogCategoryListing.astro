@@ -1,0 +1,56 @@
+---
+import HeroCentered from '../../components/sections/HeroCentered.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import BlogPostsGrid from '../../components/sections/BlogPostsGrid.astro';
+import { useStoryblokApi } from '@storyblok/astro';
+import { fetchBlogPosts } from '../../lib/storyblok-blog';
+import { storyblokVersion } from '../../lib/storyblok-fetch';
+
+interface Props {
+  blok: {
+    category_slug?: string;
+  };
+}
+
+const { blok } = Astro.props;
+const categorySlug = blok.category_slug ?? '';
+const version = storyblokVersion(Astro.url, import.meta.env.DEV);
+
+let posts: Awaited<ReturnType<typeof fetchBlogPosts>> = [];
+let categoryName = categorySlug;
+
+try {
+  const sbApi = useStoryblokApi();
+  posts = (await fetchBlogPosts(sbApi, version)).filter(
+    (s) => s.content.blog_category === categorySlug,
+  );
+
+  const catStory = await sbApi.get(`cdn/stories/blog-categories/${categorySlug}`, { version });
+  categoryName = catStory.data?.story?.name ?? categorySlug;
+} catch {
+  /* empty */
+}
+---
+
+<HeroCentered badge="[Blog]" title={categoryName}>
+  <p class="lead-text text_center color__white-shade1">
+    {posts.length} post{posts.length === 1 ? '' : 's'} in this category
+  </p>
+</HeroCentered>
+
+<section class="section padding-small">
+  <div class="container">
+    <Breadcrumb
+      crumbs={[
+        { label: 'Home', href: '/' },
+        { label: 'Blog', href: '/blog' },
+        { label: categoryName },
+      ]}
+    />
+    {posts.length > 0 ? (
+      <BlogPostsGrid posts={posts} />
+    ) : (
+      <p class="body-text">No posts in this category yet.</p>
+    )}
+  </div>
+</section>

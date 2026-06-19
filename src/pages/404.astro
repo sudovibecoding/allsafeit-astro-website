@@ -1,0 +1,97 @@
+---
+/**
+ * 404 — Page Not Found.
+ *
+ * Webflow reference: `404.html` — `.utility-page-wrap` with a full-viewport
+ * photo background (`DSC_1695DSC_1694.avif`), `.metric-text` "404" headline,
+ * H2 "Page Not Found", short body, single "Back to home" CTA. We extend that
+ * with a second CTA ("Contact us") so users with a dead-link in mind still
+ * have an actionable path.
+ *
+ * Title format follows the site convention (`<page> | AllSafe IT`) rather
+ * than Webflow's outlier hyphen — every other page in the site uses `|`.
+ *
+ * The page is `noindex` so search engines don't surface this when a real
+ * page moves.
+ */
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Page Not Found | AllSafe IT"
+  description="The page you're looking for doesn't exist or has been moved. Return to the AllSafe IT homepage or reach out for help."
+  noindex={true}
+>
+  {/* Full-viewport hero matching Webflow `.utility-page-wrap` — photo bg,
+      dark overlay, white type. */}
+  <section class="notfound-section">
+    <div class="container">
+      <div class="notfound-wrap">
+        <p class="metric-text color__white-shade1" aria-hidden="true">404</p>
+        <h1 class="h2 color__white-shade1">Page Not Found</h1>
+        <p class="lead-text color__white-shade1">
+          The page you are looking for doesn't exist or has been moved.
+        </p>
+        <div class="notfound-actions">
+          <a href="/" class="button small">Back to home</a>
+          <a href="/contact-us" class="button small ghost">Contact us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Full-viewport hero with a photo background — mirrors Webflow's
+     `.utility-page-wrap` (background-image + 100vh height). A dark overlay
+     (linear-gradient) keeps the white type legible regardless of where the
+     photo crops on different viewports. */
+  .notfound-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-brand-dark);
+    background-image:
+      linear-gradient(rgba(0, 25, 68, 0.7), rgba(0, 25, 68, 0.85)),
+      url('/images/DSC_1695DSC_1694.avif');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 4rem 0;
+  }
+
+  .notfound-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: var(--container-6col);
+    align-items: flex-start;
+  }
+
+  .notfound-wrap .h2 { margin: 0; }
+  .notfound-wrap .lead-text { margin: 0; }
+
+  .notfound-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  /* Ghost variant — outlined CTA for the secondary action ("Contact us"). */
+  .button.ghost {
+    background-color: transparent;
+    border: 1px solid var(--color-light-1);
+    color: var(--color-light-1);
+  }
+  .button.ghost:hover {
+    background-color: var(--color-light-1);
+    color: var(--color-brand-dark);
+  }
+
+  @media (max-width: 767px) {
+    .notfound-wrap { align-items: center; text-align: center; }
+    .notfound-actions { justify-content: center; }
+  }
+</style>

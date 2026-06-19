@@ -1,0 +1,53 @@
+---
+import ServiceCardGrid from '../../components/sections/ServiceCardGrid.astro';
+import { resolveImage } from '../../lib/storyblok-asset';
+import { headingPlainText } from '../../lib/storyblok-heading';
+import { renderBodyContentInner, stripHtmlTags } from '../../lib/storyblok-richtext';
+import { DEFAULT_SERVICE_CARDS } from '../../lib/storyblok-defaults';
+
+interface CardBlok {
+  heading?: string;
+  tagline?: string;
+  body?: unknown;
+  href?: string;
+  link_label?: string;
+  icon_image?: { filename?: string; id?: number } | string;
+  image_path?: string;
+}
+
+interface Props {
+  blok: {
+    heading?: unknown;
+    lead?: unknown;
+    cards?: CardBlok[];
+  };
+}
+
+const { blok } = Astro.props;
+
+function mapCard(card: CardBlok) {
+  const iconUrl = resolveImage(card.icon_image, card.image_path);
+  return {
+    heading: card.heading ?? '',
+    tagline: card.tagline ?? '',
+    body: stripHtmlTags(renderBodyContentInner(card.body)),
+    href: card.href ?? '#',
+    label: card.link_label ?? 'Learn more',
+    icon: iconUrl
+      ? `<img src="${iconUrl}" alt="" width="32" height="32" loading="lazy" />`
+      : '',
+  };
+}
+
+const sourceCards =
+  blok.cards && blok.cards.length > 0 ? blok.cards : DEFAULT_SERVICE_CARDS;
+
+const services = sourceCards.map(mapCard).filter((s) => s.heading);
+const leadText = blok.lead ? stripHtmlTags(renderBodyContentInner(blok.lead)) : undefined;
+---
+
+<ServiceCardGrid
+  heading={headingPlainText(blok.heading) || undefined}
+  lead={leadText}
+  services={services}
+/>

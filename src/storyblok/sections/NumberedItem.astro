@@ -1,0 +1,7 @@
+---
+interface Props {
+  blok: { term?: string; body?: string };
+}
+---
+
+<div hidden data-numbered-item={Astro.props.blok.term} />

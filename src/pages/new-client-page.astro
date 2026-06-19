@@ -1,0 +1,301 @@
+---
+/**
+ * New Client Page — onboarding/welcome doc for newly-signed AllSafe IT clients.
+ *
+ * 9-section support doc covering: support channels, app login, ticket
+ * submission, alternative channels, status tracking, emergency protocol,
+ * resource downloads, and contact.
+ *
+ * Heaviest support-doc page in the build. Reuses TocSidebar +
+ * TutorialStep extensively.
+ *
+ * Indexing: indexable — onboarding pages may receive search traffic from
+ * existing clients searching for support workflow.
+ */
+
+import Base from '../layouts/Base.astro';
+import TocSidebar from '../components/sections/TocSidebar.astro';
+import TutorialStep from '../components/sections/TutorialStep.astro';
+import Benefits from '../components/sections/Benefits.astro';
+import ContactSection from '../components/sections/ContactSection.astro';
+
+const commitments = [
+  { title: 'Fast and responsive service', body: 'Real engineers, real responses, real fast — most tickets resolved within an hour.' },
+  { title: 'Cybersecurity is priority #1', body: 'Every recommendation passes through a security lens before it touches your environment.' },
+  { title: 'We hire only the best', body: 'Vetted, experienced engineers with continuous internal training.' },
+  { title: 'Flexible IT services', body: 'Scope and pricing flex with your team — no penalties for scaling up or down.' },
+];
+
+const toc = [
+  { id: 'request-support', label: 'How to request support' },
+  { id: 'log-in', label: 'Log in to the AllSafe App' },
+  { id: 'open-ticket', label: 'Open a ticket via the app' },
+  { id: 'alternative-channels', label: 'Email or phone us' },
+  { id: 'ticket-status', label: 'Check ticket status' },
+  { id: 'emergency', label: 'Emergency (Priority 1) support' },
+  { id: 'resources', label: 'Resource downloads' },
+  { id: 'commitment', label: 'Our commitment' },
+];
+
+const SUPPORT_PHONE_HREF = 'tel:+18884002748';
+const SUPPORT_PHONE_DISPLAY = '(888) 400-2748';
+const HELPDESK_EMAIL = 'mailto:helpdesk@allsafeit.com';
+---
+
+<Base
+  title="Welcome to AllSafe IT — New Client Guide | AllSafe IT"
+  description="Welcome to AllSafe IT! Learn how to request support, use the AllSafe App, submit tickets, and reach us in an emergency. Bookmark this page."
+>
+  <section class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h1 class="h2">Welcome to AllSafe IT</h1>
+        <p class="lead-text">
+          This guide walks you through requesting support, using the AllSafe App,
+          and reaching us in a true emergency. Bookmark it — you'll come back to
+          it more than you think.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section padding-small">
+    <div class="container">
+      <TocSidebar items={toc} />
+    </div>
+  </section>
+
+  <!-- 1. Support request methods -->
+  <section id="request-support" class="section padding-small">
+    <div class="container">
+      <div class="content-block">
+        <h2 class="h3">How to request support</h2>
+        <p class="lead-text">There are three ways to reach us, in order of preference:</p>
+        <ol class="numbered-channels">
+          <li>
+            <strong>AllSafe App (recommended)</strong> — fastest routing, full ticket trail.
+          </li>
+          <li>
+            <strong>Email</strong> — <a href={HELPDESK_EMAIL}>helpdesk@allsafeit.com</a> for non-urgent issues.
+          </li>
+          <li>
+            <strong>Phone</strong> — <a href={SUPPORT_PHONE_HREF}>{SUPPORT_PHONE_DISPLAY}</a> for time-sensitive matters.
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Log in to the AllSafe App -->
+  <section id="log-in" class="section padding-small">
+    <div class="container">
+      <h2 class="h3" style="text-align:center; margin-bottom:32px;">Log in to the AllSafe App</h2>
+      <div class="tutorial-steps">
+        <TutorialStep stepNumber={1} title="Open the AllSafe App">
+          <p>Find the shortcut on your desktop, or open the Start menu and search for "AllSafe App."</p>
+          <p>No desktop install? Use <a href="https://app.allsafeit.com" rel="noopener">app.allsafeit.com</a> in your browser.</p>
+        </TutorialStep>
+        <TutorialStep
+          stepNumber={2}
+          title="Sign in with Microsoft 365 or email token"
+          screenshot="/images/AllSafeApp2021_Login_1AllSafeApp2021_Login.avif"
+          screenshotAlt="AllSafe App login screen"
+        >
+          <p>Two options:</p>
+          <ul>
+            <li><strong>Microsoft 365</strong> — single-sign-on with your work email.</li>
+            <li><strong>Email token</strong> — request a one-time code sent to your inbox.</li>
+          </ul>
+        </TutorialStep>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Open a ticket via the app -->
+  <section id="open-ticket" class="section padding-small">
+    <div class="container">
+      <h2 class="h3" style="text-align:center; margin-bottom:32px;">Open a ticket via the AllSafe App</h2>
+      <p class="lead-text intro-line">The fastest, easiest, and most-tracked way to get help.</p>
+      <div class="tutorial-steps">
+        <TutorialStep
+          stepNumber={1}
+          title="Click Open a Ticket"
+          screenshot="/images/AllSafeApp_OpenTicket_1AllSafeApp_OpenTicket.avif"
+          screenshotAlt="AllSafe App Open a Ticket button"
+        >
+          <p>From the app home screen.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={2} title="Choose a category and request type">
+          <p>Pick the option that best matches your issue. The more specific, the faster we route.</p>
+        </TutorialStep>
+        <TutorialStep
+          stepNumber={3}
+          title="Complete the form"
+          screenshot="/images/AllSafeApp_Submit_1AllSafeApp_Submit.avif"
+          screenshotAlt="AllSafe App ticket submission form"
+        >
+          <p>Describe what's happening, what you expected, and what you've already tried.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={4} title="Schedule a remote session if needed">
+          <p>For anything that needs a technician's eyes, you can book a remote session right inside the ticket.</p>
+        </TutorialStep>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Alternative ticket channels -->
+  <section id="alternative-channels" class="section padding-small">
+    <div class="container">
+      <div class="content-block">
+        <h2 class="h3">Email or phone us</h2>
+
+        <h3 class="h5 bold">Email</h3>
+        <p class="body-text">
+          Send to <a href={HELPDESK_EMAIL}>helpdesk@allsafeit.com</a> with a
+          <strong>descriptive but concise</strong> subject line. We auto-create
+          a ticket from the email. Include screenshots if you have them.
+        </p>
+
+        <h3 class="h5 bold" style="margin-top:24px;">Phone</h3>
+        <p class="body-text">
+          Call <a href={SUPPORT_PHONE_HREF}>{SUPPORT_PHONE_DISPLAY}</a>. Have
+          your <strong>asset tag number</strong> ready and a brief description
+          of what you've already tried.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Check ticket status -->
+  <section id="ticket-status" class="section padding-small">
+    <div class="container">
+      <h2 class="h3" style="text-align:center; margin-bottom:32px;">Check ticket status in the AllSafe App</h2>
+      <div class="tutorial-steps">
+        <TutorialStep stepNumber={1} title="Open your ticket from the app home">
+          <p>You'll see Discussion, Timeline, and Details tabs.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={2} title="Discussion — messages between you and the technician">
+          <p>Reply right inside the app, attach files, ask follow-up questions.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={3} title="Timeline — every status change in one view">
+          <p>See exactly when work started, paused, resumed, and resolved.</p>
+        </TutorialStep>
+        <TutorialStep stepNumber={4} title="Details — asset, owner, category, priority">
+          <p>Useful when looping in other team members or referencing a prior ticket.</p>
+        </TutorialStep>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Emergency -->
+  <section id="emergency" class="section padding-small">
+    <div class="container">
+      <div class="emergency-card">
+        <p class="badge-text" style="color: var(--color-accent);">Priority 1 emergency</p>
+        <h2 class="h3">When the app and email aren't fast enough</h2>
+        <p class="lead-text">
+          A Priority 1 emergency is when the issue affects <strong>your entire
+          company</strong> and <strong>stops a critical business process</strong>.
+        </p>
+        <ul class="emergency-list">
+          <li>Email server down for everyone.</li>
+          <li>Internet outage at the office.</li>
+          <li>Suspected active cyber-incident.</li>
+        </ul>
+        <p class="body-text">
+          For any of these, <strong>call <a href={SUPPORT_PHONE_HREF}>{SUPPORT_PHONE_DISPLAY}</a></strong>
+          immediately and tell the operator it's a P1. Don't submit through
+          the app or email after hours — phone is the right channel.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Resource downloads -->
+  <section id="resources" class="section padding-small">
+    <div class="container">
+      <div class="centered-title">
+        <h2 class="h3">Resource downloads</h2>
+        <p class="lead-text">
+          Quick Start Guide and full Client Manual coming soon. Email
+          <a href={HELPDESK_EMAIL}>helpdesk@allsafeit.com</a> and we'll send
+          the current PDFs.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Benefits
+    heading="Our commitment to you"
+    intro="The standards we hold ourselves to as your IT partner."
+    benefits={commitments}
+  />
+
+  <ContactSection
+    heading="Anything else?"
+    body="If you didn't find what you needed above, ask us — we'll handle it personally."
+  />
+</Base>
+
+<style>
+  .tutorial-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .content-block {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .content-block a,
+  .emergency-card a,
+  .centered-title a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+  .numbered-channels {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+  }
+  .numbered-channels li {
+    color: var(--color-text-dark-body);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+  }
+  .intro-line {
+    text-align: center;
+    max-width: var(--container-8col);
+    margin: 0 auto 24px;
+  }
+  .emergency-card {
+    max-width: var(--container-8col);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-light-1);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-default);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .emergency-list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+  }
+</style>

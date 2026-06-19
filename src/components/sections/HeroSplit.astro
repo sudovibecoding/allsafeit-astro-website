@@ -1,0 +1,253 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../primitives/Icon.astro';
+import heroImg from '../../assets/images/Hero-image-optiized.avif';
+import avatarNathan from '../../assets/images/NathanPhinney-optimized.avif';
+import avatarKevin from '../../assets/images/Kevin-Hughes-optimized.avif';
+
+interface Props {
+  titleLine1?: string;
+  titleLine2?: string;
+  lead?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  /** Optional hero image URL — defaults to bundled asset */
+  heroImageSrc?: string;
+  heroImageAlt?: string;
+}
+
+const {
+  titleLine1 = 'Managed IT Services California:',
+  titleLine2 = ' secure, proactive, reliable.',
+  lead = 'Empowering growth-focused businesses across Southern California with enterprise-grade SOC\u00a02-compliant managed IT services, cybersecurity, cloud infrastructure, and AI automation that amplify what your team can do.',
+  ctaText = '[Talk to an Expert]',
+  ctaHref = '/contact-us',
+  heroImageSrc = heroImg.src,
+  heroImageAlt = 'Small business owner smiling in Los Angeles café — AllSafe IT managed IT services client',
+} = Astro.props;
+---
+
+<section class="hero-wrap">
+  <div aria-hidden="true" style="height: var(--navbar-height)"></div>
+  <div class="container inside-hero">
+    <div class="hero-1-contents">
+      <div class="hero-grid home">
+
+        <div class="content hero-content">
+          <div class="hero-title align-left">
+            <h1 class="hero-text">
+              <span class="text-span-4">{titleLine1}</span>
+              <span>{titleLine2}</span>
+            </h1>
+            <p class="hero-lead-text">
+              {lead}
+            </p>
+          </div>
+          <a href={ctaHref} class="contact-link-cta">
+            <div class="avatar-text">
+              <div class="avatar-group">
+                <Image src={avatarNathan} alt="Nathan Phinney" class="avatar inside-group" width={54} height={54} loading="eager" />
+                <Image src={avatarKevin} alt="Kevin Hughes" class="avatar inside-group" width={54} height={54} loading="eager" />
+              </div>
+              <span class="badge-text-white">{ctaText}</span>
+            </div>
+            <div class="circle-button">
+              <div class="circle-button-icon-wrapper">
+                <Icon name="arrow-right" class="widget__embed-icons color__white-shade1 big" />
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="hero-image-wrapper">
+          <div class="blur-overlay"></div>
+          <!-- <Image
+            class="hero-image"
+            src={heroImg}
+            alt="Small business owner smiling in Los Angeles café — AllSafe IT managed IT services client"
+            widths={[400, 700, 800]}
+            sizes="(max-width: 991px) 90vw, 50vw"
+            loading="eager"
+            fetchpriority="high"
+          /> -->
+
+          <img src={heroImageSrc} alt={heroImageAlt} class="hero-image" loading="eager" fetchpriority="high" />
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-wrap {
+    z-index: 0;
+    min-height: 100vh;
+    margin-top: var(--navbar-negative-height);
+    background-color: var(--color-light-1);
+    position: relative;
+  }
+
+  .container.inside-hero {
+    z-index: 2;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    position: relative;
+  }
+
+  .hero-1-contents {
+    padding-top: var(--spacing-section-sm);
+    gap: 24px;
+    justify-content: space-between;
+    align-items: flex-end;
+    display: flex;
+  }
+
+  .hero-grid {
+    z-index: 2;
+    gap: 3rem;
+    grid-template-columns: 1fr 1fr;
+    place-items: start center;
+    display: grid;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+
+
+  .hero-title {
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+  }
+
+  .hero-title.align-left {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .hero-text {
+    color: var(--color-accent);
+    font-size: var(--text-h2);
+    line-height: var(--leading-h2);
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .text-span-4 {
+    color: var(--color-brand-dark);
+    font-size: var(--text-h1);
+    line-height: var(--leading-h2);
+    display: block;
+  }
+
+  .hero-lead-text {
+    color: var(--color-brand-dark);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    font-weight: 400;
+    text-align: left;
+  }
+
+  .contact-link-cta {
+    width: 100%;
+    max-width: var(--container-4col);
+    margin-top: var(--spacing-section-xs);
+    border-radius: var(--radius-default);
+    background-color: var(--color-brand-dark);
+    color: var(--color-text-light);
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    display: flex;
+    text-decoration: none;
+    gap: 12px;
+  }
+
+  .avatar-text {
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+  }
+
+  .avatar-group {
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 12px;
+    display: flex;
+  }
+
+  .hero-image-wrapper {
+    border-radius: var(--radius-default);
+    aspect-ratio: 1;
+    flex: 0 50%;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blur-overlay {
+    background-color: var(--color-light-1);
+    display: none;
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-image {
+    aspect-ratio: 1;
+    object-fit: cover;
+    align-self: center;
+    width: 112%;
+    max-width: none;
+  }
+
+  @media (max-width: 991px) {
+    .container.inside-hero {
+    padding-top: 0px;
+    padding-bottom: 48px;
+    position: relative;
+  }
+    .hero-wrap { min-height: auto; }
+
+    .hero-grid {
+      grid-template-columns: 1fr;
+      width: 100%;
+      max-width: var(--container-6col);
+      margin-left: auto;
+      margin-right: auto;
+      place-items: center;
+    }
+
+    .hero-title,
+    .hero-title.align-left {
+      transform: translateY(20px);
+      animation: slideUpFade 0.5s ease-out forwards;
+      will-change: transform;
+    }
+
+    @keyframes slideUpFade {
+      to { transform: translateY(0); }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .text-span-4 { font-size: var(--text-h3); }
+    .hero-text   { font-size: var(--text-h4); }
+    .hero-image  { width: 100%; margin-bottom: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-title,
+    .hero-title.align-left {
+      animation: none;
+      transform: none;
+    }
+  }
+</style>
