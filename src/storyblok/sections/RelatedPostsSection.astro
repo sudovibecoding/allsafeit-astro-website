@@ -1,7 +1,7 @@
 ---
 import RelatedPosts from '../../components/sections/RelatedPosts.astro';
 import { useStoryblokApi } from '@storyblok/astro';
-import { blogPostHref, fetchBlogPosts } from '../../lib/storyblok-blog';
+import { blogPostHref, getCachedBlogPosts } from '../../lib/storyblok-blog';
 import { storyblokVersion } from '../../lib/storyblok-fetch';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { blok } = Astro.props;
-const count = blok.count ?? 3;
+const count = Number(blok.count) || 3;
 const version = storyblokVersion(Astro.url, import.meta.env.DEV);
 const currentPath = Astro.url.pathname;
 
@@ -27,7 +27,7 @@ let posts: Array<{
 
 try {
   const sbApi = useStoryblokApi();
-  const stories = await fetchBlogPosts(sbApi, version);
+  const stories = await getCachedBlogPosts(sbApi, version);
   posts = stories
     .filter((s) => blogPostHref(s) !== currentPath)
     .slice(0, count)

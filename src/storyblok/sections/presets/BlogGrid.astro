@@ -1,7 +1,7 @@
 ---
 import BlogGrid from '../../../components/sections/BlogGrid.astro';
 import { useStoryblokApi } from '@storyblok/astro';
-import { fetchBlogPosts } from '../../../lib/storyblok-blog';
+import { fetchBlogPosts, getCachedBlogPosts } from '../../../lib/storyblok-blog';
 import { storyblokVersion } from '../../../lib/storyblok-fetch';
 
 interface Props {
@@ -18,7 +18,7 @@ const version = storyblokVersion(Astro.url, import.meta.env.DEV);
 let posts: Awaited<ReturnType<typeof fetchBlogPosts>> = [];
 try {
   const sbApi = useStoryblokApi();
-  posts = await fetchBlogPosts(sbApi, version);
+  posts = await getCachedBlogPosts(sbApi, version);
 } catch {
   /* empty */
 }

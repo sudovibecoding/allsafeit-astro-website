@@ -4,7 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import ContactSection from '../../components/sections/ContactSection.astro';
 import BlogPostsGrid from '../../components/sections/BlogPostsGrid.astro';
 import { useStoryblokApi } from '@storyblok/astro';
-import { fetchBlogPosts } from '../../lib/storyblok-blog';
+import { fetchBlogPosts, getCachedBlogPosts } from '../../lib/storyblok-blog';
 import { storyblokVersion } from '../../lib/storyblok-fetch';
 
 const version = storyblokVersion(Astro.url, import.meta.env.DEV);
@@ -12,7 +12,7 @@ const version = storyblokVersion(Astro.url, import.meta.env.DEV);
 let sorted: Awaited<ReturnType<typeof fetchBlogPosts>> = [];
 try {
   const sbApi = useStoryblokApi();
-  sorted = await fetchBlogPosts(sbApi, version);
+  sorted = await getCachedBlogPosts(sbApi, version);
 } catch {
   /* empty */
 }

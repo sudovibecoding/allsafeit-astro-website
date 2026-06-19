@@ -75,11 +75,15 @@ export function resolveRichOrHtml(
 }
 
 export function renderStoryblokRichText(doc: unknown, variant: RichTextVariant = 'default'): string {
-  if (!doc || typeof doc !== 'object') return '';
-  const root = doc as RichTextNode;
-  if (root.type !== 'doc' || !Array.isArray(root.content)) return '';
-  const html = root.content.map((node) => renderNode(node, variant)).join('');
-  return `${WRAPPER_OPEN}${html}${WRAPPER_CLOSE}`;
+  try {
+    if (!doc || typeof doc !== 'object') return '';
+    const root = doc as RichTextNode;
+    if (root.type !== 'doc' || !Array.isArray(root.content)) return '';
+    const html = root.content.map((node) => renderNode(node, variant)).join('');
+    return `${WRAPPER_OPEN}${html}${WRAPPER_CLOSE}`;
+  } catch {
+    return '';
+  }
 }
 
 function renderNode(node: RichTextNode, variant: RichTextVariant): string {

@@ -11,6 +11,10 @@ export type BlogStory = {
   };
 };
 
+type CacheEntry = { expires: number; posts: BlogStory[] };
+const blogCache = new Map<string, CacheEntry>();
+const BLOG_CACHE_TTL_MS = 5 * 60 * 1000;
+
 /** True for individual blog posts (not the blog index). Works with nested and legacy flat slugs. */
 export function isBlogPostStory(story: BlogStory): boolean {
   const canonical = story.content?.canonical;
@@ -23,7 +27,8 @@ export function isBlogPostStory(story: BlogStory): boolean {
   }
 
   return Boolean(
-    story.full_slug?.startsWith('blog/') &&
+    (story.full_slug?.startsWith('blog/') ||
+      story.full_slug?.startsWith('blog-pages/')) &&
       story.full_slug !== 'blog/index' &&
       story.full_slug !== 'blog',
   );
@@ -37,6 +42,9 @@ export function blogPostHref(story: BlogStory): string {
     } catch {
       /* fall through */
     }
+  }
+  if (story.full_slug?.startsWith('blog-pages/')) {
+    return `/blog/${story.full_slug.slice('blog-pages/'.length)}`;
   }
   return `/${story.full_slug}`;
 }
@@ -53,15 +61,35 @@ export async function fetchBlogPosts(
   const all: BlogStory[] = [];
   let page = 1;
 
-  while (true) {
-    const { data } = await sbApi.get('cdn/stories', { version, per_page: 100, page });
-    const stories = (data?.stories ?? []) as BlogStory[];
-    all.push(...stories);
-    if (stories.length < 100) break;
-    page += 1;
+  // Stories live under admin folder `blog-pages/`; avoid scanning the entire space.
+  const prefixes = ['blog-pages', 'blog'];
+
+  for (const starts_with of prefixes) {
+    page = 1;
+    while (true) {
+      const { data } = await sbApi.get('cdn/stories', {
+        version,
+        per_page: 100,
+        page,
+        starts_with,
+      });
+      const stories = (data?.stories ?? []) as BlogStory[];
+      all.push(...stories);
+      if (stories.length < 100) break;
+      page += 1;
+    }
+    if (all.length > 0) break;
   }
 
-  return all
+  const seen = new Set<string>();
+  const unique = all.filter((s) => {
+    const id = s.full_slug ?? s.name;
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+
+  return unique
     .filter(isBlogPostStory)
     .filter((s) => {
       const hero = s.content.body?.find((b) => b.component === 'hero_blog_post');
@@ -71,4 +99,16 @@ export async function fetchBlogPosts(
       (a, b) =>
         new Date(b.content.publish_date!).getTime() - new Date(a.content.publish_date!).getTime(),
     );
+}
+
+/** In-memory cache (per Worker isolate) to avoid duplicate Storyblok fetches on one page. */
+export async function getCachedBlogPosts(
+  sbApi: Parameters<typeof fetchBlogPosts>[0],
+  version: 'draft' | 'published',
+): Promise<BlogStory[]> {
+  const hit = blogCache.get(version);
+  if (hit && hit.expires > Date.now()) return hit.posts;
+  const posts = await fetchBlogPosts(sbApi, version);
+  blogCache.set(version, { posts, expires: Date.now() + BLOG_CACHE_TTL_MS });
+  return posts;
 }

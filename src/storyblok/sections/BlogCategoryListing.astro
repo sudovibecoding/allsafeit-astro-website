@@ -3,7 +3,7 @@ import HeroCentered from '../../components/sections/HeroCentered.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import BlogPostsGrid from '../../components/sections/BlogPostsGrid.astro';
 import { useStoryblokApi } from '@storyblok/astro';
-import { fetchBlogPosts } from '../../lib/storyblok-blog';
+import { fetchBlogPosts, getCachedBlogPosts } from '../../lib/storyblok-blog';
 import { storyblokVersion } from '../../lib/storyblok-fetch';
 
 interface Props {
@@ -21,7 +21,7 @@ let categoryName = categorySlug;
 
 try {
   const sbApi = useStoryblokApi();
-  posts = (await fetchBlogPosts(sbApi, version)).filter(
+  posts = (await getCachedBlogPosts(sbApi, version)).filter(
     (s) => s.content.blog_category === categorySlug,
   );
 
